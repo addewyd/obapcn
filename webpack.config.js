@@ -5,10 +5,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: { main: './src/index.js' },
+  entry: { 
+    main: './src/index.js', 
+    install: './src/install.js' 
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash].js'
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -47,6 +50,12 @@ plugins: [
       hash: true,
       template: './src/index.php',
       filename: 'index.php'
+    }),
+    new HtmlWebpackPlugin({  // Also generate a test.html
+      inject: false,
+      hash: true,
+      filename: 'install.php',
+      template: 'src/install.php'
     })
   ]
 }
