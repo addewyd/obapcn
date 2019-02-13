@@ -1,0 +1,6 @@
+{
+    "require": {
+        "monolog/monolog":"^1.24",
+        "mesilov/bitrix24-php-sdk": "^0.6.0"
+    }
+}
