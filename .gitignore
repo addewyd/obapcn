@@ -62,3 +62,6 @@ typings/
 
 vendor
 dist
+nbproject/private/
+obapcn.code-workspace
+
