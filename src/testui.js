@@ -9,6 +9,9 @@ import AsyncComputed from 'vue-async-computed';
 //import popper from 'popper.js';
 import bootstrap from 'bootstrap';
 
+var app = require('./app/apptestui.js');
+
+/*
 new Vue({
   el: '#b',
   data: {
@@ -16,3 +19,5 @@ new Vue({
   }
 })
 
+
+*/

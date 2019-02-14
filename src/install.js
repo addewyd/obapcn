@@ -1,6 +1,3 @@
-﻿
-    BX24.init(function(){
-        alert('init');
-        BX24.installFinish();
-       // curapp.dbname = 'ato';
-    });
+﻿var app = require('./app/insts.js');
+
+

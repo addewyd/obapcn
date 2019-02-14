@@ -1,5 +1,5 @@
 ﻿BX24.init(function () {
-    alert('aaa');
+    alert('init ok');
 });
 
 
