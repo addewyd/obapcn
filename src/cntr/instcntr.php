@@ -4,14 +4,14 @@ namespace Obapcn;
 mb_internal_encoding("UTF-8");
 
 require __DIR__ . '/../../vendor/autoload.php';
-require_once '../defines.php';
-require_once '../app/crdb.php';
+require_once './defines.php';
+require_once './crdb.php';
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 
 // create a log channel
-$log = new Logger('ato');
+$log = new Logger('obapcn');
 $log->pushHandler(new StreamHandler(LOG_DIR, Logger::DEBUG));
 $log -> debug('start', [HTTP_HOST]);
 
@@ -36,11 +36,10 @@ class Instcntr {
     public function manage($operation, $params)
     {
         $this -> log -> debug('operation', [$operation]);
-        if($operation == 'createdb') {
-            $dbname = $params['dbname'];
+        if($operation == 'updcodes') {
             $ai = $params['ai'];
             $ac = $params['ac'];
-            $res = createdb($dbname, $ai, $ac);
+            $res = 'ok';
             if($res !== 'ok') {
                 $this->returnResult(array('status' => 'error', 
                     'result' => $operation, 'data'=>$res));
