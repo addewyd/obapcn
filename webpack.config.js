@@ -4,6 +4,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     resolve: {
@@ -94,6 +95,7 @@ plugins: [
       filename: 'install.php',
       template: 'src/install.php'
     }),
+    new VueLoaderPlugin(),
     new CopyWebpackPlugin([{
         from: './src/cntr',
         to: './cntr'

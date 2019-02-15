@@ -1,3 +1,3 @@
-﻿var app = require('./app/insts.js');
+﻿import app from './app/insts';
 
 

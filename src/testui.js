@@ -2,22 +2,16 @@
 
 require("babel-core/register");
 require("babel-polyfill");
-import Vue from 'vue';
-import AsyncComputed from 'vue-async-computed';
+
+//import Vue from 'vue';
+//import AsyncComputed from 'vue-async-computed';
 
 //import jQuery from 'jquery';
 //import popper from 'popper.js';
+
 import bootstrap from 'bootstrap';
 
-var app = require('./app/apptestui.js');
+import app from './app/apptestui'
 
-/*
-new Vue({
-  el: '#b',
-  data: {
-    currentTab: 'home'
-  }
-})
+alert(app.cb)
 
-
-*/
