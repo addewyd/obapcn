@@ -76,6 +76,7 @@ application.prototype.init = function() {
     });
 }
 
+
 application.prototype.install = function(ai, asc) {
     var params = array_merge({'operation': 'updcodes', 
         'ai' :ai, 'ac':asc}, BX24.getAuth());

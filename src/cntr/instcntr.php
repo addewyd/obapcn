@@ -1,11 +1,15 @@
 <?php
 namespace Obapcn;
 
+
 mb_internal_encoding("UTF-8");
 
 require __DIR__ . '/../../vendor/autoload.php';
 require_once './defines.php';
 require_once './crdb.php';
+
+require_once 'auxbase.php';
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -15,12 +19,7 @@ $log = new Logger('obapcn');
 $log->pushHandler(new StreamHandler(LOG_DIR, Logger::DEBUG));
 $log -> debug('start', [HTTP_HOST]);
 
-class Instcntr {
-    public function __construct($log)
-    {
-        $this->log = $log;
-    }
-
+class Instcntr extends AuxBase {
     public function returnResult ($answer) {
     
         ob_start();
@@ -30,33 +29,33 @@ class Instcntr {
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($answer);
     }
-
-    
-    
+        
     public function manage($operation, $params)
     {
         $this -> log -> debug('operation', [$operation]);
         if($operation == 'updcodes') {
             $ai = $params['ai'];
             $ac = $params['ac'];
-            $res = 'ok';
-            if($res !== 'ok') {
+            $res = $this -> set_codes($ai, $ac);
+            if($res[0] !== 'ok') {
                 $this->returnResult(array('status' => 'error', 
-                    'result' => $operation, 'data'=>$res));
+                    'result' => $operation, 'data' => $res[1]));
                 return;
             } else {
                 $this->returnResult(array('status' => 'success', 
-                    'result' => $operation, 'data'=>$res));
+                    'result' => $operation, 'data'=>$res[1]));
                 return;
             }
         }
+
+        // ?
         $this->returnResult(array('status' => 'success',
             'result' => $operation, 'data'=>$operation));
     }
     
 };
 
-$manager = new Instcntr($log);
+$manager = new Instcntr($log, $_REQUEST);
 
 if (!empty($_REQUEST) && isset($_REQUEST['operation'])) {
     $manager->manage($_REQUEST['operation'], $_REQUEST);
