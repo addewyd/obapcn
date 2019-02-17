@@ -104,7 +104,7 @@ application.prototype.prepareEntity = function(opts) {
 var getoption = async function(item) {
     var res;
     var p = 
-    await new Promise((resolve, reject) =>
+        await new Promise((resolve, reject) =>
     {       
         BX24.callMethod('entity.item.get', {
             ENTITY: 'Options',
@@ -115,20 +115,23 @@ var getoption = async function(item) {
                     if (result.error()) {                      
                         console.error('err:');
                         console.error(result.error());
-                        reject(result.error)
+                        reject([false, result.error])
                     }
                     else
                     {
-                        resolve(result.answer)
-                        res = result;
+                        resolve([true,result.answer]);
+//                        res = result;
                     }                
                 }
             );
     });
-    console.log('p & res');
-    console.log(p);
-    console.log(res);
-    return p; // res;
+//    console.log('p & res');
+//    console.log(p);
+//    console.log(res);
+    if(p[0] && p[1].total > 0) {
+        return p[1].result[0];
+    }
+    return undefined;
 };
 
 // .............................................................................
@@ -143,6 +146,9 @@ var saveoptions = async function(opts) {
     try {
        p = await getoption('dbname');
        opt_present = true;
+       console.log('OPTS:');
+       console.log(p.NAME);
+       console.log(p.PROPERTY_VALUES);
     }
     catch(e)
     {
@@ -150,8 +156,6 @@ var saveoptions = async function(opts) {
         console.log(e)
     }
     
-    console.log('get:');
-    console.log(p);
     
     if(!opt_present) {
         var b = app.prepareEntity(opts);
@@ -163,6 +167,7 @@ var saveoptions = async function(opts) {
                         reject(result.error);
                     }
                     else {
+                        //var p2 = await getoption('dbname');
                         resolve(result)
                     }
                 }
@@ -170,9 +175,8 @@ var saveoptions = async function(opts) {
         });
         console.log('pr:');
         console.log(pr);
-        return pr;
-    } else {
-    
+        return false; // pr;
+    } else {    
         return p;
     }
 };
@@ -188,7 +192,7 @@ var createdbname = function() {
 application.prototype.install = async function(ai, asc) {
     
     var dbname = createdbname(); // or get it from user input
-    console.log(dbname);
+    //console.log(dbname);
     var p01 = await saveoptions(
         {
             dbname: dbname
@@ -196,7 +200,16 @@ application.prototype.install = async function(ai, asc) {
     );
     console.log('p01:');
     console.log(p01);
-    
+    if(p01) {
+        dbname = p01.PROPERTY_VALUES.dbname;
+    } else {
+        // create DB
+        
+        // await ...
+    }
+        
+    console.log('dbname ' + dbname);
+        
     var params = array_merge(
         {
             'operation': 'updcodes', 
