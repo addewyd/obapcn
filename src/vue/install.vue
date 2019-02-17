@@ -11,6 +11,9 @@
     <div id="inst-i-b">        
         <button v-on:click="install">Установить</button>
     </div>
+    <div id="inst-i-b">        
+        <button v-on:click="delopts">Delete options</button>
+    </div>
 </div>
 </template>
 <script>
@@ -26,6 +29,9 @@ export default {
     methods: {
         install: function(event) {
             app.install(this.app_id, this.app_secret_code);
+        },
+        delopts: function(event) {
+            app.delopts();
         }
     }
 }

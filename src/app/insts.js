@@ -67,6 +67,7 @@ import Inst from '../vue/install.vue';
   
 })();
 ﻿
+// .............................................................................
 
 function application() {}
 
@@ -75,11 +76,133 @@ application.prototype.init = function() {
         console.log('init');
     });
 }
+// .............................................................................
 
+application.prototype.prepareEntity = function(opts) {
+    var batch = [];
+    batch.push(['entity.add', 
+        {'ENTITY': 'Options', 'NAME': 'Options', 'ACCESS': {U1:'W',AU:'R'}}]);
+    batch.push(['entity.update', 
+        {'ENTITY': 'Options', 'ACCESS': {AU: 'W'}}]);
+    batch.push(['entity.item.property.add', 
+        {ENTITY: 'Options', 
+            PROPERTY: 'dbname', NAME: 'dbname', TYPE: 'S'}]); 
+    batch.push(['entity.item.add', {
+        ENTITY: 'Options',
+        DATE_ACTIVE_FROM: new Date(),
+        DETAIL_PICTURE: '',
+        NAME: 'dbname',
+        PROPERTY_VALUES: {
+            dbname: opts.dbname
+        }   
+        }]);
+    return batch;
+};
 
-application.prototype.install = function(ai, asc) {
-    var params = array_merge({'operation': 'updcodes', 
-        'ai' :ai, 'ac':asc}, BX24.getAuth());
+// .............................................................................
+
+var getoption = async function(item) {
+    var res;
+    var p = 
+    await new Promise((resolve, reject) =>
+    {       
+        BX24.callMethod('entity.item.get', {
+            ENTITY: 'Options',
+            SORT: {DATE_ACTIVE_FROM: 'ASC'}
+        },            
+        function (result) {  
+            console.log('in callback');
+                    if (result.error()) {                      
+                        console.error('err:');
+                        console.error(result.error());
+                        reject(result.error)
+                    }
+                    else
+                    {
+                        resolve(result.answer)
+                        res = result;
+                    }                
+                }
+            );
+    });
+    console.log('p & res');
+    console.log(p);
+    console.log(res);
+    return p; // res;
+};
+
+// .............................................................................
+
+var saveoptions = async function(opts) {
+    
+    // check presence first!
+    // get dbname from options
+    // 
+    var opt_present = false;
+    var p;
+    try {
+       p = await getoption('dbname');
+       opt_present = true;
+    }
+    catch(e)
+    {
+        console.log('catched:');
+        console.log(e)
+    }
+    
+    console.log('get:');
+    console.log(p);
+    
+    if(!opt_present) {
+        var b = app.prepareEntity(opts);
+        var pr = new Promise((resolve, reject) => {
+        
+            BX24.callBatch(b, 
+                function(result) {
+                    if(result.error) {
+                        reject(result.error);
+                    }
+                    else {
+                        resolve(result)
+                    }
+                }
+            );
+        });
+        console.log('pr:');
+        console.log(pr);
+        return pr;
+    } else {
+    
+        return p;
+    }
+};
+
+// .............................................................................
+
+var createdbname = function() {
+    return 'db_' + makeid(10);
+}
+
+// .............................................................................
+
+application.prototype.install = async function(ai, asc) {
+    
+    var dbname = createdbname(); // or get it from user input
+    console.log(dbname);
+    var p01 = await saveoptions(
+        {
+            dbname: dbname
+        }
+    );
+    console.log('p01:');
+    console.log(p01);
+    
+    var params = array_merge(
+        {
+            'operation': 'updcodes', 
+            dbname: dbname,
+            'ai' :ai, 'ac':asc
+        }, BX24.getAuth());
     
     $.ajax({url:'cntr/instcntr.php', type:'POST',data:params, dataType:'json',
         success:function(data){
@@ -89,11 +212,18 @@ application.prototype.install = function(ai, asc) {
             BX24.installFinish();
     },
         error: function(e){ console.log('ajax createdb',e );}
-    })    
-    
+    })        
+}
+
+application.prototype.delopts = async function() {
+    console.log('before od');
+    await BX24.callMethod('entity.delete', {'ENTITY': 'Options'});
+    console.log('after od');
 }
 
 var app = new application();
+
+// .............................................................................
 
 new Vue({
   el: '#inst-i',
