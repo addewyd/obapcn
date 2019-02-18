@@ -16,14 +16,26 @@ function application() {
     
 };
 
+application.prototype.loadAll = async function(r) {
+    console.log('loadAll');
+    return new Promise(function(resolve) {
+        return resolve("loadall-p");
+    });
+};
+
 
 application.prototype.init = async function() {
-    await new Promise((resolve) => 
+    console.log('init start');
+    var r1 = await new Promise((resolve) => 
         BX24.init(function () {
-            alert('init ok');
+            console.log('init ok');
             resolve(true);
         })
-    )
+    );
+    
+    var r2 = await this.loadAll(r1);
+    console.log('after await');
+    return r2;    
 };
 
 

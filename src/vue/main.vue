@@ -10,7 +10,13 @@ export default {
     mounted: function () {
         this.$nextTick(function () {
             console.log('app0', app);
-            app.init();
+            app.init().then(
+                (result) => {
+                    console.log('result', result);
+                }).catch((err) => { 
+                    console.log('err', err)
+                });
+            console.log('init not done yet');
         })
     },
     methods: {
