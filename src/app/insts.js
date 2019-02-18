@@ -1,8 +1,16 @@
 
 import Vue from 'vue';
+import ru from 'vee-validate/dist/locale/ru';
+import VeeValidate, { Validator } from 'vee-validate';
+
+Vue.use(VeeValidate);
+Validator.localize('ru', ru);
+
 import $ from 'jquery';
 import popper from 'popper.js';
+
 import Inst from '../vue/install.vue';
+
 
 (function () {
      var getClass = function (object) {
@@ -102,7 +110,6 @@ application.prototype.prepareEntity = function(opts) {
 // .............................................................................
 
 var getoption = async function(item) {
-    var res;
     var p = 
         await new Promise((resolve, reject) =>
     {       
@@ -129,7 +136,7 @@ var getoption = async function(item) {
 //    console.log(p);
 //    console.log(res);
     if(p[0] && p[1].total > 0) {
-        return p[1].result[0];
+        return p[1].result[0].PROPERTY_VALUES[item];
     }
     return undefined;
 };
@@ -147,8 +154,8 @@ var saveoptions = async function(opts) {
        p = await getoption('dbname');
        opt_present = true;
        console.log('OPTS:');
-       console.log(p.NAME);
-       console.log(p.PROPERTY_VALUES);
+       //console.log(p.NAME);
+       //console.log(p.PROPERTY_VALUES);
     }
     catch(e)
     {
@@ -191,6 +198,8 @@ var createdbname = function() {
 
 application.prototype.install = async function(ai, asc) {
     
+    // VALIDATE ai & ac !!!
+    
     var dbname = createdbname(); // or get it from user input
     //console.log(dbname);
     var p01 = await saveoptions(
@@ -201,7 +210,7 @@ application.prototype.install = async function(ai, asc) {
     console.log('p01:');
     console.log(p01);
     if(p01) {
-        dbname = p01.PROPERTY_VALUES.dbname;
+        dbname = p01; // .PROPERTY_VALUES.dbname;
     } else {
         // create DB
         
@@ -214,9 +223,9 @@ application.prototype.install = async function(ai, asc) {
         {
             'operation': 'updcodes', 
             dbname: dbname,
-            'ai' :ai, 'ac':asc
+            'ai' :ai, 
+            'ac':asc
         }, BX24.getAuth());
-    
     $.ajax({url:'cntr/instcntr.php', type:'POST',data:params, dataType:'json',
         success:function(data){
             console.log(data);
@@ -224,9 +233,11 @@ application.prototype.install = async function(ai, asc) {
             console.log(data['result']);
             BX24.installFinish();
     },
-        error: function(e){ console.log('ajax createdb',e );}
+        error: function(e){ console.log('ajax updcodes error',e );}
     })        
 }
+
+// .............................................................................
 
 application.prototype.delopts = async function() {
     console.log('before od');
