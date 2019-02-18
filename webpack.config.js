@@ -103,6 +103,10 @@ plugins: [
       {
         from: './src/img',
         to: './img'
+      },
+      {
+        from: './src/scripts',
+        to: './scripts'
       }
     ])
 
