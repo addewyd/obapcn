@@ -8,7 +8,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 require_once './defines.php';
 require_once './crdb.php';
 
-require_once 'auxbase.php';
+require_once 'auxbaseinst.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -19,7 +19,7 @@ $log = new Logger('obapcn');
 $log->pushHandler(new StreamHandler(LOG_DIR, Logger::DEBUG));
 $log -> debug('start', [HTTP_HOST]);
 
-class Instcntr extends AuxBase {
+class Instcntr extends AuxBaseInst {
     public function returnResult ($answer) {
     
         ob_start();
@@ -29,30 +29,42 @@ class Instcntr extends AuxBase {
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($answer);
     }
+    
+    protected function updcodes($ai, $ac) {
+            $res = $this -> set_codes($ai, $ac);
+            if($res[0] !== 'ok') {
+                $this->returnResult(array('status' => 'error', 
+                    'result' => 'updcodes', 'data' => $res[1]));
+            } else {
+                $this->returnResult(array('status' => 'success', 
+                    'result' => 'updcodes', 'data'=>$res[1]));
+            }        
+    }
+
+
+    protected function crdb() {
         
+        return TRUE;
+    }
+    
     public function manage($operation, $params)
     {
         $this -> log -> debug('operation', [$operation]);
         if($operation == 'updcodes') {
-            $ai = $params['ai'];
-            $ac = $params['ac'];
-            $res = $this -> set_codes($ai, $ac);
-            if($res[0] !== 'ok') {
-                $this->returnResult(array('status' => 'error', 
-                    'result' => $operation, 'data' => $res[1]));
-                return;
-            } else {
-                $this->returnResult(array('status' => 'success', 
-                    'result' => $operation, 'data'=>$res[1]));
-                return;
-            }
+            $this -> updcodes($params['ai'], $params['ac']);
         }
 
-        // ?
-        $this->returnResult(array('status' => 'success',
-            'result' => $operation, 'data'=>$operation));
+        if($operation == 'updcodes_crdb') {
+            if($this -> crdb()) {
+                updcodes($params['ai'], $params['ac']);
+            }        
+            else {
+                $this->returnResult(array('status' => 'error', 
+                    'result' => $operation, 'data' => $res[1]));
+
+            }
+        }
     }
-    
 };
 
 $manager = new Instcntr($log, $_REQUEST);

@@ -198,8 +198,7 @@ var createdbname = function() {
 
 application.prototype.install = async function(ai, asc) {
     
-    // VALIDATE ai & ac !!!
-    
+    var operation;
     var dbname = createdbname(); // or get it from user input
     //console.log(dbname);
     var p01 = await saveoptions(
@@ -211,17 +210,18 @@ application.prototype.install = async function(ai, asc) {
     console.log(p01);
     if(p01) {
         dbname = p01; // .PROPERTY_VALUES.dbname;
+        operation = 'updcodes';
     } else {
         // create DB
+        operation = 'updcodes_crdb'
         
-        // await ...
     }
         
     console.log('dbname ' + dbname);
         
     var params = array_merge(
         {
-            'operation': 'updcodes', 
+            'operation': operation, 
             dbname: dbname,
             'ai' :ai, 
             'ac':asc
