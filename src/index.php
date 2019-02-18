@@ -13,7 +13,13 @@ use Monolog\Handler\StreamHandler;
   <head>
   </head>
   <body>
-    <div id="b">obapcn</div>
+    <div>
+    <div id="app-main-top">
+        <app-main-top />
+    </div>
+        
+    </div>
+    
     <script src='https://api.bitrix24.com/api/v1/'></script>
     <script src="./main.js"></script>
 <?php
