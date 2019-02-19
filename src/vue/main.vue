@@ -1,6 +1,7 @@
 ﻿<template>
 <div>
-    main template
+    main template (top) 
+        <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
 
 </div>
 </template>
@@ -20,6 +21,9 @@ export default {
         })
     },
     methods: {
+        upddb: function() {
+            app.upddb();
+        }
     }
 }
 </script>

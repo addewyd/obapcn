@@ -9,7 +9,7 @@ class AuxBase {
             $this -> params = $r;
             $this -> ai = '';
             $this -> ac = '';
-            $this -> dbname = DBNAME;
+            $this -> dbname = $r['dbname'];
             $dbname = $this -> dbname;
             
             $db_settings = dbsettings();

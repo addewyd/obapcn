@@ -30,6 +30,8 @@ class Instcntr extends AuxBaseInst {
         echo json_encode($answer);
     }
     
+    // .........................................................................
+    
     protected function updcodes($ai, $ac) {
             $res = $this -> set_codes($ai, $ac);
             if($res[0] !== 'ok') {
@@ -44,25 +46,36 @@ class Instcntr extends AuxBaseInst {
 
     protected function crdb() {
         
-        return TRUE;
+        $sql = file('../scripts/obapcn.sql');
+        $this -> createdb($sql);
+        $this -> pdo = null;
+        if($this ->opendb()) {                                    
+            $this -> closedb();
+            return TRUE;
+        }
+        return FALSE;
     }
+    
+    // .........................................................................
     
     public function manage($operation, $params)
     {
         $this -> log -> debug('operation', [$operation]);
-        if($operation == 'updcodes') {
-            $this -> updcodes($params['ai'], $params['ac']);
-        }
+        switch($operation) {
+            case 'updcodes': 
+                $this -> updcodes($params['ai'], $params['ac']);
+                break;
 
-        if($operation == 'updcodes_crdb') {
-            if($this -> crdb()) {
-                updcodes($params['ai'], $params['ac']);
-            }        
-            else {
-                $this->returnResult(array('status' => 'error', 
+            case 'updcodes_crdb':
+                if($this -> crdb()) {
+                    $this -> updcodes($params['ai'], $params['ac']);
+                }        
+                else {
+                    $this->returnResult(array('status' => 'error', 
                     'result' => $operation, 'data' => $res[1]));
-
-            }
+                }
+                break;
+            default: break;
         }
     }
 };

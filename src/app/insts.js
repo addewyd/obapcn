@@ -9,6 +9,8 @@ Validator.localize('ru', ru);
 import $ from 'jquery';
 import popper from 'popper.js';
 
+import * as Utils  from './utils';
+
 import Inst from '../vue/install.vue';
 
 
@@ -109,39 +111,6 @@ application.prototype.prepareEntity = function(opts) {
 
 // .............................................................................
 
-var getoption = async function(item) {
-    var p = 
-        await new Promise((resolve, reject) =>
-    {       
-        BX24.callMethod('entity.item.get', {
-            ENTITY: 'Options',
-            SORT: {DATE_ACTIVE_FROM: 'ASC'}
-        },            
-        function (result) {  
-            console.log('in callback');
-                    if (result.error()) {                      
-                        console.error('err:');
-                        console.error(result.error());
-                        reject([false, result.error])
-                    }
-                    else
-                    {
-                        resolve([true,result.answer]);
-//                        res = result;
-                    }                
-                }
-            );
-    });
-//    console.log('p & res');
-//    console.log(p);
-//    console.log(res);
-    if(p[0] && p[1].total > 0) {
-        return p[1].result[0].PROPERTY_VALUES[item];
-    }
-    return undefined;
-};
-
-// .............................................................................
 
 var saveoptions = async function(opts) {
     
@@ -151,7 +120,7 @@ var saveoptions = async function(opts) {
     var opt_present = false;
     var p;
     try {
-       p = await getoption('dbname');
+       p = await Utils.getoption('dbname');
        opt_present = true;
        console.log('OPTS:');
        //console.log(p.NAME);
@@ -234,8 +203,8 @@ application.prototype.install = async function(ai, asc) {
             BX24.installFinish();
     },
         error: function(e){ console.log('ajax updcodes error',e );}
-    })        
-}
+    });
+};
 
 // .............................................................................
 

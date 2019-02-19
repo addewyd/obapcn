@@ -13,8 +13,8 @@
 
 
 -- Дамп структуры базы данных obapcn
-CREATE DATABASE IF NOT EXISTS `obapcn` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `obapcn`;
+-- CREATE DATABASE IF NOT EXISTS `obapcn` /*!40100 DEFAULT CHARACTER SET utf8 */;
+-- USE `obapcn`;
 
 -- Дамп структуры для таблица obapcn.codes
 CREATE TABLE IF NOT EXISTS `codes` (
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `codes` (
 -- Дамп данных таблицы obapcn.codes: ~1 rows (приблизительно)
 /*!40000 ALTER TABLE `codes` DISABLE KEYS */;
 INSERT INTO `codes` (`ai`, `ac`) VALUES
-	('tyu', 'iop');
+    ('tyu', 'iop');
 /*!40000 ALTER TABLE `codes` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
