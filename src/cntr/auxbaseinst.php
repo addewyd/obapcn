@@ -36,6 +36,8 @@ class AuxBaseInst {
             `ac` varchar(128) DEFAULT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
         $this -> pdo ->exec("insert into codes values ('x','x')");
+        
+        $this -> pdo -> exec($sql);
     }
 
     protected function opendb() {

@@ -17,15 +17,42 @@ function application() {
     this.dbname = undefined;
 };
 
+application.prototype.loadObjects = async function(r) {
+    console.log('loadObjects ' + this.dbname);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getObjects', 
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve getObjects', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else reject('error');
+                }).fail(
+                function (e) {
+                    console.log('GOe', e);
+                    reject(['error', e]);
+                });
+    });
+};
+
+// .............................................................................
+
 application.prototype.loadAll = async function(r) {
     console.log('loadAll');
-//    return new Promise(function(resolve) {
-//        return resolve("loadall-p");
-//    });
     var p1 = await Utils.getoption('dbname');
     this.dbname = p1;
-    return p1;
+    var p2 = await this.loadObjects(p1);
+    console.log('objects ', p2); // array of records is here
+    return p2;
 };
+
+// .............................................................................
 
 application.prototype.upddb = function() {
     console.log('upddb ' + this.dbname);
@@ -39,11 +66,12 @@ application.prototype.upddb = function() {
             console.log(data);
             //var answer = JSON.parse(data);
             console.log(data['result']);
-            BX24.installFinish();
     },
-        error: function(e){ console.log('ajax updcodes error',e );}
+        error: function(e){ console.log('ajax upddb error',e );}
     });    
 };
+
+// .............................................................................
 
 application.prototype.init = async function() {
     console.log('init start');

@@ -46,7 +46,7 @@ class Instcntr extends AuxBaseInst {
 
     protected function crdb() {
         
-        $sql = file('../scripts/obapcn.sql');
+        $sql = file_get_contents('../scripts/obapcn.sql');
         $this -> createdb($sql);
         $this -> pdo = null;
         if($this ->opendb()) {                                    
