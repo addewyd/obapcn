@@ -14,6 +14,7 @@ import * as Utils  from './utils';
 import MainTop from '../vue/main.vue';
 import MainMiddle from '../vue/mainmiddle.vue';
 import ObjectsGrid from '../vue/objectsgrid.vue';
+import CellTest from '../vue/celltest.vue';
 
 function application() {
     this.dbname = undefined;
@@ -96,6 +97,7 @@ var bus = new Vue;
 
 Vue.component('app-main-middle', MainMiddle);
 Vue.component('objects-grid', ObjectsGrid);
+Vue.component('cell-test', CellTest);
         
 new Vue({
   el: '#app-main-top',

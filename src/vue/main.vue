@@ -7,7 +7,7 @@
 
     <div>
         <app-main-middle />
-        <objects-grid />
+        <objects-grid cellcomp="cell-test" />
     </div>
         <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
 
