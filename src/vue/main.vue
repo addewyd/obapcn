@@ -1,19 +1,36 @@
 ﻿<template>
 <div>
     main template (top) 
+        <div v-for="record in objects">
+            {{record.id}} {{record.name}}
+        </div>
+
+    <div>
+        <app-main-middle />
+    </div>
         <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
 
 </div>
 </template>
 <script>
-import app from '../app/app';
+import {app, bus} from '../app/app';
 export default {
+    data: function(){
+        return {
+            objects: []
+        };
+    },
+
     mounted: function () {
+        var self = this;
         this.$nextTick(function () {
             console.log('app0', app);
             app.init().then(
                 (result) => {
                     console.log('result', result);
+                    self.objects = result;
+                    app.objects = result;
+                    bus.$emit('objects-ready');
                 }).catch((err) => { 
                     console.log('err', err)
                 });

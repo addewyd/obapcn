@@ -12,6 +12,7 @@ import * as Utils  from './utils';
 
 
 import MainTop from '../vue/main.vue';
+import MainMiddle from '../vue/mainmiddle.vue';
 
 function application() {
     this.dbname = undefined;
@@ -89,8 +90,11 @@ application.prototype.init = async function() {
 
 
 var app = new application();
+var bus = new Vue;
 
 
+Vue.component('app-main-middle', MainMiddle);
+        
 new Vue({
   el: '#app-main-top',
   components: {
@@ -99,4 +103,4 @@ new Vue({
 });
 
 
-export default app;
+export /*default*/ {app, bus};

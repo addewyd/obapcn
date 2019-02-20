@@ -15,7 +15,7 @@ use Monolog\Handler\StreamHandler;
   <body>
     <div>
     <div id="app-main-top">
-        <app-main-top />
+        <app-main-top />        
     </div>
         
     </div>
@@ -23,7 +23,7 @@ use Monolog\Handler\StreamHandler;
     <script src='https://api.bitrix24.com/api/v1/'></script>
     <script src="./main.js"></script>
 <?php
-    dbtest();
+    //dbtest();
 ?>
 </body>
 
