@@ -7,6 +7,7 @@
 
     <div>
         <app-main-middle />
+        <objects-grid />
     </div>
         <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
 
