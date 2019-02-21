@@ -1,9 +1,6 @@
 ﻿<template>
 <div>
     main template (top) 
-        <div v-for="record in objects">
-            {{record.id}} {{record.name}}
-        </div>
 
     <div>
         <app-main-middle />

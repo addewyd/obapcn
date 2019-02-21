@@ -1,7 +1,11 @@
 ﻿<template>
-
-    <div>
-        <h1>cell test<br/>{{d}}</h1>
+    <div style="border:1px solid blue; width: 200px">
+    <div style="background-color: yellow; width: 90px">
+        {{d.number}}
+    </div>
+    <div  style="background-color: #bbbbbb; width: 90px">
+        {{d.square}}
+    </div>
     </div>
 </template>
 
@@ -9,14 +13,7 @@
 import {app, bus} from '../app/app';
 export default {  
     props: {
-        d: String
-    },  
-    mounted: function () {
-        var self = this;
-        bus.$on('objects-ready', function (n) {
-            console.log('on', n, app);
-            self.app = app;
-        });
+        d: Object
     }
 }
 </script>
