@@ -44,3 +44,35 @@ CREATE TABLE IF NOT EXISTS `flats` (
     CONSTRAINT `FK__objects_f` FOREIGN KEY (`objectid`) REFERENCES `objects` (`id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `pgentypes` (
+    `id` INT(10) UNSIGNED NOT NULL,
+    `name` VARCHAR(48) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `parttypes` (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(48) NOT NULL DEFAULT '0',
+    `pgentypeid`  INT(10) UNSIGNED NOT NULL,
+    `code1c` INT(10),
+    `forlife`  tinyint not null default 0,
+    PRIMARY KEY (`id`),
+    INDEX `FK__ps_pgentypes` (`pgentypeid`),
+    CONSTRAINT `FK__ps_pgentypes` FOREIGN KEY (`pgentypeid`) REFERENCES `pgentypes` (`id`)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `partsquares` (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `parttypeid` INT(10) UNSIGNED NOT NULL,
+    `flatid` INT(10) UNSIGNED NOT NULL,
+    `square` float,
+    PRIMARY KEY (`id`),
+    INDEX `FK__ps_ptypes` (`parttypeid`),
+    INDEX `FK__ps_flats` (`ftatid`),
+    CONSTRAINT `FK__ps_flats` FOREIGN KEY (`parttypeid`) REFERENCES `parttypes` (`id`),
+    CONSTRAINT `FK__ps_flats` FOREIGN KEY (`flatid`) REFERENCES `flats` (`id`)
+
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
