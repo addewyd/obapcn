@@ -1,11 +1,19 @@
 ﻿<template>
-    <div style="border:1px solid blue; width: 200px">
-    <div style="background-color: yellow; width: 90px">
+    <div>
+    <table style="border:1px solid blue; width: 200px">
+    <tr>
+    <td style="background-color: yellow; width: 90px">
         {{d.number}}
-    </div>
-    <div  style="background-color: #bbbbbb; width: 90px">
+    </td>
+    <td  style="background-color: #bbbbbb; width: 90px">
         {{d.square}}
-    </div>
+    </td>
+    </tr>
+    <tr>
+        <td>floor {{d.floor.floornum}}</td>
+        <td style="background-color: #bbcbfb; width: 90px"> empty yet</td>
+    </tr>
+    </table>
     </div>
 </template>
 

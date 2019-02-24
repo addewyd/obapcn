@@ -76,6 +76,34 @@ application.prototype.upddb = function() {
 
 // .............................................................................
 
+application.prototype.refreshdata = async function(id) {
+    console.log('app.refreshdata', id);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getData',
+            objectid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve getData', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else reject('error');
+                }).fail(
+                function (e) {
+                    console.log('GDe', e);
+                    reject(['error', e]);
+                });
+    });
+}
+
+// .............................................................................
+
 application.prototype.init = async function() {
     console.log('init start');
     var r1 = await new Promise((resolve) => 

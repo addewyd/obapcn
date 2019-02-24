@@ -75,6 +75,21 @@ class Maincntr extends AuxBase {
                 }
                 
                 break;
+            
+            case 'getData':
+                $objectid = $this -> params['objectid'];
+                $sql = 'select * from floors where objectid=?';
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                
+                break;
 
             default: 
                 $status = 'error';

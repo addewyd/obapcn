@@ -1,10 +1,10 @@
 ﻿<template>
 <div>
     middle
-    {{app}}
+    <!--{{app}}-->
     <div></div>
     <div v-for="record in objects">
-      id      {{record.id}} name  {{record.name}}
+       <span v-on:click="refreshdata(record.id)" >id  {{record.id}} name  {{record.name}}</span>
      </div>
 </div>
 </template>
@@ -14,7 +14,8 @@ export default {
     data: function(){
         return {
             app: undefined,
-            objects: []
+            objects: [],
+            currentid: 0
         };
     },
     mounted: function () {
@@ -24,6 +25,12 @@ export default {
             self.app = app;
             self.objects = app.objects;
         });
+    },
+    methods: {
+        refreshdata: function(id) {
+            this.currentid = id;
+            bus.$emit('refresh-data', id);
+        }
     }
 
 }

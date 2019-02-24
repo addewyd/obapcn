@@ -22,6 +22,7 @@ export default {
     },
     data: function(){
         return {
+            objectid: 0,
             records: [
                 [
                     {floor: 'f1', number:'1-1', square: 22.5},
@@ -51,13 +52,27 @@ export default {
             cellComponent: this.cellcomp
         };
     },
+    
+    methods: {
+        refreshdata: async function(id) {    
+            var floors = await app.refreshdata(id);
+            this.records = floors.map( (f) => {
+                return [{floor: f, number: '4-2', square: 47.5}];
+            });
+        }
+    },
+    
     mounted: function () {
         var self = this;
         bus.$on('objects-ready', function (n) {
             console.log('on', n, app);
             self.app = app;
         });
+        bus.$on('refresh-data', function (n) {
+            console.log('got refresh-data', n);
+            self.objectid = n;
+            self.refreshdata(n);
+        });
     }
-
 }
 </script>
