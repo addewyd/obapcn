@@ -66,3 +66,7 @@ nbproject/
 obapcn.code-workspace
 
 1c/flexport.epf
+.settings/
+.buildpath
+.project
+auxdata/*.csv

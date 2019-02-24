@@ -40,7 +40,7 @@ class Maincntr extends AuxBase {
             $this -> pdo ->exec($sql);
             return ['success', 'ok', ''];
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             $this -> log -> debug('upddb', [$e]);
             return ['error', $e, ''];
         }        
