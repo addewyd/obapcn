@@ -42,7 +42,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(scss)$/,
+        test: /\.(sass|scss)$/,
         include: path.resolve(__dirname, 'src/scss'),
         use: [
                 {
@@ -50,6 +50,7 @@ module.exports = {
                 }, 
                 {
                     loader: 'css-loader', // translates CSS into CommonJS modules
+                    options: {sourceMap: true}
                 }, 
                 {
                     loader: 'postcss-loader', // Run post css actions
@@ -63,8 +64,11 @@ module.exports = {
                     }
                 }, 
                 {
-                    loader: 'sass-loader' // compiles SASS to CSS
-            }]
+                    loader: 'sass-loader', // compiles SASS to CSS
+                    options: {
+                        sourceMap: true
+                    }
+                }]
         },
         {
         test: /\.css$/,

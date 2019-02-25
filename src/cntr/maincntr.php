@@ -93,7 +93,7 @@ class Maincntr extends AuxBase {
 
             case 'getFloorData':
                 $floorid = $this -> params['floorid'];
-                $sql = 'select fl.floornum, f.fnumb, f.square, f.price, f.nrooms '
+                $sql = 'select f.id, fl.floornum, f.fnumb, f.square, f.price, f.nrooms, f.gensquare '
                         . ' from flats f join floors fl '
                         . ' on f.floorid=fl.id'
                         . ' where floorid=?';

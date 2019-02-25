@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import ru from 'vee-validate/dist/locale/ru';
 import VeeValidate, { Validator } from 'vee-validate';
-
+Vue.config.devtools = true;
 Vue.use(VeeValidate);
 Validator.localize('ru', ru);
 
@@ -14,6 +14,8 @@ import * as Utils  from './utils';
 import MainTop from '../vue/main.vue';
 import MainMiddle from '../vue/mainmiddle.vue';
 import ObjectsGrid from '../vue/objectsgrid.vue';
+import ModalWindow from '../vue/modal.vue';
+import FlatInfo from '../vue/flatinfo.vue';
 import CellTest from '../vue/celltest.vue';
 
 function application() {
@@ -88,7 +90,7 @@ application.prototype.getFloorData = async function(id) {
     $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
             
-            if(data.status == 'success') {
+            if(data.status === 'success') {
                 resolve(data['result'])
             } else {
                 console.log('ajax getFloorData error', data.status);
@@ -153,6 +155,9 @@ application.prototype.init = async function() {
 var app = new application();
 var bus = new Vue;
 
+
+Vue.component('modal-window', ModalWindow);
+Vue.component('flat-info', FlatInfo);
 
 Vue.component('app-main-middle', MainMiddle);
 Vue.component('objects-grid', ObjectsGrid);

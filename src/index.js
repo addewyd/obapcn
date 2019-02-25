@@ -1,5 +1,6 @@
 ﻿
 import "./scss/style.scss";
+import "./scss/modal.scss";
 
 //require("babel-core/register");
 //require("babel-polyfill");
