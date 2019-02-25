@@ -1,17 +1,19 @@
 ﻿<template>
     <div>
-    <table style="border:1px solid blue; width: 200px">
+    <table class="chess">
     <tr>
-    <td style="background-color: yellow; width: 90px">
-        {{d.number}}
+    <td class="chess" style="background-color: yellow;">
+        N:{{d.fnumb}}
     </td>
-    <td  style="background-color: #bbbbbb; width: 90px">
-        {{d.square}}
+    <td class="chess"   style="background-color: #bbbbbb;">
+        {{d.square}} M<span style="font-size:60%; vertical-align: super">2</span> 
     </td>
     </tr>
     <tr>
-        <td>floor {{d.floor.floornum}}</td>
-        <td style="background-color: #bbcbfb; width: 90px"> empty yet</td>
+        <td class="chess" >NR: {{d.nrooms}}</td>
+        <td class="chess" style="background-color: #bbcbfb;"> 
+            {{d.price}}
+        </td>
     </tr>
     </table>
     </div>

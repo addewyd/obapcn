@@ -91,6 +91,24 @@ class Maincntr extends AuxBase {
                 
                 break;
 
+            case 'getFloorData':
+                $floorid = $this -> params['floorid'];
+                $sql = 'select fl.floornum, f.fnumb, f.square, f.price, f.nrooms '
+                        . ' from flats f join floors fl '
+                        . ' on f.floorid=fl.id'
+                        . ' where floorid=?';
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$floorid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                
+                break;
+
             default: 
                 $status = 'error';
                 $res = 'Unknoun Op';
@@ -103,7 +121,6 @@ class Maincntr extends AuxBase {
         $this->returnResult($ret);
         
     }
-
 
 }
 

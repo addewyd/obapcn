@@ -65,7 +65,10 @@ def floorinsert(conn, fn, oid):
 # ..............................................................................
 
 def flatinsert(conn, objid, floorid, line):
-    sql = 'insert into flats (objectid, floorid, fnumb, nrooms, contractid, square, gensquare, price) values (%s ,%s, %s, %s, %s, %s, %s, %s)'
+    sql = """insert into flats 
+        (objectid, floorid, fnumb, nrooms, contractid, square, gensquare, price) 
+        values 
+        (%s ,%s, %s, %s, %s, %s, %s, %s)"""
 
     fnumb = line['Номер']
     nrooms = line['Кол-во комнат'] . replace(',', '.')

@@ -76,6 +76,35 @@ application.prototype.upddb = function() {
 
 // .............................................................................
 
+application.prototype.getFloorData = async function(id) {
+    console.log('app.getFloorData ' + this.dbname);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getFloorData',
+            floorid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        done(function(data) {
+            
+            if(data.status == 'success') {
+                resolve(data['result'])
+            } else {
+                console.log('ajax getFloorData error', data.status);
+                reject([data.status, data.result]);
+            }
+        }).
+        fail(function(e){ 
+                console.log('ajax getFloorData error',e );
+                reject['error', e];
+            }
+        );    
+    });
+};
+
+// .............................................................................
+
 application.prototype.refreshdata = async function(id) {
     console.log('app.refreshdata', id);
     var params = Utils.array_merge(
@@ -93,7 +122,9 @@ application.prototype.refreshdata = async function(id) {
                     console.log('resolve getData', data, data.result);
                     if(data.status === 'success')
                         resolve(data.result);
-                    else reject('error');
+                    else {
+                        reject([data.status, data.result]);
+                    }
                 }).fail(
                 function (e) {
                     console.log('GDe', e);

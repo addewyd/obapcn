@@ -4,7 +4,8 @@
     <!--{{app}}-->
     <div></div>
     <div v-for="record in objects">
-       <span v-on:click="refreshdata(record.id)" >id  {{record.id}} name  {{record.name}}</span>
+       <span v-on:click="refreshdata(record.id)" >
+           id (clickable)  {{record.id}} name  {{record.name}}</span>
      </div>
 </div>
 </template>
