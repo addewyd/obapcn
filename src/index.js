@@ -1,6 +1,7 @@
 ﻿
 import "./scss/style.scss";
 import "./scss/modal.scss";
+import "./scss/vuedialog.scss";
 
 //require("babel-core/register");
 //require("babel-polyfill");

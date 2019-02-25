@@ -17,12 +17,17 @@
     </tr>
     </table>
 
+    <!-- flat info modal dialog -->
     <modal-window v-if="showFI" @close="showFI = false">
         <div slot="body">                
            modal
            <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
+        <div slot="footer">
+            -- Footer
+        </div>
     </modal-window>
+
 
     </div>
 </template>

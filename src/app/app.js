@@ -5,6 +5,13 @@ Vue.config.devtools = true;
 Vue.use(VeeValidate);
 Validator.localize('ru', ru);
 
+import VuejsDialog from "vuejs-dialog"
+//import VuejsDialogMixin from "vuejs-dialog/dist/vuejs-dialog-mixin.min.js" // only needed in custom components
+ 
+//import 'vuejs-dialog/dist/vuejs-dialog.min.css'
+ 
+Vue.use(VuejsDialog)
+
 import $ from 'jquery';
 import popper from 'popper.js';
 
@@ -142,6 +149,11 @@ application.prototype.init = async function() {
     var r1 = await new Promise((resolve) => 
         BX24.init(function () {
             console.log('init ok');
+            
+            Vue.dialog.alert('init callback')
+                .then(function (dialog) {
+                    console.log(dialog);
+            });
             resolve(true);
         })
     );
