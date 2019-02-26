@@ -15,6 +15,20 @@ table.f-sold {
     color: red;
 }
 
+div.fcell-over {
+  position: relative;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0; 
+  left: 0;
+  color: white;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+  transform:  translate(0%,-172%);
+}
+
 /*
 table.f-sold::after {
     content: "sold";
