@@ -47,8 +47,20 @@ span.tabhead {
     font-weight: bold;
     font-size: 120%;
     border-right: 1px solid blue;
-    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
+    border-left: 1px solid blue;
+    
     cursor: pointer;
+    border-top-right-radius: 10px 10px;
+}
+
+span.tab-act {
+    background-color: white;
+    border-bottom: 1px solid white;
+}
+span.tab-pas {
+    background-color: #dddddd;
+    border-bottom: 1px solid blue;
 }
 
 span.objitem {

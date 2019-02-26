@@ -7,17 +7,7 @@ export default {
     data: function(){
         return {
             objectid: 0,
-            records: [
-                [
-                    {floor: 'f1', fnumb:'1-1', square: 22.5, price:0, nrooms:0},
-                    {floor: 'f1', fnumb:'1-2', square: 27.5, price:0, nrooms:0}
-                ],
-                [
-                    {floor: 'f2', fnumb:'2-1', square: 22.5, price:0, nrooms:0},
-                    {floor: 'f2', fnumb:'2-3', square: 27.5, price:0, nrooms:0},
-                    {floor: 'f2', fnumb:'2-4', square: 24.5, price:0, nrooms:0}
-                ]
-            ],
+            records: [],
             app: undefined,
             cellComponent: this.cellcomp
         };
