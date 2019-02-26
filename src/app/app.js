@@ -22,11 +22,22 @@ import MainTop from '../vue/main.vue';
 import MainMiddle from '../vue/mainmiddle.vue';
 import ObjectsGrid from '../vue/objectsgrid.vue';
 import ModalWindow from '../vue/modal.vue';
+
 import FlatInfo from '../vue/flatinfo.vue';
+
 import FITabs from '../vue/fitabs.vue';
 import FITab01 from '../vue/fitab01.vue';
 import FITab02 from '../vue/fitab02.vue';
 import FITab03 from '../vue/fitab03.vue';
+
+import OrderInfo from '../vue/orderinfo.vue';
+
+import OITabs from '../vue/oitabs.vue';
+import OITab01 from '../vue/oitab01.vue';
+import OITab02 from '../vue/oitab02.vue';
+import OITab03 from '../vue/oitab03.vue';
+import OITab04 from '../vue/oitab04.vue';
+
 
 import CellTest from '../vue/celltest.vue';
 
@@ -180,6 +191,14 @@ Vue.component('fi-tab-03', FITab03);
 Vue.component('fi-tabs', FITabs);
 Vue.component('modal-window', ModalWindow);
 Vue.component('flat-info', FlatInfo);
+
+Vue.component('oi-tabs', OITabs);
+Vue.component('order-info', OrderInfo);
+
+Vue.component('oi-tab-01', OITab01);
+Vue.component('oi-tab-02', OITab02);
+Vue.component('oi-tab-03', OITab03);
+Vue.component('oi-tab-04', OITab04);
 
 Vue.component('app-main-middle', MainMiddle);
 Vue.component('objects-grid', ObjectsGrid);

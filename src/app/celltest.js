@@ -6,12 +6,16 @@ export default {
     },
     data: function() {
         return {
-            showFI: false
+            showFI: false,
+            showOI: false,
         }
     },
     methods: {
-        click: function(c) {
+        clickFI: function(c) {
             this.showFI = c;
+        },
+        clickOI: function(c) {
+            this.showOI = c;
         }
     },
     computed: {
@@ -27,6 +31,9 @@ export default {
         var self = this;
         bus.$on('close-fi', function () {
             self.showFI = false;
+        });
+        bus.$on('close-oi', function () {
+            self.showOI = false;
         });
     }
 }
