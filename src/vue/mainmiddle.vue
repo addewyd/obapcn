@@ -1,12 +1,11 @@
 ﻿<template>
 <div>
-    middle
-    <!--{{app}}-->
-    <div></div>
+    <h3>Objects</h3>
     <div v-for="record in objects">
-       <span v-on:click="refreshdata(record.id)" >
-           id (clickable)  {{record.id}} name  {{record.name}}</span>
-     </div>
+       <span class="objitem" v-on:click="refreshdata(record.id)" >
+           {{record.id}}  {{record.name}}
+       </span>
+    </div>
 </div>
 </template>
 <script>
@@ -33,6 +32,5 @@ export default {
             bus.$emit('refresh-data', id);
         }
     }
-
 }
 </script>

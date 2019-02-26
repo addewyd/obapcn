@@ -1,9 +1,10 @@
 ﻿<template>
     <div>
-        id {{flatid}} <br />
-        Общая площадь {{gensquare}}  <br />
-        {{finfo}}
-        <button @click="close">Close</button>
+        <div style="font-size: 8pt">
+            id {{flatid}} = {{finfo.id}}<br />
+            Общая площадь {{gensquare}}  <br />
+        </div>
+        <button class="btn btn-primary" @click="close">Close</button>
     </div>
 </template>
 <script>

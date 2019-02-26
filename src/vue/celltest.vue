@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-    <table class="chess">
+    <table :class="status">
     <tr>
     <td v-on:click="click(true)" class="chess" style="background-color: yellow;">
         N:{{d.fnumb}}
@@ -20,14 +20,13 @@
     <!-- flat info modal dialog -->
     <modal-window v-if="showFI" @close="showFI = false">
         <div slot="body">                
-           modal
+           <fi-tabs :finfo="d"></fi-tabs>
            <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
         <div slot="footer">
             -- Footer
         </div>
     </modal-window>
-
 
     </div>
 </template>
@@ -46,6 +45,12 @@ export default {
     methods: {
         click: function(c) {
             this.showFI = c;
+        }
+    },
+    computed: {
+        status: function() {
+            if(parseInt(this.d.sold) > 0) return "chess f-sold";
+            return "chess"
         }
     },
     mounted: function () {

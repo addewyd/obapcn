@@ -10,8 +10,39 @@ table.chess {
     border:1px solid blue;
     font-size: 9pt;
 }
+table.f-sold {
+    border:1px solid red;
+    color: red;
+}
+
+/*
+table.f-sold::after {
+    content: "sold";
+    font-size: 40%;
+}
+*/
 
 td.chess {
     width: 58px;    
     cursor: pointer
+}
+
+span.tabhead {
+    width: 120px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+    font-size: 120%;
+    border-right: 1px solid blue;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+
+span.objitem {
+    margin: 0px 7px 0px 7px;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+
+div.tabs {
+    border-bottom: 1px solid blue;
 }

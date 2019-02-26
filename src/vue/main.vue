@@ -1,12 +1,10 @@
 ﻿<template>
 <div>
-    main template (top) 
-
     <div>
         <app-main-middle />
         <objects-grid cellcomp="cell-test" />
     </div>
-        <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
+    <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
 
 </div>
 </template>

@@ -23,6 +23,11 @@ import MainMiddle from '../vue/mainmiddle.vue';
 import ObjectsGrid from '../vue/objectsgrid.vue';
 import ModalWindow from '../vue/modal.vue';
 import FlatInfo from '../vue/flatinfo.vue';
+import FITabs from '../vue/fitabs.vue';
+import FITab01 from '../vue/fitab01.vue';
+import FITab02 from '../vue/fitab02.vue';
+import FITab03 from '../vue/fitab03.vue';
+
 import CellTest from '../vue/celltest.vue';
 
 function application() {
@@ -168,6 +173,11 @@ var app = new application();
 var bus = new Vue;
 
 
+Vue.component('fi-tab-01', FITab01);
+Vue.component('fi-tab-02', FITab02);
+Vue.component('fi-tab-03', FITab03);
+
+Vue.component('fi-tabs', FITabs);
 Vue.component('modal-window', ModalWindow);
 Vue.component('flat-info', FlatInfo);
 
