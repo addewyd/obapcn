@@ -70,3 +70,4 @@ obapcn.code-workspace
 .buildpath
 .project
 auxdata/*.csv
+TMP/
