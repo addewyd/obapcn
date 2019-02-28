@@ -3,6 +3,26 @@ CREATE TABLE IF NOT EXISTS `codes` (
   `ac` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS `pgentypes` (
+    `id` INT(10) UNSIGNED NOT NULL,
+    `name` VARCHAR(48) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `parttypes` (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(48) NOT NULL DEFAULT '0',
+    `pgentypeid`  INT(10) UNSIGNED NOT NULL,
+    `code1c` INT(10),
+    `forlife`  tinyint not null default 0,
+    PRIMARY KEY (`id`),
+    INDEX `FK__ps_pgentypes` (`pgentypeid`),
+    CONSTRAINT `FK__ps_pgentypes` FOREIGN KEY (`pgentypeid`) REFERENCES `pgentypes` (`id`)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE IF NOT EXISTS `objects` (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(128) NOT NULL DEFAULT '0',
@@ -34,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `flats` (
     `square` float,
     `gensquare` float,
     `sold` tinyint not null default 0,
-    `contractid` INT(10) UNSIGNED NOT NULL,
     `meterprice` float,
     `price` float,
     `studio` tinyint not null default 0,
@@ -47,30 +66,21 @@ CREATE TABLE IF NOT EXISTS `flats` (
     `flattype` tinyint not null default 0,
     `bph` tinyint not null default 0,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `flat_unq` (`objectid`, `floorid`, `fnumb`),
     INDEX `FK__objects_f` (`objectid`),
     INDEX `FK__floor_f` (`floorid`),
     CONSTRAINT `FK__objects_f` FOREIGN KEY (`objectid`) REFERENCES `objects` (`id`),
     CONSTRAINT `FK__floor_f` FOREIGN KEY (`floorid`) REFERENCES `floors` (`id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `pgentypes` (
-    `id` INT(10) UNSIGNED NOT NULL,
-    `name` VARCHAR(48) NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`)
-
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE IF NOT EXISTS `parttypes` (
+CREATE TABLE `contracts` (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(48) NOT NULL DEFAULT '0',
-    `pgentypeid`  INT(10) UNSIGNED NOT NULL,
-    `code1c` INT(10),
-    `forlife`  tinyint not null default 0,
+    `flatid` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `regnum` VARCHAR(500) NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    INDEX `FK__ps_pgentypes` (`pgentypeid`),
-    CONSTRAINT `FK__ps_pgentypes` FOREIGN KEY (`pgentypeid`) REFERENCES `pgentypes` (`id`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    INDEX `FK1_ctr_fl` (`flatid`),
+    CONSTRAINT `FK1_ctr_fl` FOREIGN KEY (`flatid`) REFERENCES `flats` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `partsquares` (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -78,8 +88,21 @@ CREATE TABLE IF NOT EXISTS `partsquares` (
     `fid` INT(10) UNSIGNED NOT NULL,
     `square` float,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `pt_unq` (`parttypeid`, `fid`),
     INDEX `FK__ps_ptypes` (`parttypeid`),
     INDEX `FK__ps_flats` (`fid`),
     CONSTRAINT `FK__ps_ptypes` FOREIGN KEY (`parttypeid`) REFERENCES `parttypes` (`id`),
     CONSTRAINT `FK__ps_flats` FOREIGN KEY (`fid`) REFERENCES `flats` (`id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `payshedules` (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `contractid` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `pdate` DATE NOT NULL,
+    `psumm` FLOAT NOT NULL DEFAULT '0',
+    `percent` SMALLINT(6) NULL DEFAULT '0',
+    `pmethod` VARCHAR(100) NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    INDEX `FK1_ps_cntr` (`contractid`),
+    CONSTRAINT `FK1_ps_cntr` FOREIGN KEY (`contractid`) REFERENCES `contracts` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
