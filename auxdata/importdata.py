@@ -1,6 +1,7 @@
 ﻿import pymysql
 import io
 import json
+import re
 
 
 def opendb():
@@ -9,6 +10,15 @@ def opendb():
         db='db_sddpavmyls',  cursorclass=pymysql.cursors.DictCursor)
     return conn
 
+def todate(pdate):
+    p = '(\d{1,2})\.(\d{1,2})\.(\d{4})\s'
+    po = re.compile(p)
+    m = po.search(pdate)
+    if m:
+        d = "%04d-%02d-%02d" % (int(m.group(3)), int(m.group(2)), int(m.group(1)))
+    else:
+        d = '2000-01-01'
+    return d
 
 # ..............................................................................
 
@@ -117,7 +127,7 @@ def contractinsert(conn, flatid, contract):
     # ins conttact
 
     sql1 = 'select id from contracts where flatid =%s'
-    sql2 = 'insert into contracts (flatid, regnum) values (%s, %s)'
+    sql2 = 'insert into contracts (flatid, regnum, regdate, client, summ, firstpay, paytype, varianto) values (%s, %s, %s, %s, %s, %s, %s, %s)'
 
     contractid = -1
 
@@ -130,9 +140,15 @@ def contractinsert(conn, flatid, contract):
              curs.close()
         else:
             regnum = contract['regnum']
+            regdate = todate(contract['regdate'])
+            client = contract['client']
+            summ = contract['summ']
+            firstpay = contract['firstpay']
+            paytype = contract['paytype']
+            varianto = contract['varianto']
             curs.close()
             curs = conn.cursor()
-            curs.execute(sql2, (flatid, regnum))
+            curs.execute(sql2, (flatid, regnum, regdate, client, summ, firstpay, paytype, varianto))
             contractid = curs.lastrowid
 
         paysheduleinsert(conn, contractid, contract['payshedule'])
@@ -141,9 +157,22 @@ def contractinsert(conn, flatid, contract):
 # .............................................................................,
 
 def paysheduleinsert(conn, contractid, shedule):
+
+    sql = 'insert into payshedules (contractid, pdate, psumm, percent, pmethod) values(%s, %s, %s, %s, %s)'
+    curs = conn.cursor()
+
     for payment in shedule:
         pdate = payment['date']
-        print(pdate)
+#        print(pdate)
+        d = todate(pdate)
+        print(d)
+        psumm = payment['summ']
+        percent = payment['percent']
+        pmethod = payment['pmethod']
+        #curs = conn.cursor()
+        curs.execute(sql, (contractid, d, psumm, percent, pmethod))
+    curs.close()
+    conn.commit()
 
 
 # clear partsquares flats floors # (objects)
@@ -161,6 +190,16 @@ def insertall(f1, objectid, conn):
 
 if __name__ == "__main__":
     conn = opendb()
+
+    # clear table ps
+    sql = 'delete from  payshedules';
+    curs = conn.cursor()
+    curs.execute(sql)
+
+    sql = 'delete from contracts';
+    curs.execute(sql)
+    conn.commit()
+
 
     f1 = '../TMP/paris.json'
     objectid = 10
@@ -187,5 +226,6 @@ if __name__ == "__main__":
     objectid = 11
     insertall(f1, objectid, conn)
 
+    conn.commit()
 
 # tokio-pr

@@ -77,6 +77,12 @@ CREATE TABLE `contracts` (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `flatid` INT(10) UNSIGNED NOT NULL DEFAULT '0',
     `regnum` VARCHAR(500) NULL DEFAULT '0',
+    `regdate` DATE NULL DEFAULT NULL,
+    `client` VARCHAR(100) NULL DEFAULT '0',
+    `summ` FLOAT NULL DEFAULT '0',
+    `firstpay` FLOAT NULL DEFAULT '0',
+    `paytype` VARCHAR(150) NULL DEFAULT '0',
+    `varianto` VARCHAR(150) NULL DEFAULT '0',
     PRIMARY KEY (`id`),
     INDEX `FK1_ctr_fl` (`flatid`),
     CONSTRAINT `FK1_ctr_fl` FOREIGN KEY (`flatid`) REFERENCES `flats` (`id`)

@@ -4,6 +4,8 @@ import VeeValidate, { Validator } from 'vee-validate';
 Vue.config.devtools = true;
 Vue.use(VeeValidate);
 Validator.localize('ru', ru);
+import AsyncComputed from 'vue-async-computed';
+Vue.use(AsyncComputed);
 
 import VuejsDialog from "vuejs-dialog"
 //import VuejsDialogMixin from "vuejs-dialog/dist/vuejs-dialog-mixin.min.js" // only needed in custom components
@@ -114,6 +116,35 @@ application.prototype.getFloorData = async function(id) {
         done(function(data) {
             
             if(data.status === 'success') {
+                resolve(data['result'])
+            } else {
+                console.log('ajax getFloorData error', data.status);
+                reject([data.status, data.result]);
+            }
+        }).
+        fail(function(e){ 
+                console.log('ajax getFloorData error',e );
+                reject['error', e];
+            }
+        );    
+    });
+};
+// .............................................................................
+
+application.prototype.getSquares = async function(id) {
+    console.log('app.getSquares ' + this.dbname);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getSquares',
+            flatid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        done(function(data) {
+            
+            if(data.status === 'success') {
+                console.log('ajax getSq', data.result);
                 resolve(data['result'])
             } else {
                 console.log('ajax getFloorData error', data.status);

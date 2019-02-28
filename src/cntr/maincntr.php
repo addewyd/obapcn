@@ -110,6 +110,23 @@ class Maincntr extends AuxBase {
                 
                 break;
 
+            case 'getSquares':
+                $flatid = $this -> params['flatid'];
+                $sql = 'select t.code1c, t.name, p.square from partsquares p '
+                        . 'join parttypes t on p.parttypeid=t.id '
+                        . 'where p.fid = ? order by t.code1c ';
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$flatid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                
+                break;
+            
             default: 
                 $status = 'error';
                 $res = 'Unknoun Op';
