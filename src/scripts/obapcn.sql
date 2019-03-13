@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `flats` (
     `pledge` tinyint not null default 0,
     `flattype` tinyint not null default 0,
     `bph` tinyint not null default 0,
+    `Pointsatfloor` MULTIPOINT NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `flat_unq` (`objectid`, `floorid`, `fnumb`),
     INDEX `FK__objects_f` (`objectid`),

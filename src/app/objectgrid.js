@@ -1,4 +1,4 @@
-﻿import {app, bus} from './app';
+﻿import {Vue, app, bus} from './app';
 
 export default {    
     props: {
@@ -9,7 +9,10 @@ export default {
             objectid: 0,
             records: [],
             app: undefined,
-            cellComponent: this.cellcomp
+            showFloorPlan: false,
+            cellComponent: this.cellcomp,
+            c_floorid: undefined,
+            c_floorplot: undefined
         };
     },
     
@@ -22,6 +25,13 @@ export default {
                 return ret;
             }));
             this.records = d;
+        },
+        clickFloor: function(floorid, floorplot) {
+            //Vue.dialog.alert('floor ' + floorid);
+            console.log('floor ', floorid);
+            this.c_floorid = floorid;
+            this.c_floorplot = floorplot;
+            this.showFloorPlan = true;
         }
     },
     
@@ -36,5 +46,9 @@ export default {
             self.objectid = n;
             self.refreshdata(n);
         });
+        bus.$on('close-floorplot', function () {
+            self.showFloorPlan = false;
+        });
+
     }
 }

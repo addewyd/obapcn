@@ -8,6 +8,7 @@ export default {
         return {
             showFI: false,
             showOI: false,
+            showFloorPlan: false
         }
     },
     methods: {

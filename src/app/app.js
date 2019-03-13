@@ -22,8 +22,10 @@ import * as Utils  from './utils';
 
 import MainTop from '../vue/main.vue';
 import MainMiddle from '../vue/mainmiddle.vue';
-import ObjectsGrid from '../vue/objectsgrid.vue';
 import ModalWindow from '../vue/modal.vue';
+
+import FloorPlot from '../vue/floorplot.vue';
+import ObjectsGrid from '../vue/objectsgrid.vue';
 
 import FlatInfo from '../vue/flatinfo.vue';
 
@@ -234,7 +236,9 @@ Vue.component('oi-tab-04', OITab04);
 Vue.component('app-main-middle', MainMiddle);
 Vue.component('objects-grid', ObjectsGrid);
 Vue.component('cell-test', CellTest);
-        
+
+Vue.component('floor-plot', FloorPlot);
+
 new Vue({
   el: '#app-main-top',
   components: {
@@ -243,4 +247,4 @@ new Vue({
 });
 
 
-export /*default*/ {app, bus};
+export /*default*/ {app, bus, Vue};
