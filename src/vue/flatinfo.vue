@@ -4,7 +4,8 @@
             id {{flatid}} = {{finfo.id}}<br />
             Общая площадь {{gensquare}}  <br />
         </div>
-        <button class="btn btn-primary" @click="close">Close</button>
+        <button class="btn btn-primary" @click="save">Сохранить</button>
+        <button class="btn btn-secondary" @click="close">Отмена</button>
     </div>
 </template>
 <script>
@@ -19,6 +20,9 @@ import {app, bus} from '../app/app';
         methods: {
             close: function() {
                 bus.$emit('close-fi');
+            },
+            save: function() {
+                bus.$emit('save-fi');
             }
         }
     }

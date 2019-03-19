@@ -198,11 +198,12 @@ application.prototype.init = async function() {
     var r1 = await new Promise((resolve) => 
         BX24.init(function () {
             console.log('init ok');
-            
+            /*
             Vue.dialog.alert('init callback')
                 .then(function (dialog) {
                     console.log(dialog);
             });
+            */
             resolve(true);
         })
     );

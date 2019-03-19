@@ -2,7 +2,7 @@
 <div class="tabs">
    <ul class="nav nav-tabs">
       <li role="presentation" @click="fitabxx = '01'">
-        <span :class="tabclass('01')">Tab 01</span></li>
+        <span :class="tabclass('01')">Общие</span></li>
       <li role="presentation" @click="fitabxx = '02'">
         <span :class="tabclass('02')">Tab 02</span></li>
       <li role="presentation" @click="fitabxx = '03'">
