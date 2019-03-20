@@ -17,6 +17,11 @@ import {app, bus} from '../app/app';
             gensquare: String,
             finfo: Object
         },
+        data: function() {
+            return {
+                flatinfo: this.finfo
+            }
+        },
         methods: {
             close: function() {
                 bus.$emit('close-fi');

@@ -131,6 +131,7 @@ application.prototype.getFloorData = async function(id) {
         );    
     });
 };
+
 // .............................................................................
 
 application.prototype.getSquares = async function(id) {
@@ -159,6 +160,49 @@ application.prototype.getSquares = async function(id) {
             }
         );    
     });
+};
+
+// .............................................................................
+
+application.prototype.getDeals = async function(id) {
+    var rd = [];
+    return new Promise((resolve, reject) => 
+        BX24.callMethod("crm.deal.list",
+            { 
+		order: { "ID": "ASC" },
+		filter: {},
+		select: [ "ID", "TITLE", "STAGE_ID"]
+            }, function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject( {
+                            data:  [result.error()],
+                            nxt: 0,
+                            total: 0
+                        });
+                }
+                else
+                {
+                    var d = result.data();
+                    var n = 0;
+                    var m = result.more();
+                    var t = result.total();
+                    console.log('m: ', m);
+                    rd = Utils.array_merge(rd, d);
+                    
+                    if(m) {
+                        n = result.next();
+                    } else {
+                        resolve({
+                            data: rd,
+                            nxt: n,
+                            total: t
+                        });
+                    }
+                        
+                }   
+        })
+    )
 };
 
 // .............................................................................
