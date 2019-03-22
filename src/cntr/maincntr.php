@@ -94,7 +94,8 @@ class Maincntr extends AuxBase {
             case 'getFloorData':
                 $floorid = $this -> params['floorid'];
                 $sql = 'select f.id, fl.floornum, f.fnumb, f.square, '
-                        . 'f.price, f.nrooms, f.gensquare, f.sold, f.floorid, fl.plot as floorplot '
+                        . 'f.price, f.nrooms, f.gensquare, f.sold, f.floorid, '
+                        . 'fl.plot as floorplot, f.deal_id '
                         . ' from flats f join floors fl '
                         . ' on f.floorid=fl.id'
                         . ' where floorid=?';
@@ -118,6 +119,39 @@ class Maincntr extends AuxBase {
                 try {
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$flatid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                
+                break;
+            
+            case 'getOrderData':
+                $flatid = $this -> params['flatid'];
+                $sql = 'select * from contracts where flatid=?'
+                        ;
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$flatid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                
+                break;
+
+            case 'getPshedData':
+                //$this -> log -> debug('psd', $this -> params);
+                $orderid = $this -> params['orderid'];
+                $sql = 'select * from payshedules where contractid=?'
+                        ;
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$orderid]);
                     $res = $q->fetchAll(\PDO::FETCH_ASSOC);
                     $status = 'success';
                 } catch(\PDOException $e) {

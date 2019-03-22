@@ -114,11 +114,12 @@ application.prototype.getFloorData = async function(id) {
             dbname: this.dbname
         }, BX24.getAuth());
     return new Promise((resolve, reject) => {
-    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
             
             if(data.status === 'success') {
-                resolve(data['result'])
+                
+                resolve(data['result']);
             } else {
                 console.log('ajax getFloorData error', data.status);
                 reject([data.status, data.result]);
@@ -150,12 +151,12 @@ application.prototype.getSquares = async function(id) {
                 console.log('ajax getSq', data.result);
                 resolve(data['result'])
             } else {
-                console.log('ajax getFloorData error', data.status);
+                console.log('ajax getSq error', data.status);
                 reject([data.status, data.result]);
             }
         }).
         fail(function(e){ 
-                console.log('ajax getFloorData error',e );
+                console.log('ajax getSq error',e );
                 reject['error', e];
             }
         );    
@@ -164,7 +165,67 @@ application.prototype.getSquares = async function(id) {
 
 // .............................................................................
 
-application.prototype.getDeals = async function(id) {
+application.prototype.getOrderData = async function(id) {
+    console.log('app.getSquares ' + this.dbname);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getOrderData',
+            flatid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        done(function(data) {
+            
+            if(data.status === 'success') {
+                console.log('ajax getOD', data.result);
+                resolve(data['result'])
+            } else {
+                console.log('ajax getOD error', data.status);
+                reject([data.status, data.result]);
+            }
+        }).
+        fail(function(e){ 
+                console.log('ajax getOD error',e );
+                reject['error', e];
+            }
+        );    
+    });
+};
+
+// .............................................................................
+
+application.prototype.getPshedData = async function(id) {
+    console.log('app.getSquares ' + this.dbname);
+    var params = Utils.array_merge(
+        {
+            'operation': 'getPshedData',
+            orderid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        done(function(data) {
+            
+            if(data.status === 'success') {
+                console.log('ajax getPSD', data.result);
+                resolve(data['result'])
+            } else {
+                console.log('ajax getPSD error', data.status);
+                reject([data.status, data.result]);
+            }
+        }).
+        fail(function(e){ 
+                console.log('ajax getPSD error',e );
+                reject['error', e];
+            }
+        );    
+    });
+};
+
+// .............................................................................
+
+application.prototype.getDeals = async function() {
     var rd = [];
     return new Promise((resolve, reject) => 
         BX24.callMethod("crm.deal.list",
@@ -200,6 +261,33 @@ application.prototype.getDeals = async function(id) {
                         });
                     }
                         
+                }   
+        })
+    )
+};
+
+// .............................................................................
+
+application.prototype.getDealData = async function(id) {
+    return new Promise((resolve, reject) => 
+        BX24.callMethod("crm.deal.get",
+            { 
+                id: id
+            }, function(result) {
+                if(result.error()) {
+                    console.log('error(dd)', result.error());
+                    //reject
+                    resolve( {
+                            success: false,
+                            data:  result.error(),
+                        });
+                }
+                else
+                {
+                        resolve({
+                            success: true,
+                            data: result.data()
+                        });                        
                 }   
         })
     )

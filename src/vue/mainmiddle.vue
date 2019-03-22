@@ -2,7 +2,7 @@
 <div>
     <h3>Objects</h3>
     <div v-for="record in objects">
-       <span class="objitem" v-on:click="refreshdata(record.id)" >
+       <span class="objitem" v-on:click="refreshdata(record.id,record.name)" >
            {{record.id}}  {{record.name}}
        </span>
     </div>
@@ -27,9 +27,9 @@ export default {
         });
     },
     methods: {
-        refreshdata: function(id) {
+        refreshdata: function(id, name) {
             this.currentid = id;
-            bus.$emit('refresh-data', id);
+            bus.$emit('refresh-data', id, name);
         }
     }
 }

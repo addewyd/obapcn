@@ -10,7 +10,8 @@
 
 module.exports = {
     props: {
-          flatid: String
+          flatid: String,
+          odata: Array
     },
 
     data: function() {

@@ -5,8 +5,11 @@
    tab 02 {{finfo}}
     </h3>
     dlen {{deals.length}}
-    <div v-for="deal in deals">
-        {{deal}}
+    <div v-for="rec in deals">
+        {{rec}}
+    </div>
+    <div>
+    Deal: {{dealdata}}
     </div>
 </div>
 </template>
@@ -19,7 +22,8 @@ export default {
 
     data: function() {
         return {
-            deals: []
+            deals: [],
+            deal: undefined
         }
     },
     
@@ -29,6 +33,18 @@ export default {
             this.deals = d.data;
             console.log('next, total: ', d.nxt, d.total);
             return this.deals;
+        },
+        dealdata: async function() {
+            if(this.finfo.deal_id) {
+                var d = await app.getDealData(this.finfo.deal_id);
+                if(d.success)
+                    this.deal = d.data;
+                else
+                    console.log('error(ft)',d.data);
+
+                this.deal = d.data;
+            }
+            return this.deal;
         }
     }
 }

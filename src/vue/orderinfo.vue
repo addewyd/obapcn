@@ -13,6 +13,11 @@ import {app, bus} from '../app/app';
         props: {
             flatid: String
         },
+        data: function() {
+            return {
+        //        orderdata: undefined
+            };
+        },
         methods: {
             close: function() {
                 bus.$emit('close-oi');

@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <div style="font-size: 8pt">
-            id {{flatid}} = {{finfo.id}}<br />
+            id {{flatid}} = {{finfo.id}} {{finfo.deal_id}}<br />
             Общая площадь {{gensquare}}  <br />
         </div>
         <button class="btn btn-primary" @click="save">Сохранить</button>

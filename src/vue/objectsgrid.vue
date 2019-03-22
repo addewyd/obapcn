@@ -1,5 +1,6 @@
 ﻿<template>
 <div>
+    <h2>{{objectname}}</h2>
     <table>
         <tr v-for="rec in records" >
             <!-- assumed that there are NOT empty floors! -->

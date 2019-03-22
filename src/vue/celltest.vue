@@ -1,20 +1,21 @@
 ﻿<template>
     <div>
     
-    <div class="fcell">
+    <div class="fcell" :style="cellstyle">
         <table :class="status">
         <tr>
-        <td v-on:click="clickFI(true)" class="chess" style="background-color: yellow;">
-            N:{{d.fnumb}}
+        <td v-on:click="clickFI(true)" class="chess">
+            N:{{fdata.fnumb}}
+            <span style="font-size: 40%">D: {{deal?deal.STAGE_ID:""}}</span>
         </td>
-        <td class="chess"   style="background-color: #bbbbbb;">
-            {{d.square}} M<span style="font-size:60%; vertical-align: super">2</span> 
+        <td class="chess">
+            {{fdata.square}} M<span style="font-size:60%; vertical-align: super">2</span> 
         </td>
         </tr>
         <tr>
             <td class="chess" v-on:click="clickOI(true)" >NR: {{d.nrooms}}</td>
-            <td class="chess" style="background-color: #bbcbfb;"> 
-                {{d.price}}
+            <td class="chess"> 
+                {{fdata.price}}
             </td>
         </tr>
         </table>
@@ -37,7 +38,7 @@
     <!-- order info modal dialog -->
     <modal-window v-if="showOI" @close="showOI = false">
         <div slot="body">                
-           <oi-tabs :flatid="d.id"></oi-tabs>
+           <oi-tabs :flatid="d.id"  :odata="orderdata"></oi-tabs>
            
            Договор на {{d}}
            
