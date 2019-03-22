@@ -106,7 +106,6 @@ application.prototype.upddb = function() {
 // .............................................................................
 
 application.prototype.getFloorData = async function(id) {
-    console.log('app.getFloorData ' + this.dbname);
     var params = Utils.array_merge(
         {
             'operation': 'getFloorData',
@@ -136,7 +135,6 @@ application.prototype.getFloorData = async function(id) {
 // .............................................................................
 
 application.prototype.getSquares = async function(id) {
-    console.log('app.getSquares ' + this.dbname);
     var params = Utils.array_merge(
         {
             'operation': 'getSquares',
@@ -166,7 +164,6 @@ application.prototype.getSquares = async function(id) {
 // .............................................................................
 
 application.prototype.getOrderData = async function(id) {
-    console.log('app.getSquares ' + this.dbname);
     var params = Utils.array_merge(
         {
             'operation': 'getOrderData',
@@ -178,7 +175,7 @@ application.prototype.getOrderData = async function(id) {
         done(function(data) {
             
             if(data.status === 'success') {
-                console.log('ajax getOD', data.result);
+                //console.log('ajax getOD', data.result);
                 resolve(data['result'])
             } else {
                 console.log('ajax getOD error', data.status);
@@ -196,7 +193,6 @@ application.prototype.getOrderData = async function(id) {
 // .............................................................................
 
 application.prototype.getPshedData = async function(id) {
-    console.log('app.getSquares ' + this.dbname);
     var params = Utils.array_merge(
         {
             'operation': 'getPshedData',

@@ -5,7 +5,8 @@
 </template>
 <script>
 
-module.exports = {
+import {app, bus} from '../app/app';
+export default {
     props: {
           finfo: Object
     },
@@ -13,7 +14,13 @@ module.exports = {
     data: function() {
         return {
         }
-    }
+    },
+    
+    created: function() {
+    },
+    beforeDestroy: function() {
+    }    
+
 }
 
 </script>

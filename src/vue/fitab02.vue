@@ -46,7 +46,13 @@ export default {
             }
             return this.deal;
         }
-    }
+    },
+    
+    created: function() {
+    },
+    beforeDestroy: function() {
+    }    
+
 }
 
 </script>

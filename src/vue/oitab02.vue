@@ -45,6 +45,11 @@ export default {
             this.psheddata = pd;
             return pd;
         }
+    },
+    
+    created: function() {
+    },
+    beforeDestroy: function() {
     }
     
 }

@@ -38,7 +38,7 @@
 </div>
 </template>
 <script>
-import {app, bus} from '../app/app';
+import {Vue, app, bus} from '../app/app';
 export default {
     props: {
           finfo: Object
@@ -59,10 +59,10 @@ export default {
         }
     },
     
-    mounted: function() {
-        //this.squares = app.getSquares(this.finfo.id);
-    }
-    
+    created: function() {
+    },
+    beforeDestroy: function() {
+    }    
 }
 
 </script>

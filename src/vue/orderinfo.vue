@@ -3,7 +3,8 @@
         <div style="font-size: 8pt">
             id {{flatid}} <br />
         </div>
-        <button class="btn btn-primary" @click="close">Close</button>
+        <button class="btn btn-primary" @click="save">Сохранить</button>
+        <button class="btn btn-secondary" @click="close">Отмена</button>
     </div>
 </template>
 <script>
@@ -20,9 +21,16 @@ import {app, bus} from '../app/app';
         },
         methods: {
             close: function() {
-                bus.$emit('close-oi');
+                this.$parent.$parent.$emit('close-oi');
+            },
+            save: function() {
             }
-        }
+        },
+    
+    created: function() {
+    },
+    beforeDestroy: function() {
     }
+}
 </script>
 

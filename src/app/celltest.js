@@ -67,18 +67,23 @@ export default {
                 var d = await app.getOrderData(this.d.id);
                 this.orderdata = d;
                 //bus.$emit('order-refresh');
-    console.log('acOD', d);
                 return d;
         }
 
     },
-    mounted: function () {
+    created: function () {
         var self = this;
-        bus.$on('close-fi', function () {
+        
+        this.$on('close-fi', function () {
             self.showFI = false;
         });
-        bus.$on('close-oi', function () {
+        this.$on('close-oi', function () {
             self.showOI = false;
         });
+        
+    },
+    beforeDestroy: function() {
+        this.$off('close-fi');
+        this.$off('close-oi');
     }
 }

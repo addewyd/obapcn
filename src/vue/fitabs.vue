@@ -10,7 +10,19 @@
    </ul>
 
    <div class="tab-content">
+       <!--
     <component v-bind:is="'fi-tab-'+fitabxx" v-bind:finfo="finfo"></component>
+    -->
+    <div v-if="fitabxx=='01'">
+        <fi-tab-01 v-bind:finfo="finfo"></fi-tab-01>
+    </div>
+    <div v-if="fitabxx=='02'">
+        <fi-tab-02 v-bind:finfo="finfo"></fi-tab-02>
+    </div>
+    <div v-if="fitabxx=='03'">
+        <fi-tab-03 v-bind:finfo="finfo"></fi-tab-03>
+    </div>
+    
   </div>
 </div>
 </template>

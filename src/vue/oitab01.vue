@@ -23,6 +23,12 @@ export default {
         return {
             orderdata: this.odata
         }
+    },
+    
+    created: function() {
+        //console.log('P', this.$parent);
+    },
+    beforeDestroy: function() {
     }
 }
 

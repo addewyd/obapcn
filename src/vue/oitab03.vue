@@ -7,8 +7,8 @@
 </div>
 </template>
 <script>
-
-module.exports = {
+import {app, bus} from '../app/app';
+export default {
     props: {
           flatid: String,
           odata: Array
@@ -17,6 +17,11 @@ module.exports = {
     data: function() {
         return {
         }
+    },
+    
+    created: function() {
+    },
+    beforeDestroy: function() {
     }
 }
 

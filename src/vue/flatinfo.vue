@@ -24,10 +24,10 @@ import {app, bus} from '../app/app';
         },
         methods: {
             close: function() {
-                bus.$emit('close-fi');
+    // modal-window -> celltest
+                this.$parent.$parent.$emit('close-oi');
             },
             save: function() {
-                bus.$emit('save-fi');
             }
         }
     }
