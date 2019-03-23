@@ -31,17 +31,14 @@
            <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
         <div slot="footer">
-            -- Footer
+           
         </div>
     </modal-window>
 
     <!-- order info modal dialog -->
     <modal-window v-if="showOI" @close="showOI = false">
         <div slot="body">                
-           <oi-tabs :flatid="d.id" :odata="orderdata" :saving="saving"></oi-tabs>
-           
-           Договор на {{d}}
-           
+           <oi-tabs :flatid="d.id" :odata="orderdata" :saving="saving"></oi-tabs>           
            <order-info  :flatid="d.id"></order-info>
         </div>
         <div slot="footer">

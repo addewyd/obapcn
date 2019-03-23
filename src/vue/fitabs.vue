@@ -1,4 +1,6 @@
 ﻿<template>
+    <div>
+        flat id {{finfo.id}}
 <div class="tabs">
    <ul class="nav nav-tabs">
       <li role="presentation" @click="fitabxx = '01'">
@@ -13,6 +15,7 @@
        
     <component v-bind:is="'fi-tab-'+fitabxx" v-bind:finfo="finfo" :saving="dSave2"></component>
         
+  </div>
   </div>
 </div>
 </template>

@@ -1,4 +1,7 @@
 ﻿<template>
+<div>    
+order id {{orderdata.length>0?orderdata[0].id:'No order'}}
+
 <div class="tabs">
    <ul class="nav nav-tabs">
       <li role="presentation" @click="oitabxx = '01'">
@@ -10,12 +13,12 @@
       <li role="presentation" @click="oitabxx = '04'">
         <span :class="tabclass('04')">Tab 04</span></li>
    </ul>
-{{orderdata.id}}
    <div class="tab-content">
         <component v-bind:is="'oi-tab-'+oitabxx" 
             :flatid="flatid" 
-            :odata="odata" :saving="dSave2"></component>
+            :odata="orderdata" :saving="dSave2"></component>
   </div>
+</div>
 </div>
 </template>
 <script>
