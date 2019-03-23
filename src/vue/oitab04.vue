@@ -13,11 +13,28 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array
+          odata: Array,
+          saving: Object
     },
 
     data: function() {
         return {
+            dSave: this.saving
+        }
+    },
+    watch : {
+        dSave: {
+            handler: function(val) {
+                console.log('watched(oi04)', val.state);
+                if(val.state) {
+                    // send back
+                    console.log('watched(oi04) - SAVE');
+                    val.state = false;
+                } else {
+                    console.log('watched(oi04) - nothing to do');
+                }
+            },
+            deep:true
         }
     },
     

@@ -11,7 +11,8 @@ export default {
             showFloorPlan: false,
             fdata: this.d,
             deal: undefined,
-            orderdata: undefined
+            orderdata: undefined,
+            saving: {state: false}
         }
     },
     methods: {
@@ -80,10 +81,20 @@ export default {
         this.$on('close-oi', function () {
             self.showOI = false;
         });
+        this.$on('save-fi', function () {
+            console.log('got save-fi');
+            self.saving.state = true;
+        });
+        this.$on('save-oi', function () {
+            console.log('got save-oi');
+            self.saving.state = true;
+        });
         
     },
     beforeDestroy: function() {
         this.$off('close-fi');
         this.$off('close-oi');
+        this.$off('save-fi');
+        this.$off('save-oi');
     }
 }

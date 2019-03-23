@@ -10,33 +10,41 @@
    </ul>
 
    <div class="tab-content">
-       <!--
-    <component v-bind:is="'fi-tab-'+fitabxx" v-bind:finfo="finfo"></component>
-    -->
-    <div v-if="fitabxx=='01'">
-        <fi-tab-01 v-bind:finfo="finfo"></fi-tab-01>
-    </div>
-    <div v-if="fitabxx=='02'">
-        <fi-tab-02 v-bind:finfo="finfo"></fi-tab-02>
-    </div>
-    <div v-if="fitabxx=='03'">
-        <fi-tab-03 v-bind:finfo="finfo"></fi-tab-03>
-    </div>
-    
+       
+    <component v-bind:is="'fi-tab-'+fitabxx" v-bind:finfo="finfo" :saving="dSave2"></component>
+        
   </div>
 </div>
 </template>
 <script>
-
-module.exports = {
+import {app, bus} from '../app/app';
+    export default {
     props: {
-          finfo: Object
+        finfo: Object,
+        saving: Object
     },
 
     data: function() {
         return {
             cb: 'fi tabs',
-            fitabxx: '01'
+            fitabxx: '01',
+            dSave: this.saving,
+            dSave2: {state: false}
+        }
+    },
+    watch : {
+        dSave: {
+            handler: function(val) {
+                console.log('watched', val.state);
+                if(val.state) {
+                    // send back
+                    val.state = false;
+                    this.dSave2.state = true;
+                } else {
+                    console.log('watched - nothing to do');
+                }
+            },
+            deep:true
         }
     },
     methods: {

@@ -27,7 +27,7 @@
     <!-- flat info modal dialog -->
     <modal-window v-if="showFI" @close="showFI = false">
         <div slot="body">                
-           <fi-tabs :finfo="d"></fi-tabs>
+           <fi-tabs :finfo="fdata" :saving="saving"></fi-tabs>
            <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
         <div slot="footer">
@@ -38,7 +38,7 @@
     <!-- order info modal dialog -->
     <modal-window v-if="showOI" @close="showOI = false">
         <div slot="body">                
-           <oi-tabs :flatid="d.id"  :odata="orderdata"></oi-tabs>
+           <oi-tabs :flatid="d.id" :odata="orderdata" :saving="saving"></oi-tabs>
            
            Договор на {{d}}
            

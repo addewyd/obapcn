@@ -17,13 +17,30 @@
 import {app, bus} from '../app/app';
 export default {
     props: {
-          finfo: Object
+          finfo: Object,
+          saving: Object
     },
 
     data: function() {
         return {
             deals: [],
-            deal: undefined
+            deal: undefined,
+            dSave: this.saving
+        }
+    },
+    watch : {
+        dSave: {
+            handler: function(val) {
+                console.log('watched(Fi02)', val.state);
+                if(val.state) {
+                    // send back
+                    console.log('watched(Fi02) - SAVE');
+                    val.state = false;
+                } else {
+                    console.log('watched(Fi02) - nothing to do');
+                }
+            },
+            deep:true
         }
     },
     

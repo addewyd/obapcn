@@ -10,7 +10,6 @@
 </template>
 <script>
 import {app, bus} from '../app/app';
-
     export default {
         props: {
             flatid: String,
@@ -28,6 +27,7 @@ import {app, bus} from '../app/app';
                 this.$parent.$parent.$emit('close-fi');
             },
             save: function() {
+                this.$parent.$parent.$emit('save-fi');
             }
         }
     }

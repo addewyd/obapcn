@@ -14,7 +14,7 @@
    <div class="tab-content">
         <component v-bind:is="'oi-tab-'+oitabxx" 
             :flatid="flatid" 
-            :odata="odata"></component>
+            :odata="odata" :saving="dSave2"></component>
   </div>
 </div>
 </template>
@@ -23,14 +23,32 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array
+          odata: Array,
+          saving: Object
     },
 
     data: function() {
         return {
             cb: 'oi tabs',
             oitabxx: '01',
-            orderdata: this.odata
+            orderdata: this.odata,
+            dSave: this.saving,
+            dSave2: {state: false}
+        }
+    },
+    watch : {
+        dSave: {
+            handler: function(val) {
+                console.log('watched(oi)', val.state);
+                if(val.state) {
+                    // send back
+                    val.state = false;
+                    this.dSave2.state = true;
+                } else {
+                    console.log('watched(oi) - nothing to do');
+                }
+            },
+            deep:true
         }
     },
     mounted: function () {

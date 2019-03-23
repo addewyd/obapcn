@@ -24,6 +24,7 @@ import {app, bus} from '../app/app';
                 this.$parent.$parent.$emit('close-oi');
             },
             save: function() {
+                this.$parent.$parent.$emit('save-oi');
             }
         },
     
