@@ -11,6 +11,7 @@ export default {
             records: [],
             app: undefined,
             showFloorPlan: false,
+            showNewObject: false,
             cellComponent: this.cellcomp,
             c_floorid: undefined,
             c_floorplot: undefined
@@ -34,6 +35,10 @@ export default {
             this.c_floorid = floorid;
             this.c_floorplot = floorplot;
             this.showFloorPlan = true;
+        },
+        newObject: function() {
+            this.showNewObject = true;
+            
         }
     },
     
@@ -53,6 +58,9 @@ export default {
         });
         bus.$on('close-floorplot', function () {
             self.showFloorPlan = false;
+        });
+        bus.$on('close-newobject', function () {
+            self.showNewObject = false;
         });
 
     }

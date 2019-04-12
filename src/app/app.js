@@ -45,6 +45,9 @@ import OITab04 from '../vue/oitab04.vue';
 
 import CellTest from '../vue/celltest.vue';
 
+import NewObject from '../vue/newobject.vue';
+
+
 function application() {
     this.dbname = undefined;
 };
@@ -155,7 +158,7 @@ application.prototype.getSquares = async function(id) {
         }).
         fail(function(e){ 
                 console.log('ajax getSq error',e );
-                reject['error', e];
+                reject(['error', e]);
             }
         );    
     });
@@ -226,9 +229,9 @@ application.prototype.getDeals = async function() {
     return new Promise((resolve, reject) => 
         BX24.callMethod("crm.deal.list",
             { 
-		order: { "ID": "ASC" },
-		filter: {},
-		select: [ "ID", "TITLE", "STAGE_ID"]
+        order: { "ID": "ASC" },
+        filter: {},
+        select: [ "ID", "TITLE", "STAGE_ID"]
             }, function(result) {
                 if(result.error()) {
                     console.error(result.error());
@@ -367,6 +370,7 @@ Vue.component('objects-grid', ObjectsGrid);
 Vue.component('cell-test', CellTest);
 
 Vue.component('floor-plot', FloorPlot);
+Vue.component('new-object', NewObject);
 
 new Vue({
   el: '#app-main-top',
