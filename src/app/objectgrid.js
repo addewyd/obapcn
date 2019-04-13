@@ -11,7 +11,7 @@ export default {
             records: [],
             app: undefined,
             showFloorPlan: false,
-            showNewObject: false,
+            showNewFloor: false,
             cellComponent: this.cellcomp,
             c_floorid: undefined,
             c_floorplot: undefined
@@ -19,7 +19,8 @@ export default {
     },
     
     methods: {
-        refreshdata: async function(id) {    
+        refreshdata: async function(id) {  
+            this.objectid = id;
             var floors = await app.refreshdata(id);
             var d = await Promise.all(
                 floors.map( (f) => {
@@ -36,9 +37,13 @@ export default {
             this.c_floorplot = floorplot;
             this.showFloorPlan = true;
         },
-        newObject: function() {
-            this.showNewObject = true;
-            
+        newFloor: function() {
+            if(this.objectid == 0 || this.objectid === '') {
+               Vue.dialog.alert('Объект не выбран') ;
+            }
+            else {
+                this.showNewFloor = true;
+            }
         }
     },
     
@@ -59,9 +64,8 @@ export default {
         bus.$on('close-floorplot', function () {
             self.showFloorPlan = false;
         });
-        bus.$on('close-newobject', function () {
-            self.showNewObject = false;
+        bus.$on('close-newfloor', function () {
+            self.showNewFloor = false;
         });
-
     }
 }

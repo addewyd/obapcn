@@ -1,8 +1,5 @@
 ﻿<template>
 <div>
-    <div class="topmenu">
-        <button id="new_object" class="btn btn-primary" @click="newObject()">New object</button>
-    </div>
     <h2>{{objectname}}</h2>
     <table>
         <tr v-for="rec in records" >
@@ -16,6 +13,15 @@
             </td>
         </tr>
     </table>
+    <button id="add-floor" class="btn btn-primary" @click="newFloor()">Add floor</button>
+    
+    <modal-window v-if="showNewFloor" @close="showNewFloor = false">
+        <div slot="body">                
+           <new-floor :object_id="objectid"></new-floor>
+        </div>
+        
+    </modal-window>
+    
     <modal-window v-if="showFloorPlan" @close="showFloorPlan = false">
         <div slot="body">                
            <floor-plot :floorid="c_floorid" :floorplot="c_floorplot"></floor-plot>
@@ -23,15 +29,6 @@
         <div slot="footer">
         </div>
     </modal-window>
-
-    <modal-window v-if="showNewObject" @close="showNewObject = false">
-        <div slot="body">                
-           <new-object></new-object>
-        </div>
-        <div slot="footer">
-        </div>
-    </modal-window>
-
 
 </div>
 </template>

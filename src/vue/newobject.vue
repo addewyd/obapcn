@@ -2,8 +2,12 @@
 <div>
     <h3>
         New
+        <input type = "text" id="new-object-name" v-model="nob_name" />
     </h3>
-    <button class="btn btn-primary" @click="close">Close</button>
+    <div>
+    <button class="btn btn-primary" @click="save()">Save</button>
+    <button class="btn btn-primary" @click="cancel()">Cancel</button>
+    </div>
 
 </div>
 </template>
@@ -12,10 +16,15 @@ import {app, bus, Vue} from '../app/app';
 export default {
     data: function() {
         return {
+            nob_name: ''
         }
     },
     methods: {
-        close: function() {
+        save: async function() {
+            var res = await app.saveNewObject(this.nob_name);
+            bus.$emit('close-newobject');
+        },
+        cancel: function() {
             bus.$emit('close-newobject');
         }
     }

@@ -46,6 +46,7 @@ import OITab04 from '../vue/oitab04.vue';
 import CellTest from '../vue/celltest.vue';
 
 import NewObject from '../vue/newobject.vue';
+import NewFloor from '../vue/newfloor.vue';
 
 
 function application() {
@@ -324,6 +325,36 @@ application.prototype.refreshdata = async function(id) {
 
 // .............................................................................
 
+application.prototype.saveNewObject = async function(nob_name) {
+    console.log('sno', nob_name);
+    return new Promise((resolve, reject) => {
+        resolve(true);
+    });
+    
+}
+
+// .............................................................................
+
+application.prototype.delObject = async function(id) {
+    console.log('del', id);
+    return new Promise((resolve, reject) => {
+        resolve(true);
+    });
+    
+}
+
+// .............................................................................
+
+application.prototype.saveNewFloor = async function(objectid, nf_num) {
+    console.log('snf', objectid, nf_num);
+    return new Promise((resolve, reject) => {
+        resolve(true);
+    });
+    
+}
+
+// .............................................................................
+
 application.prototype.init = async function() {
     console.log('init start');
     var r1 = await new Promise((resolve) => 
@@ -371,6 +402,7 @@ Vue.component('cell-test', CellTest);
 
 Vue.component('floor-plot', FloorPlot);
 Vue.component('new-object', NewObject);
+Vue.component('new-floor', NewFloor);
 
 new Vue({
   el: '#app-main-top',
