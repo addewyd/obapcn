@@ -146,8 +146,47 @@ class Maincntr extends AuxBase {
                 try {
                     $this -> pdo->beginTransaction();
                     // DEL FLATS, FLOORS, CONTRACTS, PARTSQUARES, PAYSHEDULES
+                    
+                    $sql = 'select * from flats where objectid = ?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    foreach($res as $rec) {
+                        $fid = $rec['id'];
+                        $sql = 'delete from partsquares where fid=?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        
+                        $sql = 'select * from contracts where flatid = ?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        $res2 = $q->fetchAll(\PDO::FETCH_ASSOC);
+                        foreach($res2 as $rec2) {
+                            $sql = 'delete from payshedules where contractid=?';
+                            $q = $this -> pdo->prepare($sql);
+                            $q->execute([$rec2['contractid']]);
+                        }
+                        
+                        $sql = 'delete from contracts where flatid=?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        
+                    }
+                    $sql = 'delete from flats where objectid=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+                    
+                    $sql = 'delete from floors where objectid=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+
+                    $sql = 'delete from objects where id=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+                    
                     $this -> pdo->commit();
                     $status = 'success';
+                    
                 } catch(\PDOException $e) {
                     $this -> pdo -> rollback();
                     $status = 'error';
