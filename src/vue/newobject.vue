@@ -2,7 +2,12 @@
 <div>
     <h3>
         New
-        <input type = "text" id="new-object-name" v-model="nob_name" />
+        <span :class="{ 'control': true }" class="field">
+        <input type = "text" name="nob_name" id="nob_name" v-model="nob_name"
+            v-validate="'required'"/>
+            <span v-show="errors.has('nob_name')" 
+                class="help is-danger">{{ errors.first('nob_name') }}</span>
+        </span>
     </h3>
     <div>
     <button class="btn btn-primary" @click="save()">Save</button>
@@ -22,7 +27,8 @@ export default {
     methods: {
         save: async function() {
             var res = await app.saveNewObject(this.nob_name);
-            bus.$emit('close-newobject');
+            bus.$emit('save-newobject');
+            bus.$emit('refresh-data');
         },
         cancel: function() {
             bus.$emit('close-newobject');

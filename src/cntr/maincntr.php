@@ -90,12 +90,77 @@ class Maincntr extends AuxBase {
                 }
                 
                 break;
+            
+            case 'saveNewObject':
+                $sql = 'insert into objects (name, code1c) values (?,?)';
+                $objectname = $this -> params['objectname'];
+                $c1c = $this -> params['c1c'];
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectname, $c1c]);
+//                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;                    
+                }
+                break;
+            
+            case 'saveNewFloor':
+                $objectid = $this -> params['objectid'];
+                $f_num = $this -> params['f_num'];
+                $flat_numb = $this -> params['flat_numb'];
+                try {
+                    $this -> pdo->beginTransaction();
+                    
+                    $sql = 'insert into floors (objectid, floornum) values (?,?)';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid, $f_num]);
+//$this -> log -> debug('snf 1', []);                    
+                    $lid = $this -> pdo-> lastInsertId();
+//$this -> log -> debug('snf 2', [$lid]);  
+                    
+                    $sql = 'insert into flats (objectid, floorid, sold, studio, cottage,'
+                            . ' nosell, pledge, flattype, bph, code)'
+                            . ' values (?,?,?,?,?,?,?,?,?, ?)';
+                    for($i = 0; $i < $flat_numb; $i ++) {
+                        $j = $i + 1;
+                        $code = $f_num . '_' . $j;
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$objectid, $lid, 0, 0, 0, 0, 0, 0, 0, $code]);
+//$this -> log -> debug('snf 3', [$code]);
+                        
+                    }
+                    
+                    $this -> pdo->commit();
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
+                    $status = 'error';
+                    $res = $e;
+                }
+                break;
+            
+            case 'delObject':
+                $objectid = $this -> params['objectid'];
+                try {
+                    $this -> pdo->beginTransaction();
+                    // DEL FLATS, FLOORS, CONTRACTS, PARTSQUARES, PAYSHEDULES
+                    $this -> pdo->commit();
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
+                    $status = 'error';
+                    $res = $e;
+                }
+                
+                break;
             // one row (floor) in object
             case 'getFloorData':
                 $floorid = $this -> params['floorid'];
                 $sql = 'select f.id, fl.floornum, f.fnumb, f.square, '
                         . 'f.price, f.nrooms, f.gensquare, f.sold, f.floorid, '
-                        . 'fl.plot as floorplot, f.deal_id '
+                        . 'fl.plot as floorplot, f.deal_id, f.code '
                         . ' from flats f join floors fl '
                         . ' on f.floorid=fl.id'
                         . ' where floorid=?';

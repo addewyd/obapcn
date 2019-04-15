@@ -65,6 +65,7 @@ export default {
             self.showFloorPlan = false;
         });
         bus.$on('close-newfloor', function () {
+            console.log('got cnf');
             self.showNewFloor = false;
         });
     }

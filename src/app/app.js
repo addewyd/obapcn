@@ -326,18 +326,67 @@ application.prototype.refreshdata = async function(id) {
 // .............................................................................
 
 application.prototype.saveNewObject = async function(nob_name) {
-    console.log('sno', nob_name);
-    return new Promise((resolve, reject) => {
+    var c1c = Utils.makeid(10);
+    console.log('sno', nob_name, c1c);
+    var params = Utils.array_merge(
+        {
+            'operation': 'saveNewObject',
+            objectname: nob_name,
+            c1c: c1c,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    var self = this;
+    return  new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                async function (data) {
+                    console.log('resolve saveNewObject', data, data.result);
+                    if(data.status === 'success') {
+                        await self.loadObjects(self.dbname);
+                        resolve(data.result);
+                    }    
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('SNO', e);
+                    reject(['error', e]);
+                });
+        
         resolve(true);
     });
-    
-}
+        
+};
 
 // .............................................................................
 
 application.prototype.delObject = async function(id) {
     console.log('del', id);
+    var params = Utils.array_merge(
+        {
+            'operation': 'delObject',
+            objectid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
     return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve delObject', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('dO', e);
+                    reject(['error', e]);
+                });
+        
         resolve(true);
     });
     
@@ -345,12 +394,35 @@ application.prototype.delObject = async function(id) {
 
 // .............................................................................
 
-application.prototype.saveNewFloor = async function(objectid, nf_num) {
-    console.log('snf', objectid, nf_num);
+application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) {
+    console.log('snf', objectid, f_num, flat_numb);
+    var params = Utils.array_merge(
+        {
+            'operation': 'saveNewFloor',
+            objectid: objectid,
+            f_num: f_num,
+            flat_numb: flat_numb,
+            dbname: this.dbname
+        }, BX24.getAuth());
     return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve snf', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('snf err', e);
+                    reject(['error', e]);
+                });
+        
         resolve(true);
-    });
-    
+    });    
 }
 
 // .............................................................................

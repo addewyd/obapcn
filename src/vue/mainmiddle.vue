@@ -50,6 +50,9 @@ export default {
         bus.$on('close-newobject', function () {
             self.showNewObject = false;
         });
+        bus.$on('save-newobject', function () {
+            self.showNewObject = false;
+        });
     
     },
     methods: {
@@ -63,7 +66,18 @@ export default {
         },
         delObject: async function(id) {
             console.log('del', id);
-            var res = await app.delObject(id);
+    
+                this.$dialog
+                .confirm({
+                    title: "Really delete?",
+                })
+                .then(dialog => {
+                    app.delObject(id);
+                })
+                .catch(() => { 
+                    // resolve(false);
+                });            
+           
         }
     }
 }

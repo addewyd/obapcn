@@ -92,4 +92,4 @@ var getoption = async function(item) {
 };
 
 
-export { getoption, array_merge };
+export { getoption, array_merge, makeid };

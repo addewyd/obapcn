@@ -11,12 +11,26 @@
         <label for="floornum">Этаж</label>
         <span style="color: rgb(255, 0, 0);">*</span>
         <span :class="{ 'control': true }" class="field">        
-            <input id="floornum" class="content-input" name="floornum" v-model="flatinfo.floornum" placeholder="" 
+            <input id="floornum" class="content-input" disabled="true"
+                   name="floornum" v-model="flatinfo.floornum" placeholder="" 
                 v-validate="'required'"/>
             <span v-show="errors.has('floornum')" 
                 class="help is-danger">{{ errors.first('floornum') }}</span>
         </span>
        </div>
+       
+       <div>
+        <label for="fcode">Код</label>
+        <span style="color: rgb(255, 0, 0);">*</span>
+        <span :class="{ 'control': true }" class="field">        
+            <input id="fcode" class="content-input" disabled="true"
+                   name="floornum" v-model="flatinfo.code" placeholder="" 
+                v-validate="'required'"/>
+            <span v-show="errors.has('fcode')" 
+                class="help is-danger">{{ errors.first('fcode') }}</span>
+        </span>
+       </div>
+       
        <div>
         <label for="fnumb">Номер</label>
         <span style="color: rgb(255, 0, 0);">*</span>
