@@ -19,7 +19,8 @@ export default {
     },
     
     methods: {
-        refreshdata: async function(id) {  
+        refreshdata: async function(id) { 
+            console.log('RD1', id);
             this.objectid = id;
             var floors = await app.refreshdata(id);
             var d = await Promise.all(
@@ -29,6 +30,7 @@ export default {
                 })
             );
             this.records = d;
+            console.log('RD2', id);
         },
         clickFloor: function(floorid, floorplot) {
             //Vue.dialog.alert('floor ' + floorid);
@@ -44,6 +46,28 @@ export default {
             else {
                 this.showNewFloor = true;
             }
+        },
+        delFloor: async function(id) {
+            this.$dialog
+                .confirm({
+                    title: "Really delete?",
+                })
+                .then(dialog => {
+                    Promise.all([
+                        app.delFloor(id),
+                        this.refreshdata(this.objectid)
+                    ])
+                })
+                .catch(() => { 
+                    // resolve(false);
+                });             
+        },
+        delEmptyFloors: async function() {
+            await Promise.all([
+                app.delEmptyFloors(this.objectid),
+                this.refreshdata(this.objectid)
+            ]);
+            
         }
     },
     
@@ -54,10 +78,11 @@ export default {
             console.log('on', n, app);
             self.app = app;
         });
-        bus.$on('refresh-data', function (n,name) {
-            console.log('got refresh-data', n);
+        bus.$on('refresh-data', function (n, name) {
+            console.log('got refresh-data', n, name);
             self.records = []; // Clear data!!!
             self.objectid = n;
+            // have to get real name by id!
             self.objectname = name;
             self.refreshdata(n);
         });

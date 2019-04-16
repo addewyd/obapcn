@@ -4,13 +4,22 @@
     <table>
         <tr v-for="rec in records" >
             <!-- assumed that there are NOT empty floors! -->
-            <td v-on:click="clickFloor(rec[0].floorid,rec[0].floorplot)"
+            
+            <td  v-if="rec.length>0" v-on:click="clickFloor(rec[0].floorid,rec[0].floorplot)"
                 style="font-size: 120%; font-weight:bold;cursor: pointer">{{ rec[0].floornum}}</td>
             <td v-for="cell in rec">                
                 <component v-bind:is="cellcomp" 
                     v-bind:d="cell">
                 </component>
             </td>
+            <td v-if="rec.length>0">
+                <button @click="delFloor(rec[0].floorid)">Del</button>
+            </td>
+            <td v-if="rec.length<1">
+                <button @click="delEmptyFloors()">X</button>
+            </td>
+            
+            
         </tr>
     </table>
     <button id="add-floor" class="btn btn-primary" @click="newFloor()">Add floor</button>

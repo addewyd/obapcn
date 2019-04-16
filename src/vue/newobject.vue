@@ -28,7 +28,9 @@ export default {
         save: async function() {
             var res = await app.saveNewObject(this.nob_name);
             bus.$emit('save-newobject');
-            bus.$emit('refresh-data');
+            console.log('SNO res', res);
+    
+            bus.$emit('refresh-data', res.id, res.name);
         },
         cancel: function() {
             bus.$emit('close-newobject');

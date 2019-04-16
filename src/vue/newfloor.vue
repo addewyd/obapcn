@@ -38,7 +38,7 @@ export default {
         save: async function() {
             bus.$emit('close-newfloor');
             var res = await app.saveNewFloor(this.objectid, this.floor_num, this.flat_number);
-            bus.$emit('refresh-data');
+            bus.$emit('refresh-data', this.objectid, '');
             console.log('sno res', res);
         },
         cancel: function() {

@@ -259,11 +259,10 @@ application.prototype.getDeals = async function() {
                             nxt: n,
                             total: t
                         });
-                    }
-                        
+                    }                        
                 }   
         })
-    )
+    );
 };
 
 // .............................................................................
@@ -278,16 +277,16 @@ application.prototype.getDealData = async function(id) {
                     console.log('error(dd)', result.error());
                     //reject
                     resolve( {
-                            success: false,
-                            data:  result.error(),
-                        });
+                        success: false,
+                        data:  result.error(),
+                    });
                 }
                 else
                 {
-                        resolve({
-                            success: true,
-                            data: result.data()
-                        });                        
+                    resolve({
+                        success: true,
+                        data: result.data()
+                    });                        
                 }   
         })
     )
@@ -354,10 +353,7 @@ application.prototype.saveNewObject = async function(nob_name) {
                     console.log('SNO', e);
                     reject(['error', e]);
                 });
-        
-        resolve(true);
-    });
-        
+    });        
 };
 
 // .............................................................................
@@ -385,12 +381,67 @@ application.prototype.delObject = async function(id) {
                 function (e) {
                     console.log('dO', e);
                     reject(['error', e]);
-                });
-        
-        resolve(true);
-    });
-    
-}
+                });        
+    });    
+};
+
+// .............................................................................
+
+application.prototype.delFloor = async function(id) {
+    console.log('del floor', id);
+    var params = Utils.array_merge(
+        {
+            'operation': 'delFloor',
+            floorid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve delFloor', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('dF', e);
+                    reject(['error', e]);
+                });        
+    });    
+};
+
+// .............................................................................
+
+application.prototype.delEmptyFloors = async function(id) {
+    console.log('delEF', id);
+    var params = Utils.array_merge(
+        {
+            'operation': 'delEmptyFloors',
+            objectid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve delED', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('dEF', e);
+                    reject(['error', e]);
+                });        
+    });    
+};
 
 // .............................................................................
 
@@ -419,9 +470,7 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
                 function (e) {
                     console.log('snf err', e);
                     reject(['error', e]);
-                });
-        
-        resolve(true);
+                });        
     });    
 }
 
@@ -432,12 +481,6 @@ application.prototype.init = async function() {
     var r1 = await new Promise((resolve) => 
         BX24.init(function () {
             console.log('init ok');
-            /*
-            Vue.dialog.alert('init callback')
-                .then(function (dialog) {
-                    console.log(dialog);
-            });
-            */
             resolve(true);
         })
     );

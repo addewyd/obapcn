@@ -98,8 +98,9 @@ class Maincntr extends AuxBase {
                 try {
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectname, $c1c]);
-//                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
                     $status = 'success';
+                    $res = ['id'=>$this -> pdo -> lastInsertId(), 'name'=>$objectname];
+//$this -> log -> debug('SNO res', $res);                      
                 } catch(\PDOException $e) {
                     $status = 'error';
                     $res = $e;                    
@@ -134,6 +135,36 @@ class Maincntr extends AuxBase {
                     
                     $this -> pdo->commit();
                     $status = 'success';
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
+                    $status = 'error';
+                    $res = $e;
+                }
+                break;
+                
+            case 'delEmptyFloors':
+                $objectid = $this -> params['objectid'];
+                try {
+                    $this -> pdo->beginTransaction();
+                    $sql = 'select id from floors where objectid=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$objectid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    foreach($res as $rec) {
+                        $flid = $rec['id'];
+                        $sql = 'select * from flats where floorid = ?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$flid]);
+                        $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                        if (count($res) < 1) {
+                            $sql = 'delete from floors where id=?';
+                            $q = $this -> pdo->prepare($sql);
+                            $q->execute([$flid]);
+                        }
+                    }
+                    $this -> pdo->commit();
+                    $status = 'success';
+                                        
                 } catch(\PDOException $e) {
                     $this -> pdo -> rollback();
                     $status = 'error';
@@ -194,7 +225,58 @@ class Maincntr extends AuxBase {
                 }
                 
                 break;
-            // one row (floor) in object
+                
+            case 'delFloor':
+                $floorid = $this -> params['floorid'];
+                try {
+                    $this -> pdo->beginTransaction();
+                    // DEL FLATS, FLOORS, CONTRACTS, PARTSQUARES, PAYSHEDULES
+                    
+                    $sql = 'select * from flats where floorid = ?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$floorid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    foreach($res as $rec) {
+                        $fid = $rec['id'];
+                        $sql = 'delete from partsquares where fid=?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        
+                        $sql = 'select * from contracts where flatid = ?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        $res2 = $q->fetchAll(\PDO::FETCH_ASSOC);
+                        foreach($res2 as $rec2) {
+                            $sql = 'delete from payshedules where contractid=?';
+                            $q = $this -> pdo->prepare($sql);
+                            $q->execute([$rec2['contractid']]);
+                        }
+                        
+                        $sql = 'delete from contracts where flatid=?';
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([$fid]);
+                        
+                    }
+                    $sql = 'delete from flats where floorid=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$floorid]);
+                    
+                    $sql = 'delete from floors where id=?';
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$floorid]);
+                    
+                    $this -> pdo->commit();
+                    $status = 'success';
+                    
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
+                    $status = 'error';
+                    $res = $e;
+                }
+                
+                break;
+
+                // one row (floor) in object
             case 'getFloorData':
                 $floorid = $this -> params['floorid'];
                 $sql = 'select f.id, fl.floornum, f.fnumb, f.square, '

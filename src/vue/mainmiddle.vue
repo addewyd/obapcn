@@ -72,7 +72,10 @@ export default {
                     title: "Really delete?",
                 })
                 .then(dialog => {
-                    app.delObject(id);
+                     Promise.all([
+                        app.delObject(id),
+                        this.refreshdata(0, '')
+                    ]);
                 })
                 .catch(() => { 
                     // resolve(false);
