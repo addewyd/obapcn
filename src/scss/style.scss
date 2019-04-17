@@ -5,6 +5,16 @@
     border: 1px solid blue
 }
 
+.folder {
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 0.6em;
+    height: 1.5em;
+    background: url(../svg/cntr.svg); /* 5px -250px no-repeat; */
+    background-position: 5px -165px;
+}
+
 table.chess {
     width: 120px;
     border:1px solid blue;
@@ -20,7 +30,7 @@ div.fcell-over {
   display: none;
   width: 100%;
   height: 100%;
-  top: 0; 
+  top: 0;
   left: 0;
   color: white;
   background-color: rgba(0,0,0,0.5);
@@ -37,7 +47,7 @@ table.f-sold::after {
 */
 
 td.chess {
-    width: 58px;    
+    width: 58px;
     cursor: pointer
 }
 
@@ -49,7 +59,7 @@ span.tabhead {
     border-right: 1px solid blue;
     border-top: 1px solid blue;
     border-left: 1px solid blue;
-    
+
     cursor: pointer;
     border-top-right-radius: 10px 10px;
 }
@@ -86,21 +96,21 @@ div.right {
 }
 
 div.clear {
-    clear: both;    
+    clear: both;
 }
 
 .control {
-    
+
 }
 
 .input {
-    
+
 }
 
 .help {
-   color: red; 
+   color: red;
 }
 
 .is-danger {
-    
+
 }

@@ -25,7 +25,7 @@ module.exports = {
 
   module: {
     rules: [
-    {
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -77,7 +77,19 @@ module.exports = {
             fallback: 'style-loader',
             use: ['css-loader']
           })
-      }
+        },
+        {
+                test: /\.svg/,
+                use: {
+                    loader: 'svg-url-loader',
+                    options: {}
+                }
+            }
+        //,
+        //{
+        //    test: /\.svg$/,
+        //    loader: 'svg-inline-loader'
+       // }
     ]
   },
 plugins: [ 

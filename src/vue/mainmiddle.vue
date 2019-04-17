@@ -5,8 +5,10 @@
         <button class="btn btn-primary">Button</button>
         <button class="btn btn-primary">Button</button>
     </div>
-    
-    <h3>Objects</h3>
+
+    <h3><span class="folder" v-if="folded" @click="folded=!folded"> </span>
+        <span class="folder" v-if="!folded" @click="folded=!folded"> </span> Объекты</h3>
+    <div v-if="!folded">
     <table>
     <tr v-for="record in objects">
        <td class="objitem" v-on:click="refreshdata(record.id,record.name)" >
@@ -18,26 +20,27 @@
        <td><button :id="'del-object-'+record.id" @click="delObject(record.id)">Del</button></td>
     </tr>
     </table>
-    
+    </div>
     <modal-window v-if="showNewObject" @close="showNewObject = false">
-        <div slot="body">                
+        <div slot="body">
            <new-object></new-object>
         </div>
         <div slot="footer">
         </div>
-    </modal-window>    
-    
+    </modal-window>
+
 </div>
 </template>
 <script>
 import {app, bus} from '../app/app';
-export default {    
+export default {
     data: function(){
         return {
             app: undefined,
             objects: [],
             showNewObject: false,
-            currentid: 0
+            currentid: 0,
+            folded: false
         };
     },
     mounted: function () {
@@ -53,7 +56,7 @@ export default {
         bus.$on('save-newobject', function () {
             self.showNewObject = false;
         });
-    
+
     },
     methods: {
         refreshdata: function(id, name) {
@@ -62,11 +65,11 @@ export default {
         },
         newObject: function() {
             this.showNewObject = true;
-            
+
         },
         delObject: async function(id) {
             console.log('del', id);
-    
+
                 this.$dialog
                 .confirm({
                     title: "Really delete?",
@@ -77,10 +80,10 @@ export default {
                         this.refreshdata(0, '')
                     ]);
                 })
-                .catch(() => { 
+                .catch(() => {
                     // resolve(false);
-                });            
-           
+                });
+
         }
     }
 }
