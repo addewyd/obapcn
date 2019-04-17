@@ -21,7 +21,7 @@ $log -> debug('start', [HTTP_HOST]);
 
 class Maincntr extends AuxBase {
     public function returnResult ($answer) {
-    
+
         ob_start();
         ob_end_clean();
         Header('Cache-Control: no-cache');
@@ -29,9 +29,9 @@ class Maincntr extends AuxBase {
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($answer);
     }
-    
+
     // .........................................................................
-    
+
     protected function upddb($dbname) {
         $this -> log -> debug('upddb', [$dbname]);
         try {
@@ -43,11 +43,11 @@ class Maincntr extends AuxBase {
         catch(\Exception $e) {
             $this -> log -> debug('upddb', [$e]);
             return ['error', $e, ''];
-        }        
+        }
     }
-    
+
     // .........................................................................
-    
+
     public function manage($operation, $params)
     {
         $status = '';
@@ -55,13 +55,13 @@ class Maincntr extends AuxBase {
         $cmt = '';
         $this -> log -> debug('operation', [$operation]);
         switch($operation) {
-            case 'upddb': 
+            case 'upddb':
                 $r = $this -> upddb($params['dbname']);
                 $status = $r[0];
                 $res = $r[1];
                 $cmt = $r[2];
                 break;
-            
+
             case 'getObjects':
                 $sql = 'select id, name from objects';
                 try {
@@ -71,11 +71,11 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
-            
+
             case 'getData':
                 $objectid = $this -> params['objectid'];
                 $sql = 'select * from floors where objectid=?';
@@ -86,11 +86,26 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
-            
+
+            case 'getParts':
+                $flatid = $this -> params['flatid'];
+                $sql = 'select * from parttypes order by code1c';
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute();
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;
+                }
+
+                break;
+
             case 'saveNewObject':
                 $sql = 'insert into objects (name, code1c) values (?,?)';
                 $objectname = $this -> params['objectname'];
@@ -100,27 +115,27 @@ class Maincntr extends AuxBase {
                     $q->execute([$objectname, $c1c]);
                     $status = 'success';
                     $res = ['id'=>$this -> pdo -> lastInsertId(), 'name'=>$objectname];
-//$this -> log -> debug('SNO res', $res);                      
+//$this -> log -> debug('SNO res', $res);
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
                 break;
-            
+
             case 'saveNewFloor':
                 $objectid = $this -> params['objectid'];
                 $f_num = $this -> params['f_num'];
                 $flat_numb = $this -> params['flat_numb'];
                 try {
                     $this -> pdo->beginTransaction();
-                    
+
                     $sql = 'insert into floors (objectid, floornum) values (?,?)';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectid, $f_num]);
-//$this -> log -> debug('snf 1', []);                    
+//$this -> log -> debug('snf 1', []);
                     $lid = $this -> pdo-> lastInsertId();
-//$this -> log -> debug('snf 2', [$lid]);  
-                    
+//$this -> log -> debug('snf 2', [$lid]);
+
                     $sql = 'insert into flats (objectid, floorid, sold, studio, cottage,'
                             . ' nosell, pledge, flattype, bph, code)'
                             . ' values (?,?,?,?,?,?,?,?,?, ?)';
@@ -130,9 +145,9 @@ class Maincntr extends AuxBase {
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$objectid, $lid, 0, 0, 0, 0, 0, 0, 0, $code]);
 //$this -> log -> debug('snf 3', [$code]);
-                        
+
                     }
-                    
+
                     $this -> pdo->commit();
                     $status = 'success';
                 } catch(\PDOException $e) {
@@ -141,7 +156,7 @@ class Maincntr extends AuxBase {
                     $res = $e;
                 }
                 break;
-                
+
             case 'delEmptyFloors':
                 $objectid = $this -> params['objectid'];
                 try {
@@ -164,20 +179,20 @@ class Maincntr extends AuxBase {
                     }
                     $this -> pdo->commit();
                     $status = 'success';
-                                        
+
                 } catch(\PDOException $e) {
                     $this -> pdo -> rollback();
                     $status = 'error';
                     $res = $e;
                 }
                 break;
-            
+
             case 'delObject':
                 $objectid = $this -> params['objectid'];
                 try {
                     $this -> pdo->beginTransaction();
                     // DEL FLATS, FLOORS, CONTRACTS, PARTSQUARES, PAYSHEDULES
-                    
+
                     $sql = 'select * from flats where objectid = ?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectid]);
@@ -187,7 +202,7 @@ class Maincntr extends AuxBase {
                         $sql = 'delete from partsquares where fid=?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
-                        
+
                         $sql = 'select * from contracts where flatid = ?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
@@ -197,16 +212,16 @@ class Maincntr extends AuxBase {
                             $q = $this -> pdo->prepare($sql);
                             $q->execute([$rec2['contractid']]);
                         }
-                        
+
                         $sql = 'delete from contracts where flatid=?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
-                        
+
                     }
                     $sql = 'delete from flats where objectid=?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectid]);
-                    
+
                     $sql = 'delete from floors where objectid=?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectid]);
@@ -214,24 +229,24 @@ class Maincntr extends AuxBase {
                     $sql = 'delete from objects where id=?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$objectid]);
-                    
+
                     $this -> pdo->commit();
                     $status = 'success';
-                    
+
                 } catch(\PDOException $e) {
                     $this -> pdo -> rollback();
                     $status = 'error';
                     $res = $e;
                 }
-                
+
                 break;
-                
+
             case 'delFloor':
                 $floorid = $this -> params['floorid'];
                 try {
                     $this -> pdo->beginTransaction();
                     // DEL FLATS, FLOORS, CONTRACTS, PARTSQUARES, PAYSHEDULES
-                    
+
                     $sql = 'select * from flats where floorid = ?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$floorid]);
@@ -241,7 +256,7 @@ class Maincntr extends AuxBase {
                         $sql = 'delete from partsquares where fid=?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
-                        
+
                         $sql = 'select * from contracts where flatid = ?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
@@ -251,29 +266,29 @@ class Maincntr extends AuxBase {
                             $q = $this -> pdo->prepare($sql);
                             $q->execute([$rec2['contractid']]);
                         }
-                        
+
                         $sql = 'delete from contracts where flatid=?';
                         $q = $this -> pdo->prepare($sql);
                         $q->execute([$fid]);
-                        
+
                     }
                     $sql = 'delete from flats where floorid=?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$floorid]);
-                    
+
                     $sql = 'delete from floors where id=?';
                     $q = $this -> pdo->prepare($sql);
                     $q->execute([$floorid]);
-                    
+
                     $this -> pdo->commit();
                     $status = 'success';
-                    
+
                 } catch(\PDOException $e) {
                     $this -> pdo -> rollback();
                     $status = 'error';
                     $res = $e;
                 }
-                
+
                 break;
 
                 // one row (floor) in object
@@ -292,9 +307,9 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
 
             case 'getSquares':
@@ -309,11 +324,11 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
-            
+
             case 'getOrderData':
                 $flatid = $this -> params['flatid'];
                 $sql = 'select * from contracts where flatid=?'
@@ -325,9 +340,9 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
 
             case 'getPshedData':
@@ -342,22 +357,22 @@ class Maincntr extends AuxBase {
                     $status = 'success';
                 } catch(\PDOException $e) {
                     $status = 'error';
-                    $res = $e;                    
+                    $res = $e;
                 }
-                
+
                 break;
-            
-            default: 
+
+            default:
                 $status = 'error';
                 $res = 'Unknoun Op';
                 $cmt = $operation;
                 $this -> log -> debug($res, [$operation]);
                 break;
         }
-        $ret = array('status' => $status, 
+        $ret = array('status' => $status,
             'result' => $res, 'data'=> $cmt);
         $this->returnResult($ret);
-        
+
     }
 
 }

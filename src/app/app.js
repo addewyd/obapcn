@@ -9,9 +9,9 @@ Vue.use(AsyncComputed);
 
 import VuejsDialog from "vuejs-dialog"
 //import VuejsDialogMixin from "vuejs-dialog/dist/vuejs-dialog-mixin.min.js" // only needed in custom components
- 
+
 //import 'vuejs-dialog/dist/vuejs-dialog.min.css'
- 
+
 Vue.use(VuejsDialog)
 
 import $ from 'jquery';
@@ -57,7 +57,7 @@ application.prototype.loadObjects = async function(r) {
     console.log('loadObjects ' + this.dbname);
     var params = Utils.array_merge(
         {
-            'operation': 'getObjects', 
+            'operation': 'getObjects',
             dbname: this.dbname
         }, BX24.getAuth());
     return new Promise((resolve, reject) => {
@@ -94,7 +94,7 @@ application.prototype.upddb = function() {
     console.log('upddb ' + this.dbname);
     var params = Utils.array_merge(
         {
-            'operation': 'upddb', 
+            'operation': 'upddb',
             dbname: this.dbname
         }, BX24.getAuth());
     $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json',
@@ -104,7 +104,7 @@ application.prototype.upddb = function() {
             console.log(data['result']);
     },
         error: function(e){ console.log('ajax upddb error',e );}
-    });    
+    });
 };
 
 // .............................................................................
@@ -119,20 +119,20 @@ application.prototype.getFloorData = async function(id) {
     return new Promise((resolve, reject) => {
         $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
-            
+
             if(data.status === 'success') {
-                
+
                 resolve(data['result']);
             } else {
                 console.log('ajax getFloorData error', data.status);
                 reject([data.status, data.result]);
             }
         }).
-        fail(function(e){ 
+        fail(function(e){
                 console.log('ajax getFloorData error',e );
                 reject['error', e];
             }
-        );    
+        );
     });
 };
 
@@ -148,7 +148,7 @@ application.prototype.getSquares = async function(id) {
     return new Promise((resolve, reject) => {
     $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
-            
+
             if(data.status === 'success') {
                 console.log('ajax getSq', data.result);
                 resolve(data['result'])
@@ -157,11 +157,40 @@ application.prototype.getSquares = async function(id) {
                 reject([data.status, data.result]);
             }
         }).
-        fail(function(e){ 
+        fail(function(e){
                 console.log('ajax getSq error',e );
                 reject(['error', e]);
             }
-        );    
+        );
+    });
+};
+
+// .............................................................................
+
+application.prototype.getParts = async function(id) {
+    var params = Utils.array_merge(
+        {
+            'operation': 'getParts',
+            flatid: id,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+    $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
+        done(function(data) {
+
+            if(data.status === 'success') {
+                console.log('ajax getPr', data.result);
+                resolve(data['result'])
+            } else {
+                console.log('ajax getPr error', data.status);
+                reject([data.status, data.result]);
+            }
+        }).
+        fail(function(e){
+                console.log('ajax getPr error',e );
+                reject(['error', e]);
+            }
+        );
     });
 };
 
@@ -177,7 +206,7 @@ application.prototype.getOrderData = async function(id) {
     return new Promise((resolve, reject) => {
     $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
-            
+
             if(data.status === 'success') {
                 //console.log('ajax getOD', data.result);
                 resolve(data['result'])
@@ -186,11 +215,11 @@ application.prototype.getOrderData = async function(id) {
                 reject([data.status, data.result]);
             }
         }).
-        fail(function(e){ 
+        fail(function(e){
                 console.log('ajax getOD error',e );
                 reject['error', e];
             }
-        );    
+        );
     });
 };
 
@@ -206,7 +235,7 @@ application.prototype.getPshedData = async function(id) {
     return new Promise((resolve, reject) => {
     $.ajax({url:'cntr/maincntr.php', type:'POST',data:params, dataType:'json'}).
         done(function(data) {
-            
+
             if(data.status === 'success') {
                 console.log('ajax getPSD', data.result);
                 resolve(data['result'])
@@ -215,11 +244,11 @@ application.prototype.getPshedData = async function(id) {
                 reject([data.status, data.result]);
             }
         }).
-        fail(function(e){ 
+        fail(function(e){
                 console.log('ajax getPSD error',e );
                 reject['error', e];
             }
-        );    
+        );
     });
 };
 
@@ -227,9 +256,9 @@ application.prototype.getPshedData = async function(id) {
 
 application.prototype.getDeals = async function() {
     var rd = [];
-    return new Promise((resolve, reject) => 
+    return new Promise((resolve, reject) =>
         BX24.callMethod("crm.deal.list",
-            { 
+            {
         order: { "ID": "ASC" },
         filter: {},
         select: [ "ID", "TITLE", "STAGE_ID"]
@@ -250,7 +279,7 @@ application.prototype.getDeals = async function() {
                     var t = result.total();
                     console.log('m: ', m);
                     rd = Utils.array_merge(rd, d);
-                    
+
                     if(m) {
                         n = result.next();
                     } else {
@@ -259,8 +288,8 @@ application.prototype.getDeals = async function() {
                             nxt: n,
                             total: t
                         });
-                    }                        
-                }   
+                    }
+                }
         })
     );
 };
@@ -268,9 +297,9 @@ application.prototype.getDeals = async function() {
 // .............................................................................
 
 application.prototype.getDealData = async function(id) {
-    return new Promise((resolve, reject) => 
+    return new Promise((resolve, reject) =>
         BX24.callMethod("crm.deal.get",
-            { 
+            {
                 id: id
             }, function(result) {
                 if(result.error()) {
@@ -286,8 +315,8 @@ application.prototype.getDealData = async function(id) {
                     resolve({
                         success: true,
                         data: result.data()
-                    });                        
-                }   
+                    });
+                }
         })
     )
 };
@@ -344,7 +373,7 @@ application.prototype.saveNewObject = async function(nob_name) {
                     if(data.status === 'success') {
                         await self.loadObjects(self.dbname);
                         resolve(data.result);
-                    }    
+                    }
                     else {
                         reject([data.status, data.result]);
                     }
@@ -353,7 +382,7 @@ application.prototype.saveNewObject = async function(nob_name) {
                     console.log('SNO', e);
                     reject(['error', e]);
                 });
-    });        
+    });
 };
 
 // .............................................................................
@@ -381,8 +410,8 @@ application.prototype.delObject = async function(id) {
                 function (e) {
                     console.log('dO', e);
                     reject(['error', e]);
-                });        
-    });    
+                });
+    });
 };
 
 // .............................................................................
@@ -410,8 +439,8 @@ application.prototype.delFloor = async function(id) {
                 function (e) {
                     console.log('dF', e);
                     reject(['error', e]);
-                });        
-    });    
+                });
+    });
 };
 
 // .............................................................................
@@ -439,8 +468,8 @@ application.prototype.delEmptyFloors = async function(id) {
                 function (e) {
                     console.log('dEF', e);
                     reject(['error', e]);
-                });        
-    });    
+                });
+    });
 };
 
 // .............................................................................
@@ -470,24 +499,31 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
                 function (e) {
                     console.log('snf err', e);
                     reject(['error', e]);
-                });        
-    });    
+                });
+    });
+}
+
+// .............................................................................
+
+application.prototype.saveF01 = async function(finfo) {
+    console.log('sF01', finfo);
+    return true;
 }
 
 // .............................................................................
 
 application.prototype.init = async function() {
     console.log('init start');
-    var r1 = await new Promise((resolve) => 
+    var r1 = await new Promise((resolve) =>
         BX24.init(function () {
             console.log('init ok');
             resolve(true);
         })
     );
-    
+
     var r2 = await this.loadAll(r1);
     console.log('after await');
-    return r2;    
+    return r2;
 };
 
 

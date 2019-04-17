@@ -35,6 +35,9 @@ export default {
                 if(val.state) {
                     // send back
                     console.log('watched(Fi02) - SAVE');
+                    var res = app.saveF01(this.finfo);
+                    console.log(res);
+
                     val.state = false;
                 } else {
                     console.log('watched(Fi02) - nothing to do');
@@ -43,7 +46,7 @@ export default {
             deep:true
         }
     },
-    
+
     asyncComputed: {
         deallist: async function() {
             var d = await app.getDeals();
@@ -64,11 +67,11 @@ export default {
             return this.deal;
         }
     },
-    
+
     created: function() {
     },
     beforeDestroy: function() {
-    }    
+    }
 
 }
 
