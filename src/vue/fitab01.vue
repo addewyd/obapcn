@@ -98,7 +98,7 @@
         </table>
         <div v-if="showParts" class="selectparts">
                 <select id="select-part" v-model="part_id">
-                    <option v-for="option in parts" v-bind:value="option.id">
+                    <option v-for="option in parts_sp()" v-bind:value="option.id">
                 {{ option.name }}
                     </option>
                 </select>
@@ -131,6 +131,15 @@ export default {
         addPart: function(id) {
             this.showParts = true;
             console.log(id);
+        },
+        parts_sp: function() {
+            return this.parts.filter(e => {
+                var f = this.squares.find(s => {
+                    if (s.parttypeid == e.id) return s;
+                    return false;
+                });
+                return !f;
+            });
         }
     },
     watch : {
