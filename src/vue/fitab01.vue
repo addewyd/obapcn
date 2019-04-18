@@ -90,7 +90,7 @@
                 </td>
                 <td>
                 <input :id="'psq_'+rec.code1c" :name="'psq_'+rec.code1c"
-                    type="number" v-model="rec.square" />
+                    type="number" v-model.lazy="rec.square" @change="sq_change()"/>
                 </td>
                 <td>
             <button @click="delSquare(rec.id)" style="font-size:75%">Del</button>
@@ -125,7 +125,8 @@ export default {
             part_id: 0,
             flatinfo: this.finfo,
             dSave: this.saving,
-            showParts: false
+            showParts: false,
+            squares_changed: false
         };
     },
     methods: {
@@ -151,7 +152,10 @@ export default {
                 if(f) {
                     var sq = this.squares;
                     sq.push(f);
+                    this.squares_changed = true;
+                    this.flatinfo.squares_changed = true;
                     this.squares = sq;
+                    this.flatinfo.squares = sq;
                     //console.log('parts', this.parts);
                 }
             }
@@ -164,6 +168,15 @@ export default {
                 return e.id !== id;
             });
             this.squares = f;
+            this.flatinfo.squares = f;
+            this.flatinfo.squares_changed = true;
+            this.squares_changed = true;
+        },
+        sq_change: function() {
+            console.log('SQCH');
+            this.flatinfo.squares = this.squares;
+            this.flatinfo.squares_changed = true;
+            this.squares_changed = true;
         }
     },
     watch : {
@@ -174,7 +187,11 @@ export default {
                     // send back
                     console.log('watched(Fi01) - SAVE');
                     val.state = false;
-                    var res = app.saveF01(this.flatinfo, this.squares);
+                    var res = app.saveF01(this.finfo);
+                    if(res.status === 'success') {
+                        this.squares_changed = false;
+                        this.flatinfo.squares_changed = this.squares_changed;
+                    }
                     console.log(res);
                 } else {
                     console.log('watched(Fi01) - nothing to do');
@@ -187,7 +204,10 @@ export default {
     asyncComputed: {
         msquares: async function() {
             console.log('ms', this.finfo.id);
-            this.squares = await app.getSquares(this.finfo.id);
+            if(!this.flatinfo.squares_changed) {
+                this.squares = await app.getSquares(this.finfo.id);
+                this.finfo.squares = this.squares;
+            }
             return this.squares;
         },
         mparts: async function() {
@@ -198,8 +218,14 @@ export default {
     },
 
     created: function() {
+        if(this.flatinfo.squares_changed) {
+            this.squares_changed = this.flatinfo.squares_changed;
+            this.squares = this.flatinfo.squares;
+        }
     },
     beforeDestroy: function() {
+        this.flatinfo.squares_changed = this.squares_changed;
+        this.flatinfo.squares = this.squares;
     }
 }
 

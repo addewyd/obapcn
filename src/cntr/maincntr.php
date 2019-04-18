@@ -364,25 +364,55 @@ class Maincntr extends AuxBase {
 
             case 'saveFlatData':
                 $finfo = $this -> params['finfo'];
-                $squares = $this -> params['squares'];
-                $this -> log -> debug('sFD', [$finfo, $squares]);
-/*
- [
- *  {   "id":"1315","floornum":"0","fnumb":"8666","square":"",
- *      "price":"","nrooms":"","gensquare":"","sold":"0","floorid":"149","floorplot":"",
- *      "deal_id":"41","code":"0_1"},
- *      [
- *          {"id":"4","name":"комната 1","pgentypeid":"1","code1c":"4","forlife":"1","square":"12"}
- *      ]
- *
- *   squares can be null
- */
+                $squares = [];
+                if(isset($finfo['squares']) && isset($finfo['squares_changed']) && $finfo['squares_changed']) {
+                    $squares = $finfo['squares'];
+                }
+                $snaa = false;
+                if(isset($finfo['squares_changed']) && $finfo['squares_changed']) {
+                    $snaa = true;
+                }
 
+                //$this -> log -> debug('sFD', [$finfo]);
                 try {
                     $this -> pdo->beginTransaction();
                     // update flats
-                    if($squares) {
-                        // insert/update squares
+                    $sql = 'update flats set '
+                            . 'fnumb=?,square=?,price=?,nrooms=?,gensquare=?,sold=?, '
+                            . 'deal_id=?,code=? '
+                            . 'where id=?';
+
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([
+                        intval($finfo['fnumb']),
+                        floatval($finfo['square']),
+                        floatval($finfo['price']),
+                        floatval($finfo['nrooms']),
+                        floatval($finfo['gensquare,']),
+                        $finfo['sold'],
+                        $finfo['deal_id'] ? intval($finfo['deal_id']) : null,
+                        $finfo['code'],
+                        $finfo['id']
+                    ]);
+
+                    if($squares || $snaa) {
+                        $sqlD = 'delete from partsquares where fid=?';
+                        $sqlU = 'insert into partsquares (fid, parttypeid,square) values '
+                                . '(?,?,?)';
+
+                        $q = $this -> pdo->prepare($sqlD);
+                        $q->execute([$finfo['id']]);
+
+                        foreach($squares as $s) {
+                            $q = $this -> pdo->prepare($sqlU);
+                            $p = [
+                                $finfo['id'],
+                                $s['id'],
+                                floatval($s['square'])];
+                            //$this -> log -> debug('P', $p);
+                            $q->execute($p);
+
+                        }
                     }
 
                     $this -> pdo->commit();

@@ -45,8 +45,11 @@ export default {
                 if(val.state) {
                     // send back
                     console.log('watched(Fi02) - SAVE');
-                    var res = app.saveF01(this.finfo, this.psquares);
+                    var res = app.saveF01(this.finfo);
                     console.log(res);
+                    if(res.status === 'success') {
+                        this.finfo.squares_changed = this.squares_changed;
+                    }
 
                     val.state = false;
                 } else {
