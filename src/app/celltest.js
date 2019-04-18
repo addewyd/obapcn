@@ -2,7 +2,9 @@
 
 export default {
     props: {
-        d: Object
+        d: Object,
+        objectid: String,
+        objectname: String
     },
     data: function() {
         return {
@@ -78,7 +80,7 @@ export default {
         this.$on('close-fi', function () {
 
             // how to restore this.fdata here?
-            // bus.$emit('refresh-data', self.d.objectid, '');
+            bus.$emit('refresh-data', self.objectid, self.objectname);
             self.showFI = false;
         });
         this.$on('close-oi', function () {
