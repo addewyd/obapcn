@@ -314,7 +314,7 @@ class Maincntr extends AuxBase {
 
             case 'getSquares':
                 $flatid = $this -> params['flatid'];
-                $sql = 'select t.code1c, t.name, p.square, p.parttypeid, t.forlife from partsquares p '
+                $sql = 'select t.id, t.code1c, t.name, p.square, p.parttypeid, t.forlife from partsquares p '
                         . 'join parttypes t on p.parttypeid=t.id '
                         . 'where p.fid = ? order by t.code1c ';
                 try {
@@ -356,6 +356,39 @@ class Maincntr extends AuxBase {
                     $res = $q->fetchAll(\PDO::FETCH_ASSOC);
                     $status = 'success';
                 } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;
+                }
+
+                break;
+
+            case 'saveFlatData':
+                $finfo = $this -> params['finfo'];
+                $squares = $this -> params['squares'];
+                $this -> log -> debug('sFD', [$finfo, $squares]);
+/*
+ [
+ *  {   "id":"1315","floornum":"0","fnumb":"8666","square":"",
+ *      "price":"","nrooms":"","gensquare":"","sold":"0","floorid":"149","floorplot":"",
+ *      "deal_id":"41","code":"0_1"},
+ *      [
+ *          {"id":"4","name":"комната 1","pgentypeid":"1","code1c":"4","forlife":"1","square":"12"}
+ *      ]
+ *
+ *   squares can be null
+ */
+
+                try {
+                    $this -> pdo->beginTransaction();
+                    // update flats
+                    if($squares) {
+                        // insert/update squares
+                    }
+
+                    $this -> pdo->commit();
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
                     $status = 'error';
                     $res = $e;
                 }

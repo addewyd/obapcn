@@ -1,6 +1,6 @@
 ﻿import {app, bus} from './app';
 
-export default {  
+export default {
     props: {
         d: Object
     },
@@ -43,7 +43,7 @@ export default {
             else if(!this.deal && this.fdata.deal_id) {
                 return "background-color: #ffcaaa";
             } else {
-                return "background-color: #f0f0f0";                
+                return "background-color: #f0f0f0";
             }
         },
         isSold: function() {
@@ -63,7 +63,7 @@ export default {
                 }
             }
             return this.deal;
-        },        
+        },
         odata: async function() {
                 var d = await app.getOrderData(this.d.id);
                 this.orderdata = d;
@@ -74,8 +74,11 @@ export default {
     },
     created: function () {
         var self = this;
-        
+
         this.$on('close-fi', function () {
+
+            // how to restore this.fdata here?
+            // bus.$emit('refresh-data', self.d.objectid, '');
             self.showFI = false;
         });
         this.$on('close-oi', function () {
@@ -89,7 +92,7 @@ export default {
             console.log('got save-oi');
             self.saving.state = true;
         });
-        
+
     },
     beforeDestroy: function() {
         this.$off('close-fi');

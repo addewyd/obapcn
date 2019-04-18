@@ -93,7 +93,7 @@
                     type="number" v-model="rec.square" />
                 </td>
                 <td>
-            <button style="font-size:75%">Del</button>
+            <button @click="delSquare(rec.id)" style="font-size:75%">Del</button>
                 </td>
         </tr>
         </table>
@@ -158,6 +158,12 @@ export default {
             this.part_id = 0;
             this.showParts = false;
 
+        },
+        delSquare: function(id) {
+            var f = this.squares.filter(e => {
+                return e.id !== id;
+            });
+            this.squares = f;
         }
     },
     watch : {

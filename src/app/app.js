@@ -507,7 +507,32 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
 
 application.prototype.saveF01 = async function(finfo, squares) {
     console.log('sF01', finfo, squares);
-    return true;
+    var params = Utils.array_merge(
+        {
+            'operation': 'saveFlatData',
+            finfo: finfo,
+            squares: squares,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            type: 'POST',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve sFD', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        console.log('reject sFD', data, data.result);
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('sFD err', e);
+                    reject(['error', e]);
+                });
+    });
 }
 
 // .............................................................................

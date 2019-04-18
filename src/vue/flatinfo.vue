@@ -24,6 +24,7 @@ import {app, bus} from '../app/app';
         methods: {
             close: function() {
     // modal-window -> celltest
+                // finfo can be CHANGED!
                 this.$parent.$parent.$emit('close-fi');
             },
             save: function() {
