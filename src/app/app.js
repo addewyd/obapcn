@@ -505,8 +505,8 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
 
 // .............................................................................
 
-application.prototype.saveF01 = async function(finfo) {
-    console.log('sF01', finfo);
+application.prototype.saveF01 = async function(finfo, squares) {
+    console.log('sF01', finfo, squares);
     return true;
 }
 

@@ -12,9 +12,10 @@
    </ul>
 
    <div class="tab-content">
-       
-    <component v-bind:is="'fi-tab-'+fitabxx" v-bind:finfo="finfo" :saving="dSave2"></component>
-        
+
+    <component v-bind:is="'fi-tab-'+fitabxx"
+        v-bind:finfo="finfo" :saving="dSave2" :psquares="[]"></component>
+
   </div>
   </div>
 </div>
@@ -51,7 +52,7 @@ import {app, bus} from '../app/app';
         }
     },
     methods: {
-        tabclass: function (xx) {            
+        tabclass: function (xx) {
             if(xx == this.fitabxx) return "tabhead tab-act";
             else return "tabhead tab-pas";
         }

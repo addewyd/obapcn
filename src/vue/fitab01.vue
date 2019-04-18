@@ -89,7 +89,8 @@
             {{rec.name}}
                 </td>
                 <td>
-            {{rec.square}}
+                <input :id="'psq_'+rec.code1c" :name="'psq_'+rec.code1c"
+                    type="number" v-model="rec.square" />
                 </td>
                 <td>
             <button style="font-size:75%">Del</button>
@@ -102,9 +103,8 @@
                 {{ option.name }}
                     </option>
                 </select>
-                <button @click="showParts=false">save</button>
+                <button class="btn btn-brimary" @click="addNewPart()">OK</button>
         </div>
-        <span style="font-size:50%">{{parts}}</span>
     </div>
     <div class="clear" />
 </div>
@@ -114,12 +114,13 @@ import {Vue, app, bus} from '../app/app';
 export default {
     props: {
           finfo: Object,
-          saving: Object
+          saving: Object,
+          psquares:  Array
     },
 
     data: function() {
         return {
-            squares: [],
+            squares: this.psquares,
             parts: [],
             part_id: 0,
             flatinfo: this.finfo,
@@ -140,6 +141,23 @@ export default {
                 });
                 return !f;
             });
+        },
+        addNewPart: function() {
+            if(this.part_id > 0) {
+                var f = this.parts.find(s => {
+                    if (s.id == this.part_id) return s;
+                    return false;
+                });
+                if(f) {
+                    var sq = this.squares;
+                    sq.push(f);
+                    this.squares = sq;
+                    //console.log('parts', this.parts);
+                }
+            }
+            this.part_id = 0;
+            this.showParts = false;
+
         }
     },
     watch : {
@@ -150,7 +168,7 @@ export default {
                     // send back
                     console.log('watched(Fi01) - SAVE');
                     val.state = false;
-                    var res = app.saveF01(this.finfo);
+                    var res = app.saveF01(this.flatinfo, this.squares);
                     console.log(res);
                 } else {
                     console.log('watched(Fi01) - nothing to do');

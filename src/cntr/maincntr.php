@@ -314,7 +314,7 @@ class Maincntr extends AuxBase {
 
             case 'getSquares':
                 $flatid = $this -> params['flatid'];
-                $sql = 'select t.code1c, t.name, p.square, p.parttypeid from partsquares p '
+                $sql = 'select t.code1c, t.name, p.square, p.parttypeid, t.forlife from partsquares p '
                         . 'join parttypes t on p.parttypeid=t.id '
                         . 'where p.fid = ? order by t.code1c ';
                 try {

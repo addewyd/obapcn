@@ -5,11 +5,19 @@
    tab 02 {{finfo}}
     </h3>
     dlen {{deals.length}}
+<!--
     <div v-for="rec in deals">
         {{rec}}
     </div>
+    -->>
+    <select id="select-deal" v-model="finfo.deal_id">
+        <option v-for="option in deals" v-bind:value="option.ID">
+            {{ option.TITLE }}
+        </option>
+    </select>
+
     <div>
-    Deal: {{dealdata}}
+        Deal: <span style="font-size:50%">{{dealdata}}</span>
     </div>
 </div>
 </template>
@@ -18,13 +26,15 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           finfo: Object,
-          saving: Object
+          saving: Object,
+          psquares: Array
     },
 
     data: function() {
         return {
             deals: [],
             deal: undefined,
+            //deal_id: this.finfo.deal_id,
             dSave: this.saving
         }
     },
@@ -35,7 +45,7 @@ export default {
                 if(val.state) {
                     // send back
                     console.log('watched(Fi02) - SAVE');
-                    var res = app.saveF01(this.finfo);
+                    var res = app.saveF01(this.finfo, this.psquares);
                     console.log(res);
 
                     val.state = false;
