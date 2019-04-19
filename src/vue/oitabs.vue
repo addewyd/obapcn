@@ -1,6 +1,6 @@
 ﻿<template>
-<div>    
-order id {{orderdata.length>0?orderdata[0].id:'No order'}}
+<div>
+order id {{odata.id?odata.id:'No order'}}
 
 <div class="tabs">
    <ul class="nav nav-tabs">
@@ -14,9 +14,9 @@ order id {{orderdata.length>0?orderdata[0].id:'No order'}}
         <span :class="tabclass('04')">Tab 04</span></li>
    </ul>
    <div class="tab-content">
-        <component v-bind:is="'oi-tab-'+oitabxx" 
-            :flatid="flatid" 
-            :odata="orderdata" :saving="dSave2"></component>
+        <component v-bind:is="'oi-tab-'+oitabxx"
+            :flatid="flatid"
+            :odata="odata" :saving="dSave2"></component>
   </div>
 </div>
 </div>
@@ -26,7 +26,7 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array,
+          odata: Object,
           saving: Object
     },
 
@@ -34,7 +34,6 @@ export default {
         return {
             cb: 'oi tabs',
             oitabxx: '01',
-            orderdata: this.odata,
             dSave: this.saving,
             dSave2: {state: false}
         }
@@ -56,14 +55,14 @@ export default {
     },
     mounted: function () {
         var self = this;
-        this.orderdata = this.odata;
+        //this.orderdata = this.odata;
     },
     methods: {
-        tabclass: function (xx) {            
+        tabclass: function (xx) {
             if(xx == this.oitabxx) return "tabhead tab-act";
             else return "tabhead tab-pas";
         }
-    
+
     }
 }
 

@@ -68,7 +68,8 @@ export default {
         },
         odata: async function() {
                 var d = await app.getOrderData(this.d.id);
-                this.orderdata = d;
+                if(d.length < 1) this.orderdata = {};
+                else this.orderdata = d[0];
                 //bus.$emit('order-refresh');
                 return d;
         }

@@ -13,7 +13,7 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array,
+          odata: Object,
           saving: Object
     },
 
@@ -37,7 +37,7 @@ export default {
             deep:true
         }
     },
-    
+
     created: function() {
     },
     beforeDestroy: function() {

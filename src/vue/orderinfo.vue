@@ -12,7 +12,8 @@ import {app, bus} from '../app/app';
 
     export default {
         props: {
-            flatid: String
+            flatid: String,
+            odata: Object
         },
         data: function() {
             return {
@@ -27,7 +28,7 @@ import {app, bus} from '../app/app';
                 this.$parent.$parent.$emit('save-oi');
             }
         },
-    
+
     created: function() {
     },
     beforeDestroy: function() {

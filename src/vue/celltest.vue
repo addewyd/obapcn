@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-    
+
     <div class="fcell" :style="cellstyle">
         <table :class="status">
         <tr>
@@ -9,12 +9,12 @@
             <span style="font-size: 40%">D: {{deal?deal.STAGE_ID:""}}</span>
         </td>
         <td class="chess">
-            {{fdata.square}} M<span style="font-size:60%; vertical-align: super">2</span> 
+            {{fdata.square}} M<span style="font-size:60%; vertical-align: super">2</span>
         </td>
         </tr>
         <tr>
             <td class="chess" v-on:click="clickOI(true)" >NR: {{d.nrooms}}</td>
-            <td class="chess"> 
+            <td class="chess">
                 {{fdata.price}}
             </td>
         </tr>
@@ -26,20 +26,20 @@
 
     <!-- flat info modal dialog -->
     <modal-window v-if="showFI" @close="showFI = false">
-        <div slot="body">                
+        <div slot="body">
            <fi-tabs :finfo="fdata" :saving="saving"></fi-tabs>
            <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
         <div slot="footer">
-           
+
         </div>
     </modal-window>
 
     <!-- order info modal dialog -->
     <modal-window v-if="showOI" @close="showOI = false">
-        <div slot="body">                
-           <oi-tabs :flatid="d.id" :odata="orderdata" :saving="saving"></oi-tabs>           
-           <order-info  :flatid="d.id"></order-info>
+        <div slot="body">
+           <oi-tabs :flatid="d.id" :odata="orderdata" :saving="saving"></oi-tabs>
+           <order-info  :flatid="d.id" :odata="orderdata"></order-info>
         </div>
         <div slot="footer">
         </div>

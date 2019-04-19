@@ -3,6 +3,10 @@
     <h2>
    tab №03  ИД кв {{flatid}}
     </h2>
+    cntr all
+    <div>
+        {{odata}}
+    </div>
 
 </div>
 </template>
@@ -11,7 +15,7 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array,
+          odata: Object,
           saving: Object
     },
 
@@ -35,7 +39,7 @@ export default {
             deep:true
         }
     },
-    
+
     created: function() {
     },
     beforeDestroy: function() {

@@ -4,13 +4,13 @@
         tab 02 {{flatid}}
     </h2>
     <div>
-        <div v-if="orderdata && orderdata.length > 0">
-        Pay Shedule on {{orderdata[0].client}}
-        <div style="font-weight: bold">    
+        <div v-if="odata.id">
+        Pay Shedule on {{odata.client}}
+        <div style="font-weight: bold">
             Дата Сумма %
-        </div>    
+        </div>
         <div v-for="rec in psheddata">
-        {{rec.pdate}} {{rec.psumm}} {{rec.percent}}
+            {{rec.pdate}} {{rec.psumm}} {{rec.percent}}
         </div>
         </div>
     </div>
@@ -21,13 +21,13 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
-          odata: Array,
+          odata: Object,
           saving: Object
     },
 
     data: function() {
         return {
-            orderdata: this.odata,
+            //orderdata: this.odata,
             psheddata: [],
             dSave: this.saving
         }
@@ -48,27 +48,28 @@ export default {
         }
     },
     methods: {
-        
+
     },
     asyncComputed: {
         psheddataAsync: async function() {
             var pd = [];
-            if(this.orderdata && this.orderdata.length > 0) {
-    console.log('odid', this.orderdata[0].id);
-                pd = await app.getPshedData(this.orderdata[0].id);
+            if(this.odata.id) {
+    console.log('odid', this.odata.id);
+                pd = await app.getPshedData(this.odata.id);
             } else {
-            
+
             }
             this.psheddata = pd;
+            this.odata.psheddata = pd;
             return pd;
         }
     },
-    
+
     created: function() {
     },
     beforeDestroy: function() {
     }
-    
+
 }
 
 </script>
