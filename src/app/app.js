@@ -47,6 +47,7 @@ import CellTest from '../vue/celltest.vue';
 
 import NewObject from '../vue/newobject.vue';
 import NewFloor from '../vue/newfloor.vue';
+import NewContract from '../vue/newcontract.vue';
 
 
 function application() {
@@ -501,7 +502,36 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
                     reject(['error', e]);
                 });
     });
-}
+};
+
+// .............................................................................
+
+application.prototype.saveNewContract = async function(flatid) {
+    console.log('snc', flatid);
+    var params = Utils.array_merge(
+        {
+            'operation': 'saveNewContract',
+            flatid: flatid,
+            dbname: this.dbname
+        }, BX24.getAuth());
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve snc', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('snc err', e);
+                    reject(['error', e]);
+                });
+    });
+};
 
 // .............................................................................
 
@@ -579,6 +609,7 @@ Vue.component('cell-test', CellTest);
 Vue.component('floor-plot', FloorPlot);
 Vue.component('new-object', NewObject);
 Vue.component('new-floor', NewFloor);
+Vue.component('new-contract', NewContract);
 
 new Vue({
   el: '#app-main-top',
