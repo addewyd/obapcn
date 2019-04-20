@@ -4,8 +4,8 @@
         tab 02 {{flatid}}
     </h2>
     <div>
-        <div v-if="odata.id">
-        Pay Shedule on {{odata.client}}
+        <div v-if="odata.odata.id">
+        Pay Shedule on {{odata.odata.client}}
         <div style="font-weight: bold">
             Дата Сумма %
         </div>
@@ -53,14 +53,14 @@ export default {
     asyncComputed: {
         psheddataAsync: async function() {
             var pd = [];
-            if(this.odata.id) {
-    console.log('odid', this.odata.id);
-                pd = await app.getPshedData(this.odata.id);
+            if(this.odata.odata.id) {
+    console.log('odid', this.odata.odata.id);
+                pd = await app.getPshedData(this.odata.odata.id);
             } else {
 
             }
             this.psheddata = pd;
-            this.odata.psheddata = pd;
+            this.odata.odata.psheddata = pd;
             return pd;
         }
     },

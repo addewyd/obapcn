@@ -1,7 +1,7 @@
 ﻿<template>
 <div>
-order id {{odata.id?odata.id:'No order'}}
-<div v-if="!odata.id">
+order id {{odata.odata.id?odata.odata.id:'No order'}}
+<div v-if="!odata.odata.id">
     <button class="btn btn-primary" @click="addContract(flatid)">Add contract</button>
 </div>
 <div class="tabs">
@@ -67,14 +67,14 @@ export default {
     },
     mounted: function () {
         var self = this;
-        //this.orderdata = this.odata;
         bus.$on('close-addcontract', function () {
 
             console.log('got cac');
             self.showAddContract = false;
         });
-        bus.$on('save-newcontract', function () {
-            console.log('got sac');
+        bus.$on('save-newcontract', function (o) {
+            console.log('got sac', o);
+            self.odata.odata = o;
             self.showAddContract = false;
         });
 
@@ -90,7 +90,6 @@ export default {
         },
 
         addContract: function(flatid) {
-            // remember odata fields here???
             this.showAddContract = true;
         }
 
