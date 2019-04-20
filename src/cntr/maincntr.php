@@ -363,9 +363,30 @@ class Maincntr extends AuxBase {
                 break;
 
             case 'saveNewContract':
-                $res = [];
-                $status = 'success';
-                
+                $flatid = $this -> params['flatid'];
+                $sql = 'select * from contracts where flatid=?';
+
+                try {
+                    $q = $this -> pdo->prepare($sql);
+                    $q->execute([$flatid]);
+                    $res = $q->fetchAll(\PDO::FETCH_ASSOC);
+                    $id = 0;
+                    if(count($res) > 0) {
+                        $id = $res[0]['id'];
+                    } else {
+                        $sql = 'insert into contracts (flatid, regnum, regdate) values (?, ?,?)';
+                        $q = $this -> pdo->prepare($sql);
+                        $d = $this ->reformat_date($params['odata']['regdate']);
+                        $n = $params['odata']['regnum'];
+                        $q->execute([$flatid, $n, $d]);
+                        $id = $this -> pdo -> lastInsertId();
+                    }
+                    $res = $id;
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;
+                }
                 break;
 
             case 'saveFlatData':
@@ -443,6 +464,30 @@ class Maincntr extends AuxBase {
         $this->returnResult($ret);
 
     }
+
+    public function reformat_date($d) {
+        $rd = $d;
+
+        $m = preg_match('/\d{4}\-\d{2}\-\d{2}/', $d);
+        if($m) {
+            return $d;
+        }
+
+        $m = preg_match('/\d{1,2}\.\d{1,2}\.\d{4}/', $d);
+        if($m) {
+            $rd = date_format(
+                date_create_from_format('d.m.Y', $d), 'Y-m-d');
+            return $rd;
+        }
+        $m = preg_match('/\d{1,2}\.\d{1,2}\.\d{2}/', $d);
+        if($m) {
+            $rd = date_format(
+                date_create_from_format('d.m.y', $d), 'Y-m-d');
+            return $rd;
+        }
+        return $rd;
+    }
+
 
 }
 

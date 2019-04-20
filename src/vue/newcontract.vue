@@ -52,7 +52,7 @@ export default {
     methods: {
         save: async function() {
             var res = await app.saveNewContract(this.flatid, this.odata);
-            this.odata.id = 1;
+            this.odata.id = res;
             bus.$emit('save-newcontract', this.odata);
             console.log('SNC res', res);
         },
