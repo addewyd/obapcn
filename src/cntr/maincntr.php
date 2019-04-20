@@ -362,6 +362,12 @@ class Maincntr extends AuxBase {
 
                 break;
 
+            case 'saveNewContract':
+                $res = [];
+                $status = 'success';
+                
+                break;
+
             case 'saveFlatData':
                 $finfo = $this -> params['finfo'];
                 $squares = [];

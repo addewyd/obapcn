@@ -506,12 +506,13 @@ application.prototype.saveNewFloor = async function(objectid, f_num, flat_numb) 
 
 // .............................................................................
 
-application.prototype.saveNewContract = async function(flatid) {
-    console.log('snc', flatid);
+application.prototype.saveNewContract = async function(flatid, odata) {
+    console.log('snc', flatid, odata);
     var params = Utils.array_merge(
         {
             'operation': 'saveNewContract',
             flatid: flatid,
+            odata: odata,
             dbname: this.dbname
         }, BX24.getAuth());
     return new Promise((resolve, reject) => {

@@ -84,7 +84,12 @@ export default {
             bus.$emit('refresh-data', self.objectid, self.objectname);
             self.showFI = false;
         });
-        this.$on('close-oi', function () {
+        this.$on('close-oi', async function () {
+            // ???? odata refresh
+                var d = await app.getOrderData(self.d.id);
+                if(d.length < 1) self.orderdata = {};
+                else self.orderdata = d[0];
+
             self.showOI = false;
         });
         this.$on('save-fi', function () {

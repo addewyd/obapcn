@@ -69,10 +69,11 @@ export default {
         var self = this;
         //this.orderdata = this.odata;
         bus.$on('close-addcontract', function () {
+
             console.log('got cac');
             self.showAddContract = false;
         });
-        bus.$on('save-addcontract', function () {
+        bus.$on('save-newcontract', function () {
             console.log('got sac');
             self.showAddContract = false;
         });
@@ -89,6 +90,7 @@ export default {
         },
 
         addContract: function(flatid) {
+            // remember odata fields here???
             this.showAddContract = true;
         }
 
