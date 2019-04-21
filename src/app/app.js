@@ -570,12 +570,22 @@ application.prototype.saveF01 = async function(finfo, squares) {
 
 application.prototype.saveFloorPlot = async function(floorid, files) {
     console.log('sFP', floorid,files);
+    /*
     var params = Utils.array_merge(
         {
             'operation': 'saveFloorPlot',
             floorid: floorid,
             dbname: this.dbname
         }, BX24.getAuth());
+    */
+    var params = {
+            'operation': 'saveFloorPlot',
+            floorid: floorid,
+            dbname: this.dbname,
+            ...BX24.getAuth()
+        };
+    //var g = BX24.getAuth();
+    //var params = {...data, ...g};
 
     var fdata = new FormData();
     $.each(params, function (k, v) {
@@ -586,6 +596,7 @@ application.prototype.saveFloorPlot = async function(floorid, files) {
     for (var key of fdata.keys()) {
           console.log(key);
     }
+    var emitter = {};
 
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -597,7 +608,7 @@ application.prototype.saveFloorPlot = async function(floorid, files) {
                                 contentType: false,
                                 enctype: 'multipart/form-data',
                                 data: fdata, // params,
-                                xhr: Utils.xhrHandler
+                                xhr:  () => Utils.xhrHandler(emitter)
         }).done(x =>
             resolve(x)
         ).fail(e => reject(e)

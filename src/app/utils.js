@@ -25,6 +25,9 @@
             return false;
         }
     };
+
+// .............................................................................
+
     var array_merge = function (arr1, arr2) {
         // Variable declarations
         var arr1Class, arr2Class, i, il;
@@ -59,8 +62,6 @@
         return arr1;
     };
 
-
-﻿
 // .............................................................................﻿
 
 var getoption = async function(item) {
@@ -91,8 +92,10 @@ var getoption = async function(item) {
     return undefined;
 };
 
-var xhrHandler = function () {
-    var self = this;
+// .............................................................................
+
+var xhrHandler = function (emitter) {
+    //console.log(emitter);
     var jqXHR = window.ActiveXObject ?
             new window.ActiveXObject("Microsoft.XMLHTTP") :
             new window.XMLHttpRequest();

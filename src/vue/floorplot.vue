@@ -20,6 +20,7 @@
         <p :class="{ 'control': true }" class="field file" >
             <span class="file-input">Добавить файл</span>
             <input class="file-input" type="file" id="somefile1" name="somefile1"
+                accept="image/jpeg,image/png,image/gif"
                 @change="filesChange($event.target.name, $event.target.files)"
                   />
             <span v-show="errors.has('somefile1')"
