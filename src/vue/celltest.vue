@@ -4,7 +4,7 @@
     <div class="fcell" :style="cellstyle">
         <table :class="status">
         <tr>
-        <td v-on:click="clickFI(true)" class="chess">
+        <td v-on:click="clickFI(true)" class="chess" title="Квартира">
             N:{{fdata.fnumb}}
             <span style="font-size: 40%">D: {{deal?deal.STAGE_ID:""}}</span>
         </td>
@@ -13,7 +13,7 @@
         </td>
         </tr>
         <tr>
-            <td class="chess" v-on:click="clickOI(true)" >NR: {{d.nrooms}}</td>
+            <td class="chess" v-on:click="clickOI(true)" title="Договор">NR: {{d.nrooms}}</td>
             <td class="chess">
                 {{fdata.price}}
             </td>
@@ -38,8 +38,8 @@
     <!-- order info modal dialog -->
     <modal-window v-if="showOI" @close="showOI = false">
         <div slot="body">
-           <oi-tabs :flatid="d.id" :odata="{odata:orderdata}" :saving="saving"></oi-tabs>
-           <order-info  :flatid="d.id" :odata="{odata:orderdata}"></order-info>
+           <oi-tabs :finfo="d" :flatid="d.id" :odata="{odata:orderdata}" :saving="saving"></oi-tabs>
+           <order-info :finfo="d" :flatid="d.id" :odata="{odata:orderdata}"></order-info>
         </div>
         <div slot="footer">
         </div>

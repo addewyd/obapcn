@@ -17,6 +17,7 @@ order id {{odata.odata.id?odata.odata.id:'No order'}}
    </ul>
    <div class="tab-content">
         <component v-bind:is="'oi-tab-'+oitabxx"
+            :price="finfo.price"
             :flatid="flatid"
             :odata="odata" :saving="dSave2"></component>
   </div>
@@ -37,6 +38,7 @@ import {app, bus} from '../app/app';
 export default {
     props: {
           flatid: String,
+          finfo: Object,
           odata: Object,
           saving: Object
     },

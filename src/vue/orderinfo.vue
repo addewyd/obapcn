@@ -13,6 +13,7 @@ import {app, bus} from '../app/app';
     export default {
         props: {
             flatid: String,
+            finfo: Object,
             odata: Object
         },
         data: function() {
