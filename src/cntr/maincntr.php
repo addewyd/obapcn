@@ -452,6 +452,26 @@ class Maincntr extends AuxBase {
 
                 break;
 
+            case 'saveFloorPlot':
+/* $_FILES
+floorplot: {
+    error: 0
+    name: "[kinozal.tv]id1671597.torrent"
+    size: 11172
+    tmp_name: "C:\Windows\Temp\phpB34D.tmp"
+    type: "application/x-bittorrent"  }
+*/
+                $floorid = $this -> params['floorid'];
+                try {
+                    $res = [$this->params, $_FILES?? null];
+
+                    $status = 'success';
+                } catch (Exception $ex) {
+                    $status = 'error';
+                    $res = $e;
+                }
+                break;
+
             default:
                 $status = 'error';
                 $res = 'Unknoun Op';

@@ -58,22 +58,22 @@
         }
         return arr1;
     };
-  
+
 
 ﻿
 // .............................................................................﻿
 
 var getoption = async function(item) {
-    var p = 
+    var p =
         await new Promise((resolve, reject) =>
-    {       
+    {
         BX24.callMethod('entity.item.get', {
             ENTITY: 'Options',
             SORT: {DATE_ACTIVE_FROM: 'ASC'}
-        },            
-        function (result) {  
+        },
+        function (result) {
             console.log('in callback');
-                    if (result.error()) {                      
+                    if (result.error()) {
                         console.error('err:');
                         console.error(result.error());
                         reject([false, result.error])
@@ -81,7 +81,7 @@ var getoption = async function(item) {
                     else
                     {
                         resolve([true,result.answer]);
-                    }                
+                    }
                 }
             );
     });
@@ -91,5 +91,36 @@ var getoption = async function(item) {
     return undefined;
 };
 
+var xhrHandler = function () {
+    var self = this;
+    var jqXHR = window.ActiveXObject ?
+            new window.ActiveXObject("Microsoft.XMLHTTP") :
+            new window.XMLHttpRequest();
 
-export { getoption, array_merge, makeid };
+    jqXHR.onloadstart = function (e) {
+        //self.emitter('start', e);
+    };
+    jqXHR.onloadend = function (e) {
+        //self.emitter('finish', e);
+    };
+    //Upload progress
+    jqXHR.upload.addEventListener("progress", function (evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round((evt.loaded * 100) / evt.total);
+            //self.emitter('progress', percentComplete);
+        }
+    }, false);
+    //Download progress
+    jqXHR.addEventListener("progress", function (evt)
+    {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round((evt.loaded * 100) / evt.total);
+            //self.emitter('progress', percentComplete);
+        }
+    }, false);
+
+    return jqXHR;
+}
+
+
+export { getoption, array_merge, makeid, xhrHandler };

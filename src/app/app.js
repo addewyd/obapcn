@@ -568,6 +568,46 @@ application.prototype.saveF01 = async function(finfo, squares) {
 
 // .............................................................................
 
+application.prototype.saveFloorPlot = async function(floorid, files) {
+    console.log('sFP', floorid,files);
+    var params = Utils.array_merge(
+        {
+            'operation': 'saveFloorPlot',
+            floorid: floorid,
+            dbname: this.dbname
+        }, BX24.getAuth());
+
+    var fdata = new FormData();
+    $.each(params, function (k, v) {
+        fdata.append(k, v);
+    });
+    fdata.append('floorplot', files.item(0))
+
+    for (var key of fdata.keys()) {
+          console.log(key);
+    }
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+                                type: 'POST',
+                                dataType: 'json',
+                                processData: false,
+                                cache: false,
+                                contentType: false,
+                                enctype: 'multipart/form-data',
+                                data: fdata, // params,
+                                xhr: Utils.xhrHandler
+        }).done(x =>
+            resolve(x)
+        ).fail(e => reject(e)
+        );
+    });
+
+}
+
+// .............................................................................
+
 application.prototype.init = async function() {
     console.log('init start');
     var r1 = await new Promise((resolve) =>

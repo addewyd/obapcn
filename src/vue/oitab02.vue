@@ -124,6 +124,12 @@ export default {
             this.showCPS = true;
         },
         saveCPS: function(id) {
+            var n = parseInt(this.cpsnum);
+            var p = parseFloat(this.price);
+            var p1 = parseFloat(this.cps1);
+            var rest = p - p1;
+            var pay = rest / n;
+
             this.showCPS = false;
         },
         closeCPS: function(id) {
