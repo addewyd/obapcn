@@ -27,8 +27,8 @@
     <!-- flat info modal dialog -->
     <modal-window v-if="showFI" @close="showFI = false">
         <div slot="body">
-           <fi-tabs :finfo="fdata" :saving="saving"></fi-tabs>
-           <flat-info  :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
+           <fi-tabs   :objectid="objectid" :objectname="objectname" :finfo="fdata" :saving="saving"></fi-tabs>
+           <flat-info  :objectid="objectid" :objectname="objectname" :flatid="d.id" :gensquare="d.gensquare" :finfo="d"></flat-info>
         </div>
         <div slot="footer">
 

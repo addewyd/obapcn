@@ -122,7 +122,6 @@ application.prototype.getFloorData = async function(id) {
         done(function(data) {
 
             if(data.status === 'success') {
-
                 resolve(data['result']);
             } else {
                 console.log('ajax getFloorData error', data.status);
@@ -255,13 +254,84 @@ application.prototype.getPshedData = async function(id) {
 
 // .............................................................................
 
+application.prototype.createDeal = async function(finfo, ob) {
+    var pci = new Promise((resolve, reject) =>
+        BX24.callMethod("crm.deal.add",
+        {
+            fields: {
+                TITLE: ob,
+                UF_CRM_PB_PRICE: finfo.price
+            },
+            params: { "REGISTER_SONET_EVENT": "N" }
+        }
+        ,
+        function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject(result);
+                } else {
+                    var r = result.data();
+                    console.log("new deal", r);
+                    resolve(r)
+                }
+        })
+        )
+
+    var id = await pci;
+    console.log("new deal id", id);
+    return pci;
+
+};
+
+// .............................................................................
+
 application.prototype.getDeals = async function() {
     var rd = [];
+
+    var pci = new Promise((resolve, reject) =>
+        BX24.callMethod("crm.dealcategory.list",
+        {
+            order: { "ID": "ASC" },
+            filter: {},
+            select: ["ID", "NAME"]
+        },
+        function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject( {
+                            data:  [result.error()],
+                            nxt: 0,
+                            total: 0
+                        });
+                }
+                else
+                {
+                    var d = result.data();
+                    var n = 0;
+                    var m = result.more();
+                    var t = result.total();
+                    console.log('mpci: ', m);
+                    rd = Utils.array_merge(rd, d);
+
+                    if(m) {
+                        n = result.next();
+                    } else {
+                        resolve({
+                            data: rd,
+                            nxt: n,
+                            total: t
+                        });
+                    }
+                }
+        }));
+    var dcl = await pci;
+    console.log("pci", pci, dcl);
+
     return new Promise((resolve, reject) =>
         BX24.callMethod("crm.deal.list",
             {
         order: { "ID": "ASC" },
-        filter: {},
+        filter: {"CATEGORY_ID": 0},
         select: [ "ID", "TITLE", "STAGE_ID"]
             }, function(result) {
                 if(result.error()) {
@@ -570,22 +640,12 @@ application.prototype.saveF01 = async function(finfo, squares) {
 
 application.prototype.saveFloorPlot = async function(floorid, files) {
     console.log('sFP', floorid,files);
-    /*
-    var params = Utils.array_merge(
-        {
-            'operation': 'saveFloorPlot',
-            floorid: floorid,
-            dbname: this.dbname
-        }, BX24.getAuth());
-    */
     var params = {
             'operation': 'saveFloorPlot',
             floorid: floorid,
             dbname: this.dbname,
             ...BX24.getAuth()
         };
-    //var g = BX24.getAuth();
-    //var params = {...data, ...g};
 
     var fdata = new FormData();
     $.each(params, function (k, v) {
@@ -593,29 +653,28 @@ application.prototype.saveFloorPlot = async function(floorid, files) {
     });
     fdata.append('floorplot', files.item(0))
 
-    for (var key of fdata.keys()) {
-          console.log(key);
-    }
+//    for (var key of fdata.keys()) {
+//          console.log(key);
+//    }
     var emitter = {};
 
     return new Promise((resolve, reject) => {
         $.ajax({
             url: 'cntr/maincntr.php',
-                                type: 'POST',
-                                dataType: 'json',
-                                processData: false,
-                                cache: false,
-                                contentType: false,
-                                enctype: 'multipart/form-data',
-                                data: fdata, // params,
-                                xhr:  () => Utils.xhrHandler(emitter)
+            type: 'POST',
+            dataType: 'json',
+            processData: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            data: fdata, // params,
+            xhr:  () => Utils.xhrHandler(emitter)
         }).done(x =>
             resolve(x)
         ).fail(e => reject(e)
         );
     });
-
-}
+};
 
 // .............................................................................
 
@@ -669,6 +728,5 @@ new Vue({
     'app-main-top': MainTop
   }
 });
-
 
 export /*default*/ {app, bus, Vue};

@@ -2,14 +2,33 @@
 <div>
     <h1>{{finfo.id}}</h1>
     <h3>
-   tab 02 {{finfo}}
+   <!-- tab 02 {{finfo}} -->
     </h3>
     dlen {{deals.length}}
 <!--
     <div v-for="rec in deals">
         {{rec}}
     </div>
-    -->>
+    -->
+    <div v-if="dealdata">
+    <div>
+    Price {{dealdata.UF_CRM_PB_PRICE}}
+    </div>
+    <div>
+    Project {{dealdata.UF_CRM_PB_PROJECT}}
+    </div>
+    <div>
+    House {{dealdata.UF_CRM_PB_HOUSE}}
+    </div>
+    <div>
+    Floor {{dealdata.UF_CRM_PB_FLOOR}}
+    </div>
+    <div>
+    Number {{dealdata.UF_CRM_PB_NUMBER}}
+    </div>
+    </div>
+
+
     <select id="select-deal" v-model="finfo.deal_id">
         <option v-for="option in deals" v-bind:value="option.ID">
             {{ option.TITLE }}
@@ -19,6 +38,9 @@
     <div>
         Deal: <span style="font-size:50%">{{dealdata}}</span>
     </div>
+    <div v-if="!dealdata">
+        <button class="btn btn-primary" @click="createDeal()">Создать сделку</button>
+    </div>
 </div>
 </template>
 <script>
@@ -27,7 +49,9 @@ export default {
     props: {
           finfo: Object,
           saving: Object,
-          psquares: Array
+          psquares: Array,
+            objectid: String,
+            objectname: String
     },
 
     data: function() {
@@ -57,6 +81,14 @@ export default {
                 }
             },
             deep:true
+        }
+    },
+
+    methods: {
+        createDeal: async function() {
+            this.finfo.deal_id = await app.createDeal(this.finfo, this.objectname);
+            console.log("new deal id in vue", this.finfo.deal_id);
+
         }
     },
 

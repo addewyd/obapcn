@@ -10,7 +10,9 @@ export default {
     props: {
           finfo: Object,
           saving: Object,
-          psquares: Array
+          psquares: Array,
+            objectid: String,
+            objectname: String
     },
 
     data: function() {

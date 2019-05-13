@@ -14,7 +14,9 @@ import {app, bus} from '../app/app';
         props: {
             flatid: String,
             gensquare: String,
-            finfo: Object
+            finfo: Object,
+            objectid: String,
+            objectname: String
         },
         data: function() {
             return {

@@ -14,7 +14,7 @@
    <div class="tab-content">
 
     <component v-bind:is="'fi-tab-'+fitabxx"
-        v-bind:finfo="finfo" :saving="dSave2" :psquares="[]"></component>
+        v-bind:finfo="finfo"   :objectid="objectid" :objectname="objectname" :saving="dSave2" :psquares="[]"></component>
 
   </div>
   </div>
@@ -25,7 +25,9 @@ import {app, bus} from '../app/app';
     export default {
     props: {
         finfo: Object,
-        saving: Object
+        saving: Object,
+            objectid: String,
+            objectname: String
     },
 
     data: function() {
