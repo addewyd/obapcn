@@ -29,7 +29,7 @@
     </div>
 
 
-    <select id="select-deal" v-model="finfo.deal_id">
+    <select id="select-deal" v-model="d_finfo.deal_id">
         <option v-for="option in deals" v-bind:value="option.ID">
             {{ option.TITLE }}
         </option>
@@ -40,6 +40,9 @@
     </div>
     <div v-if="!dealdata">
         <button class="btn btn-primary" @click="createDeal()">Создать сделку</button>
+    </div>
+    <div v-if="dealdata">
+        <button class="btn btn-warning" @click="deleteDeal()">Удалить сделку</button>
     </div>
 </div>
 </template>
@@ -56,6 +59,7 @@ export default {
 
     data: function() {
         return {
+            d_finfo: this.finfo,
             deals: [],
             deal: undefined,
             //deal_id: this.finfo.deal_id,
@@ -87,7 +91,19 @@ export default {
     methods: {
         createDeal: async function() {
             this.finfo.deal_id = await app.createDeal(this.finfo, this.objectname);
+            this.d_finfo.deal_id = this.finfo.deal_id;
             console.log("new deal id in vue", this.finfo.deal_id);
+            var d = await app.getDealData(this.finfo.deal_id);
+            this.deal = d.data;
+
+        },
+        deleteDeal: async function() {
+            await app.deleteDeal(this.finfo.deal_id);
+            this.finfo.deal_id = null;
+            this.d_finfo.deal_id = this.finfo.deal_id;
+            this.deal = undefined;
+            this.deals = this.deallist;
+            //console.log("new deal id in vue", this.finfo.deal_id);
 
         }
     },

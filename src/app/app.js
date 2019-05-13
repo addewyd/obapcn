@@ -285,6 +285,33 @@ application.prototype.createDeal = async function(finfo, ob) {
 
 // .............................................................................
 
+application.prototype.deleteDeal = async function(id) {
+    var pci = new Promise((resolve, reject) =>
+        BX24.callMethod("crm.deal.delete",
+        {
+            id: id
+        }
+        ,
+        function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject(result);
+                } else {
+                    var r = result.data();
+                    console.log("del deal", r);
+                    resolve(r)
+                }
+        })
+        )
+
+    var i = await pci;
+    console.log("del deal id", i);
+    return pci;
+
+};
+
+// .............................................................................
+
 application.prototype.getDeals = async function() {
     var rd = [];
 

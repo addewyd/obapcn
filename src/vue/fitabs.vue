@@ -6,7 +6,7 @@
       <li role="presentation" @click="fitabxx = '01'">
         <span :class="tabclass('01')">Общие</span></li>
       <li role="presentation" @click="fitabxx = '02'">
-        <span :class="tabclass('02')">Tab 02</span></li>
+        <span :class="tabclass('02')">Сделка</span></li>
       <li role="presentation" @click="fitabxx = '03'">
         <span :class="tabclass('03')">Tab 03</span></li>
    </ul>
