@@ -296,7 +296,8 @@ class Maincntr extends AuxBase {
                 $floorid = $this -> params['floorid'];
                 $sql = 'select f.id, fl.floornum, f.fnumb, f.square, '
                         . 'f.price, f.nrooms, f.gensquare, f.sold, f.floorid, '
-                        . 'fl.plot as floorplot, f.deal_id, f.code '
+                        . 'fl.plot as floorplot, f.deal_id, f.code, f.meterprice, '
+                        . 'f.studio  '
                         . ' from flats f join floors fl '
                         . ' on f.floorid=fl.id'
                         . ' where floorid=?';

@@ -37,7 +37,9 @@ export default {
                     'C3:WON' : '7aaaff',
                     'C3:FINAL_INVOICE' : 'ffaaff',
                     'C3:PREPAYMENT_INVOICE' : 'aaffff',
-                    'C10:PREPARATION': '7fffaa'
+                    'C10:PREPARATION': '7fffaa',
+                    'NEW': '2fff4a',
+                    '6': 'ff2f4a'
                 };
                 var st = stages[this.deal.STAGE_ID];
                 return "background-color: #" + ( st ? st : "aaaaaa");

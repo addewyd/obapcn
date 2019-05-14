@@ -54,6 +54,17 @@
        </div>
 
        <div>
+        <label class="fi01" for="square">Жилая площадь</label>
+        <span :class="{ 'control': true }" class="field">
+            <input id="square" class="content-input" name="square"
+                   v-model="flatinfo.square" placeholder=""
+                />
+            <span v-show="errors.has('square')"
+                class="help is-danger">{{ errors.first('square') }}</span>
+        </span>
+       </div>
+
+       <div>
         <label class="fi01" for="nrooms">Комнат</label>
         <span :class="{ 'control': true }" class="field">
             <input id="nrooms" class="content-input" name="nrooms" type="number"
@@ -77,6 +88,36 @@
         </span>
        </div>
 
+       <div>
+        <label class="fi01" for="meterprice">Цена метра</label>
+        <span :class="{ 'control': true }" class="field">
+            <input id="meterprice" class="content-input" name="meterprice" type="number"
+                    min="0"
+                   v-model="flatinfo.meterprice" placeholder=""
+                />
+            <span v-show="errors.has('meterprice')"
+                class="help is-danger">{{ errors.first('meterprice') }}</span>
+        </span>
+       </div>
+
+       <div>
+        <label class="fi01" for="studio">Студия</label>
+        <span :class="{ 'control': true }" class="field">
+            <input id="studio" class="content-input" name="studio" type="number"
+                    min="0"
+                   v-model="flatinfo.studio" placeholder=""
+                />
+            <span v-show="errors.has('studio')"
+                class="help is-danger">{{ errors.first('studio') }}</span>
+        </span>
+       </div>
+<!--
+    Not here.
+    Do it in save
+       <div v-if="flatinfo.deal_id">
+           <button class="btn btn-info" @click="updateDeal(flatinfo.id)">Обновить данные сделки</button>
+       </div>
+-->
     </div>
     <div class="fi01 right">
         Помещения <button class="btn btn-success" @click="addPart(flatinfo.id)"> + </button>

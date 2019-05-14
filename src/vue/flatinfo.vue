@@ -5,7 +5,7 @@
             Общая площадь {{gensquare}}  <br />
         </div>
         <button class="btn btn-primary" @click="save">Сохранить</button>
-        <button class="btn btn-secondary" @click="close">Закрыть/Отмена</button>
+        <button class="btn btn-secondary" @click="close">Закрыть</button>
     </div>
 </template>
 <script>

@@ -1,10 +1,6 @@
 ﻿<template>
 <div>
-    <h1>{{finfo.id}}</h1>
-    <h3>
-   <!-- tab 02 {{finfo}} -->
-    </h3>
-    dlen {{deals.length}}
+
 <!--
     <div v-for="rec in deals">
         {{rec}}
@@ -42,6 +38,9 @@
         <button class="btn btn-primary" @click="createDeal()">Создать сделку</button>
     </div>
     <div v-if="dealdata">
+        <button class="btn btn-info" @click="unlinkDeal()">Открепить сделку</button>
+    </div>
+    <div v-if="dealdata">
         <button class="btn btn-warning" @click="deleteDeal()">Удалить сделку</button>
     </div>
 </div>
@@ -63,7 +62,8 @@ export default {
             deals: [],
             deal: undefined,
             //deal_id: this.finfo.deal_id,
-            dSave: this.saving
+            dSave: this.saving,
+            deals_changed: false
         }
     },
     watch : {
@@ -95,7 +95,9 @@ export default {
             console.log("new deal id in vue", this.finfo.deal_id);
             var d = await app.getDealData(this.finfo.deal_id);
             this.deal = d.data;
-
+// not finished, refresh needed
+            this.saving.state = true;
+// now is
         },
         deleteDeal: async function() {
             await app.deleteDeal(this.finfo.deal_id);
@@ -104,7 +106,17 @@ export default {
             this.deal = undefined;
             this.deals = this.deallist;
             //console.log("new deal id in vue", this.finfo.deal_id);
+// not finished, refresh needed
+            this.saving.state = true;
+// now is
 
+        },
+        unlinkDeal: function() {
+            this.finfo.deal_id = null;
+            this.d_finfo.deal_id = this.finfo.deal_id;
+            this.deal = undefined;
+            this.deals = this.deallist;
+            this.saving.state = true;
         }
     },
 

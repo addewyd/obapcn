@@ -253,14 +253,25 @@ application.prototype.getPshedData = async function(id) {
 };
 
 // .............................................................................
-
+/*
+UF_CRM_PB_PRICE": "3652000", "UF_CRM_PB_PROJECT": "ЖК Демо", "UF_CRM_PB_HOUSE": "Демо дом",
+"UF_CRM_PB_SECTION": "Секция 1", "UF_CRM_PB_FLOOR": "25",
+"UF_CRM_PB_NUMBER": "98", "UF_CRM_PB_ROOMS": "2", "UF_CRM_PB_AREA": "71.20",
+"UF_CRM_PB_BALCONY": "", "UF_CRM_PB_PRICE_METR": "51292", "UF_CRM_PB_PROP_ID": "1740049"
+*/
 application.prototype.createDeal = async function(finfo, ob) {
     var pci = new Promise((resolve, reject) =>
         BX24.callMethod("crm.deal.add",
         {
             fields: {
-                TITLE: ob,
-                UF_CRM_PB_PRICE: finfo.price
+                TITLE: ob + ' кв. ' + finfo.fnumb,
+                UF_CRM_PB_PROJECT: ob,
+                UF_CRM_PB_PRICE: finfo.price,
+                UF_CRM_PB_FLOOR: finfo.floornum,
+                UF_CRM_PB_NUMBER: finfo.fnumb,
+                UF_CRM_PB_ROOMS: finfo.nrooms,
+                UF_CRM_PB_PRICE_METR: finfo.meterprice,
+                UF_CRM_PB_AREA: finfo.gensquare
             },
             params: { "REGISTER_SONET_EVENT": "N" }
         }
@@ -635,13 +646,46 @@ application.prototype.saveNewContract = async function(flatid, odata) {
 
 application.prototype.saveF01 = async function(finfo, squares) {
     console.log('sF01', finfo, squares);
-    var params = Utils.array_merge(
+
+    if(finfo.deal_id) {
+        // update deal with finfo fields
+        var pci = new Promise((resolve, reject) =>
+            BX24.callMethod("crm.deal.update",
+            {
+                id: finfo.deal_id,
+                fields: {
+                    UF_CRM_PB_PRICE: finfo.price,
+                    UF_CRM_PB_FLOOR: finfo.floornum,
+                    UF_CRM_PB_NUMBER: finfo.fnumb,
+                    UF_CRM_PB_ROOMS: finfo.nrooms,
+                    UF_CRM_PB_PRICE_METR: finfo.meterprice,
+                    UF_CRM_PB_AREA: finfo.gensquare
+                },
+                params: { "REGISTER_SONET_EVENT": "N" }
+            },
+            function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject(result);
+                } else {
+                    var r = result.data();
+                    console.log("upd deal", r);
+                    resolve(r)
+                }
+            })
+        )
+
+        var r = await pci;
+    }
+
+    var params =
         {
             'operation': 'saveFlatData',
             finfo: finfo,
             squares: squares,
-            dbname: this.dbname
-        }, BX24.getAuth());
+            dbname: this.dbname,
+            ...BX24.getAuth()
+        };
     return new Promise((resolve, reject) => {
         $.ajax({
             url: 'cntr/maincntr.php',

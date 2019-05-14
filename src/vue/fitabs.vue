@@ -8,7 +8,7 @@
       <li role="presentation" @click="fitabxx = '02'">
         <span :class="tabclass('02')">Сделка</span></li>
       <li role="presentation" @click="fitabxx = '03'">
-        <span :class="tabclass('03')">Tab 03</span></li>
+        <span :class="tabclass('03')">Дополнительно</span></li>
    </ul>
 
    <div class="tab-content">
