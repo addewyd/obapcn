@@ -1,6 +1,6 @@
 ﻿import {Vue, app, bus} from './app';
 
-export default {    
+export default {
     props: {
         cellcomp: String
     },
@@ -17,9 +17,9 @@ export default {
             c_floorplot: undefined
         };
     },
-    
+
     methods: {
-        refreshdata: async function(id) { 
+        refreshdata: async function(id) {
             console.log('RD1', id);
             this.objectid = id;
             var floors = await app.refreshdata(id);
@@ -50,7 +50,7 @@ export default {
         delFloor: async function(id) {
             this.$dialog
                 .confirm({
-                    title: "Really delete?",
+                    title: "Действительго удалить?",
                 })
                 .then(dialog => {
                     Promise.all([
@@ -58,19 +58,19 @@ export default {
                         this.refreshdata(this.objectid)
                     ])
                 })
-                .catch(() => { 
+                .catch(() => {
                     // resolve(false);
-                });             
+                });
         },
         delEmptyFloors: async function() {
             await Promise.all([
                 app.delEmptyFloors(this.objectid),
                 this.refreshdata(this.objectid)
             ]);
-            
+
         }
     },
-    
+
     mounted: function () {
         var self = this;
         this.records = [];

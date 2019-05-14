@@ -47,6 +47,9 @@
     <div v-if="dealdata">
         <button class="btn btn-warning" @click="deleteDeal()">Удалить сделку</button>
     </div>
+    <div v-if="dealdata">
+        <button class="btn btn-success" @click="updateFromDeal()">Обновить данные из сделки</button>
+    </div>
 </div>
 </template>
 <script>
@@ -106,16 +109,25 @@ export default {
 // now is
         },
         deleteDeal: async function() {
-            await app.deleteDeal(this.finfo.deal_id);
-            this.finfo.deal_id = null;
-            this.d_finfo.deal_id = this.finfo.deal_id;
-            this.deal = undefined;
-            this.deals = this.deallist;
-            //console.log("new deal id in vue", this.finfo.deal_id);
-// not finished, refresh needed
-            this.saving.state = true;
-// now is
+            var s = this;
+            this.$dialog
+                .confirm({
+                    title: "Действительго удалить?",
+                })
+                .then(async function(dialog) {
 
+                    await app.deleteDeal(s.finfo.deal_id);
+                    s.finfo.deal_id = null;
+                    s.d_finfo.deal_id = s.finfo.deal_id;
+                    s.deal = undefined;
+                    s.deals = this.deallist;
+                    //console.log("new deal id in vue", s.finfo.deal_id);
+                    s.saving.state = true;
+
+                })
+                .catch(() => {
+                    // resolve(false);
+                });
         },
         unlinkDeal: function() {
             this.finfo.deal_id = null;
@@ -123,6 +135,18 @@ export default {
             this.deal = undefined;
             this.deals = this.deallist;
             this.saving.state = true;
+        },
+
+        updateFromDeal: function() {
+            if(this.deal) {
+                this.finfo.price = this.deal.UF_CRM_PB_PRICE;
+                this.finfo.floornum = this.deal.UF_CRM_PB_FLOOR;
+                this.finfo.fnumb = this.deal.UF_CRM_PB_NUMBER;
+                this.finfo.nrooms = this.deal.UF_CRM_PB_ROOMS;
+                this.finfo.meterprice = this.deal.UF_CRM_PB_PRICE_METR;
+                this.finfo.gensquare = this.deal.UF_CRM_PB_AREA;
+                this.saving.state = true;
+            }
         }
     },
 

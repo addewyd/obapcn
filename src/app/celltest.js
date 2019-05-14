@@ -43,7 +43,7 @@ export default {
                     'aaff1a',
                     '7aaa1f',
                     'ff1aff',
-                    'aa1fff',
+                    'faff8f',
                     '1fffaa',
                     '1fff4a',
                     '1f2ffa'
