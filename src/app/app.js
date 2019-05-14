@@ -86,7 +86,44 @@ application.prototype.loadAll = async function(r) {
     this.dbname = p1;
     var p2 = await this.loadObjects(p1);
     console.log('objects ', p2); // array of records is here
+    this.states = await this.getStates();
+    console.log('app.states', this.states)
     return p2;
+};
+
+// .............................................................................
+
+application.prototype.getStates = async function() {
+    var rd = [];
+    var pci = new Promise((resolve, reject) =>
+        BX24.callMethod("crm.status.list",
+        {
+            order: { "SORT": "ASC" },
+            filter: {"ENTITY_ID": "DEAL_STAGE"}
+        },
+        function(result) {
+                if(result.error()) {
+                    console.error(result.error());
+                    reject(result.error());
+                }
+                else
+                {
+                    var d = result.data();
+                    var n = 0;
+                    var m = result.more();
+                    var t = result.total();
+                    console.log('mstat: ', m);
+                    rd = Utils.array_merge(rd, d);
+
+                    if(m) {
+                        n = result.next();
+                    } else {
+                        console.log('states: ', rd);
+                        resolve(rd);
+                    }
+                }
+        }));
+    return pci;
 };
 
 // .............................................................................

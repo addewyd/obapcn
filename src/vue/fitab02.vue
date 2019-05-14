@@ -6,7 +6,10 @@
         {{rec}}
     </div>
     -->
+
     <div v-if="dealdata">
+        Стадия {{deal_stage?deal_stage.NAME : ""}}
+
     <div>
     Price {{dealdata.UF_CRM_PB_PRICE}}
     </div>
@@ -31,9 +34,10 @@
         </option>
     </select>
 
-    <div>
+    <div v-if="debugout">
         Deal: <span style="font-size:50%">{{dealdata}}</span>
     </div>
+
     <div v-if="!dealdata">
         <button class="btn btn-primary" @click="createDeal()">Создать сделку</button>
     </div>
@@ -63,7 +67,9 @@ export default {
             deal: undefined,
             //deal_id: this.finfo.deal_id,
             dSave: this.saving,
-            deals_changed: false
+            deals_changed: false,
+            deal_stage: null,
+            debugout: false
         }
     },
     watch : {
@@ -136,6 +142,10 @@ export default {
                     console.log('error(ft)',d.data);
 
                 this.deal = d.data;
+                this.deal_stage =
+                app.states.find( (e) => {
+                    return e.STATUS_ID == this.deal.STAGE_ID
+                } );
             }
             return this.deal;
         }

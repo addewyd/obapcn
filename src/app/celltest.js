@@ -32,15 +32,27 @@ export default {
         },
         cellstyle: function() {
             if(this.deal && this.fdata.deal_id) {
-                var stages = {
-                    'C3:LOSE' : 'aaffaa',
-                    'C3:WON' : '7aaaff',
-                    'C3:FINAL_INVOICE' : 'ffaaff',
-                    'C3:PREPAYMENT_INVOICE' : 'aaffff',
-                    'C10:PREPARATION': '7fffaa',
-                    'NEW': '2fff4a',
-                    '6': 'ff2f4a'
-                };
+                var st_colors = [
+                    'aaffaa',
+                    '7aaaff',
+                    'ffaaff',
+                    'aaffff',
+                    '7fffaa',
+                    '2fff4a',
+                    'ff2f4a',
+                    'aaff1a',
+                    '7aaa1f',
+                    'ff1aff',
+                    'aa1fff',
+                    '1fffaa',
+                    '1fff4a',
+                    '1f2ffa'
+                ];
+                var i = 0;
+                var stages = {};
+                app.states.forEach(e => {
+                    stages[e.STATUS_ID] =  st_colors[i++];
+                });
                 var st = stages[this.deal.STAGE_ID];
                 return "background-color: #" + ( st ? st : "aaaaaa");
             }
