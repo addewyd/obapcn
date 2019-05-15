@@ -1,7 +1,7 @@
 ﻿<template>
 <div>
     <div class="topmenu">
-        <button id="new_object" class="btn btn-primary" @click="newObject()">New object</button>
+        <button id="new_object" class="btn btn-primary" @click="newObject()">Новый объект</button>
         <button class="btn btn-primary">Button</button>
         <button class="btn btn-primary">Button</button>
     </div>
@@ -17,7 +17,8 @@
        <td class="objitem" v-on:click="refreshdata(record.id,record.name)" >
            {{record.name}}
        </td>
-       <td><button  class="btn btn-danger" :id="'del-object-'+record.id" @click="delObject(record.id)">Del</button></td>
+       <td><button  class="btn btn-danger" :id="'del-object-'+record.id"
+            @click="delObject(record.id)">Del</button></td>
     </tr>
     </table>
     </div>

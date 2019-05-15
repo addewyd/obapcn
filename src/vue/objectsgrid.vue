@@ -6,7 +6,8 @@
             <!-- assumed that there are NOT empty floors! -->
 
             <td  v-if="rec.length>0" v-on:click="clickFloor(rec[0].floorid,rec[0].floorplot)"
-                style="font-size: 120%; font-weight:bold;cursor: pointer">{{ rec[0].floornum}}</td>
+                style="font-size: 120%; font-weight:bold;cursor: pointer;text-align:right;padding: 0 4px;">
+                {{ rec[0].floornum}}</td>
             <td v-for="cell in rec">
                 <component v-bind:is="cellcomp"
                     v-bind:d="cell" :objectid="objectid" :objectname="objectname">
@@ -22,8 +23,9 @@
 
         </tr>
     </table>
-    <button id="add-floor" class="btn btn-primary" @click="newFloor()">Add floor</button>
-
+    <div v-if="objectid>0">
+    <button id="add-floor" class="btn btn-primary fi02" @click="newFloor()">Добавить этаж</button>
+    </div>
     <modal-window v-if="showNewFloor" @close="showNewFloor = false">
         <div slot="body">
            <new-floor :object_id="objectid" :objectname="objectname"></new-floor>

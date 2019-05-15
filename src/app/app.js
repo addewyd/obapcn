@@ -759,6 +759,7 @@ application.prototype.saveO01 = async function(odata) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: 'cntr/maincntr.php',
+            type: "POST",
             data: params}).done(
                 function (data) {
                     console.log('resolve saveO01', data, data.result);

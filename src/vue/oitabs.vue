@@ -1,8 +1,8 @@
 ﻿<template>
 <div>
-order id {{odata.odata.id?odata.odata.id:'No order'}}
+Договор  {{odata.odata.id ? (odata.odata.regnum + ' от ' + odata.odata.regdate) : 'Нет'}}
 <div v-if="!odata.odata.id">
-    <button class="btn btn-primary" @click="addContract(flatid)">Добавить данные договора</button>
+    <button class="btn btn-primary fi02" @click="addContract(flatid)">Добавить договор</button>
 </div>
 <div class="tabs">
    <ul class="nav nav-tabs">
@@ -10,10 +10,12 @@ order id {{odata.odata.id?odata.odata.id:'No order'}}
         <span :class="tabclass('01')">Общее</span></li>
       <li role="presentation" @click="oitabxx = '02'">
         <span :class="tabclass('02')">График платежей</span></li>
+      <!--
       <li role="presentation" @click="oitabxx = '03'">
         <span :class="tabclass('03')">Tab 03</span></li>
       <li role="presentation" @click="oitabxx = '04'">
         <span :class="tabclass('04')">Tab 04</span></li>
+      -->
    </ul>
    <div class="tab-content">
         <component v-bind:is="'oi-tab-'+oitabxx"

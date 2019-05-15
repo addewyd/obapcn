@@ -1,25 +1,25 @@
 ﻿<template>
 <div>
     <h2>
-        tab 02 {{flatid}}
+        Id {{flatid}}
     </h2>
     <div>
         <div v-if="odata.odata.id">
         <div v-if="psheddata.length>0">
-            Pay Shedule on {{odata.odata.client}}
+            График платежей
             <table>
                 <thead>
                     <tr>
-                        <th style="border-bottom:1px solid;border-right:1px solid; padding: 0 3px">Дата</th>
-                        <th style="border-bottom:1px solid;border-right:1px solid; padding: 0 3px"> Сумма</th>
-                        <th style="border-bottom:1px solid;"> % </th>
+                        <th style="border-bottom:1px solid;border-right:1px solid; padding: 0 5px">Дата</th>
+                        <th style="border-bottom:1px solid;border-right:1px solid; padding: 0 5px"> Сумма</th>
+                        <th style="border-bottom:1px solid; padding: 0 5px"> % </th>
                     </tr>
                 </thead>
                 <tbody>
                 <tr v-for="rec in psheddata">
-                <td style="border-right:1px solid; padding: 0 3px">{{rec.pdate}}</td>
-                <td style="border-right:1px solid; padding: 0 3px"> {{rec.psumm}}</td>
-                <td> {{rec.percent}}</td>
+                <td style="border-right:1px solid; padding: 0 5px">{{dformat(rec.pdate)}}</td>
+                <td style="border-right:1px solid; padding: 0 5px;text-align:right"> {{rec.psumm}}</td>
+                <td style="padding: 0 5px"> {{rec.percent}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -134,6 +134,12 @@ export default {
         }
     },
     methods: {
+        dformat: function(d) {
+            return d.slice(8,10) + '.' +
+            d.slice(5,7) + '.' +
+            d.slice(0,4);
+
+        },
         delpshed: async function() {
             await app.delPshed(this.odata.odata.id);
             this.psheddata = [];

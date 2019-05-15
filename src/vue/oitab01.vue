@@ -1,7 +1,7 @@
 ﻿<template>
 <div>
     <h2>
-   tab 01 {{flatid}}
+   Id {{flatid}}
     </h2>
     <div v-if="odata.odata.id">
 
@@ -27,9 +27,6 @@
                 class="help is-danger">{{ errors.first('regdate') }}</span>
             </span>
        </div>
-
-
-        order {{odata.odata}}
     </div>
 </div>
 </template>

@@ -4,7 +4,7 @@
         <app-main-middle />
         <objects-grid cellcomp="cell-test" />
     </div>
-    <button class="btn btn-secondary" v-on:click="upddb">Update DB</button>
+    <button class="btn btn-secondary fi02" v-on:click="upddb">Update DB</button>
 
 </div>
 </template>
@@ -27,7 +27,7 @@ export default {
                     self.objects = result;
                     app.objects = result;
                     bus.$emit('objects-ready');
-                }).catch((err) => { 
+                }).catch((err) => {
                     console.log('err', err)
                 });
             console.log('init not done yet');
