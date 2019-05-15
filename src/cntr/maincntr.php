@@ -390,6 +390,70 @@ class Maincntr extends AuxBase {
                 }
                 break;
 
+            case 'updateContract':
+                $pshed = $this -> params['odata']['psheddata']??FALSE;
+
+                try {
+                    $this -> pdo->beginTransaction();
+//$this -> log -> debug('pshed', $pshed);
+                    if(count($pshed) > 0) {
+
+                        $sql = "delete from payshedules where contractid=?";
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([
+                            $this->params['odata']['id']]);
+
+                        $sql = 'insert into payshedules '
+                                . '(contractid,pdate,psumm,percent,pmethod) '
+                                . 'values '
+                                . '(?,?,?,?,?)';
+                        foreach($pshed as $p) {
+                            $this -> log -> debug('pshed', [$p]);
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([
+                            $p['contractid'],
+                            $p['pdate'],
+                            $p['psumm'],
+                            $p['percent'],
+                            $p['pmethod'],
+                                ]);
+                        }
+
+                    }
+                    $sql = 'update contracts set '
+                            . 'regnum=?,regdate=? where id=? ';
+                    $q = $this -> pdo->prepare($sql);
+                    $q -> execute([
+                        $this -> params['odata']['regnum'],
+                        $this -> params['odata']['regdate'],
+                        $this -> params['odata']['id']
+                    ]);
+
+                    $this -> pdo->commit();
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $this -> pdo -> rollback();
+                    $status = 'error';
+                    $res = $e;
+                }
+                break;
+
+            case 'delPshed':
+                $pshed = $this -> params['id'];
+
+                try {
+                        $sql = "delete from payshedules where contractid=?";
+                        $q = $this -> pdo->prepare($sql);
+                        $q->execute([
+                            $pshed]);
+
+                    $status = 'success';
+                } catch(\PDOException $e) {
+                    $status = 'error';
+                    $res = $e;
+                }
+                break;
+
             case 'saveFlatData':
                 $finfo = $this -> params['finfo'];
                 $squares = [];
@@ -406,7 +470,8 @@ class Maincntr extends AuxBase {
                     $this -> pdo->beginTransaction();
                     // update flats
                     $sql = 'update flats set '
-                            . 'fnumb=?,square=?,price=?,nrooms=?,gensquare=?,sold=?, '
+                            . 'fnumb=?,square=?,price=?, meterprice=?, '
+                            . 'nrooms=?,gensquare=?,sold=?, studio=?, '
                             . 'deal_id=?,code=? '
                             . 'where id=?';
 
@@ -415,9 +480,11 @@ class Maincntr extends AuxBase {
                         intval($finfo['fnumb']),
                         floatval($finfo['square']),
                         floatval($finfo['price']),
+                        floatval($finfo['meterprice']),
                         floatval($finfo['nrooms']),
-                        floatval($finfo['gensquare,']),
+                        floatval($finfo['gensquare']),
                         $finfo['sold'],
+                        $finfo['studio'],
                         $finfo['deal_id'] ? intval($finfo['deal_id']) : null,
                         $finfo['code'],
                         $finfo['id']

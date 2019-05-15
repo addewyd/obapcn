@@ -23,7 +23,7 @@
             <label class="fi01" for="fcode">Код</label>
             <span style="color: rgb(255, 0, 0);">*</span>
             <span :class="{ 'control': true }" class="field">
-                <input id="fcode" class="content-input" disabled="true"
+                <input id="fcode" class="content-input"
                    name="floornum" v-model="flatinfo.code" placeholder=""
                 v-validate="'required'"/>
             <span v-show="errors.has('fcode')"
@@ -103,12 +103,21 @@
        <div>
         <label class="fi01" for="studio">Студия</label>
         <span :class="{ 'control': true }" class="field">
-            <input id="studio" class="content-input" name="studio" type="number"
-                    min="0"
-                   v-model="flatinfo.studio" placeholder=""
+            <input id="studio" class="content-input" name="studio" type="checkbox"
+                   v-model="is_studio" placeholder=""
                 />
             <span v-show="errors.has('studio')"
                 class="help is-danger">{{ errors.first('studio') }}</span>
+        </span>
+       </div>
+       <div>
+        <label class="fi01" for="sold">Продано</label>
+        <span :class="{ 'control': true }" class="field">
+            <input id="sold" class="content-input" name="sold" type="checkbox"
+                   v-model="is_sold" placeholder=""
+                />
+            <span v-show="errors.has('sold')"
+                class="help is-danger">{{ errors.first('sold') }}</span>
         </span>
        </div>
 <!--
@@ -169,7 +178,9 @@ export default {
             flatinfo: this.finfo,
             dSave: this.saving,
             showParts: false,
-            squares_changed: false
+            squares_changed: false,
+            is_studio: parseInt(this.finfo.studio) > 0,
+            is_sold: parseInt(this.finfo.sold) > 0
         };
     },
     methods: {
@@ -241,6 +252,12 @@ export default {
                 }
             },
             deep:true
+        },
+        is_sold: function(n, o) {
+            this.flatinfo.sold = n ? '1':'0';
+        },
+        is_studio: function(n, o) {
+            this.flatinfo.studio = n ? '1':'0';
         }
     },
 

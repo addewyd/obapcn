@@ -13,7 +13,7 @@
                 </component>
             </td>
             <td v-if="rec.length>0">
-                <button @click="delFloor(rec[0].floorid)">Del</button>
+                <button class="btn btn-danger" @click="delFloor(rec[0].floorid)">Del</button>
             </td>
             <td v-if="rec.length<1">
                 <button @click="delEmptyFloors()">X</button>

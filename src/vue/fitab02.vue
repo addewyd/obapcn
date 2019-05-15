@@ -39,16 +39,16 @@
     </div>
 
     <div v-if="!dealdata">
-        <button class="btn btn-primary" @click="createDeal()">Создать сделку</button>
+        <button class="btn btn-primary fi02" @click="createDeal()">Создать сделку</button>
     </div>
     <div v-if="dealdata">
-        <button class="btn btn-info" @click="unlinkDeal()">Открепить сделку</button>
+        <button class="btn btn-info fi02" @click="unlinkDeal()">Открепить сделку</button>
     </div>
     <div v-if="dealdata">
-        <button class="btn btn-warning" @click="deleteDeal()">Удалить сделку</button>
+        <button class="btn btn-warning fi02" @click="deleteDeal()">Удалить сделку</button>
     </div>
     <div v-if="dealdata">
-        <button class="btn btn-success" @click="updateFromDeal()">Обновить данные из сделки</button>
+        <button class="btn btn-success fi02" @click="updateFromDeal()">Обновить данные из сделки</button>
     </div>
 </div>
 </template>

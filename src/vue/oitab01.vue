@@ -55,6 +55,9 @@ export default {
                     // send back
                     console.log('watched(oi01) - SAVE');
                     val.state = false;
+                    var res = app.saveO01(this.odata.odata);
+                    if(res.status === 'success') {
+                    }
                 } else {
                     console.log('watched(oi01) - nothing to do');
                 }

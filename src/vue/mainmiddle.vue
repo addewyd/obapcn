@@ -17,7 +17,7 @@
        <td class="objitem" v-on:click="refreshdata(record.id,record.name)" >
            {{record.name}}
        </td>
-       <td><button :id="'del-object-'+record.id" @click="delObject(record.id)">Del</button></td>
+       <td><button  class="btn btn-danger" :id="'del-object-'+record.id" @click="delObject(record.id)">Del</button></td>
     </tr>
     </table>
     </div>

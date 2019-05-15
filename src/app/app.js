@@ -746,6 +746,68 @@ application.prototype.saveF01 = async function(finfo, squares) {
 
 // .............................................................................
 
+application.prototype.saveO01 = async function(odata) {
+    console.log('sO01', odata);
+    var params =
+        {
+            'operation': 'updateContract',
+            odata: odata,
+            dbname: this.dbname,
+            ...BX24.getAuth()
+        };
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve saveO01', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('saveO01 err', e);
+                    reject(['error', e]);
+                });
+    });
+}
+
+// .............................................................................
+
+application.prototype.delPshed = async function(id) {
+    console.log('delPshed', id);
+    var params =
+        {
+            'operation': 'delPshed',
+            id: id,
+            dbname: this.dbname,
+            ...BX24.getAuth()
+        };
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'cntr/maincntr.php',
+            data: params}).done(
+                function (data) {
+                    console.log('resolve delPshed', data, data.result);
+                    if(data.status === 'success')
+                        resolve(data.result);
+                    else {
+                        reject([data.status, data.result]);
+                    }
+                }).fail(
+                function (e) {
+                    console.log('delPshed err', e);
+                    reject(['error', e]);
+                });
+    });
+}
+
+// .............................................................................
+
 application.prototype.saveFloorPlot = async function(floorid, files) {
     console.log('sFP', floorid,files);
     var params = {

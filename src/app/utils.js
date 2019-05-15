@@ -125,5 +125,16 @@ var xhrHandler = function (emitter) {
     return jqXHR;
 }
 
+var addmon = function(d, m) {
+    var dd = Date.parse(d);
+    dd = new Date(dd);
+    dd.setMonth(dd.getMonth() + m);
+    var datestring =
+            dd.getFullYear() + '-' +
+            ("0"+(dd.getMonth()+1)).slice(-2)
+            + "-"
+            + ("0" + dd.getDate()).slice(-2);
+    return datestring;
+}
 
-export { getoption, array_merge, makeid, xhrHandler };
+export { getoption, array_merge, makeid, xhrHandler, addmon };
